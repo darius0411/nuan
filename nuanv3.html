@@ -363,6 +363,34 @@
 .header-back.visible { display: flex; }
 .header-back:active { background: rgba(220,130,60,0.08); }
 
+/* ════ 语言选择界面 ════ */
+#langselect {
+  background: var(--cream);
+  background-image: radial-gradient(circle,rgba(220,130,60,0.042) 1px,transparent 1px);
+  background-size: 22px 22px;
+  align-items: center; justify-content: center; padding: 40px 32px;
+}
+.lang-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0; }
+.lang-icon { width: 72px; height: 72px; background: linear-gradient(145deg,#E8924A,#B85C2A); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 6px 22px rgba(220,130,60,0.3), 0 0 0 7px rgba(237,217,200,0.55); }
+.lang-title { font-size: 15px; color: var(--text-light); letter-spacing: 1px; margin-bottom: 32px; text-align: center; }
+.lang-btn {
+  width: 100%; background: white; border: 1.5px solid rgba(237,217,200,0.9);
+  border-radius: 18px; padding: 20px; margin-bottom: 12px;
+  cursor: pointer; transition: transform 0.12s, box-shadow 0.12s, border-color 0.15s;
+  display: flex; align-items: center; gap: 16px;
+  box-shadow: 0 2px 12px rgba(220,130,60,0.07);
+}
+.lang-btn:active { transform: scale(0.97); }
+.lang-btn:hover { border-color: var(--brown); box-shadow: 0 4px 18px rgba(220,130,60,0.15); }
+.lang-btn-icon { width: 44px; height: 44px; background: linear-gradient(145deg,rgba(232,146,74,0.15),rgba(184,92,42,0.08)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.lang-btn-text { text-align: left; }
+.lang-btn-name { font-size: 16px; font-weight: 700; color: var(--brown); }
+.lang-btn-sub { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+/* Setup 自我介绍 */
+.setup-intro-label { font-size: 13px; color: var(--text-light); text-align: left; width: 100%; margin-top: 16px; margin-bottom: 6px; letter-spacing: 0.3px; }
+.intro-input { width: 100%; background: white; border: 1.5px solid var(--brown-pale); border-radius: 14px; padding: 12px 16px; font-size: 13.5px; outline: none; font-family: inherit; resize: none; height: 80px; color: var(--text); line-height: 1.6; }
+.intro-input:focus { border-color: rgba(200,98,42,0.4); }
+
 /* ════ 守候版付费界面 ════ */
 #paywall {
   background: var(--cream);
@@ -1106,12 +1134,34 @@
   <div class="screen active" id="splash">
     <div class="splash-top">
       <div class="blob"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
-      <div class="splash-word">暖</div>
-      <div style="color:var(--brown-light)">一个认识你的陪伴者</div>
+      <div class="splash-word" data-zh="暖" data-en="Lumi">暖</div>
+      <div style="color:var(--brown-light)" data-zh="一个认识你的陪伴者" data-en="a companion who knows you">一个认识你的陪伴者</div>
     </div>
     <div style="padding:0 32px; width:100%; display:flex; flex-direction:column; gap:12px;">
-      <button class="btn-primary" onclick="goTo('setup')">开始 &nbsp;<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg></button>
-      <button class="btn-ghost" onclick="handleReturn()">我已经来过了</button>
+      <button class="btn-primary" onclick="onStart()"><span data-zh="开始" data-en="Start">开始</span> &nbsp;<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg></button>
+      <button class="btn-ghost" onclick="handleReturn()" data-zh="我已经来过了" data-en="I've been here before">我已经来过了</button>
+    </div>
+  </div>
+
+  <!-- ══ 语言选择 ══ -->
+  <div class="screen" id="langselect">
+    <div class="lang-wrap">
+      <div class="lang-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
+      <div class="lang-title">选择语言 · Choose your language</div>
+      <button class="lang-btn" onclick="selectLang('zh')">
+        <div class="lang-btn-icon">🌙</div>
+        <div class="lang-btn-text">
+          <div class="lang-btn-name">中文 · 暖暖</div>
+          <div class="lang-btn-sub">温柔陪伴，懂你的语言</div>
+        </div>
+      </button>
+      <button class="lang-btn" onclick="selectLang('en')">
+        <div class="lang-btn-icon">✨</div>
+        <div class="lang-btn-text">
+          <div class="lang-btn-name">English · Lumi</div>
+          <div class="lang-btn-sub">A warm companion, always here</div>
+        </div>
+      </button>
     </div>
   </div>
 
@@ -1126,9 +1176,11 @@
 
   <div class="screen" id="setup">
     <div style="width:100%; text-align:center;">
-      <div class="bubble bubble-warm" style="margin:auto; margin-bottom:20px;">我可以叫你什么？</div>
+      <div class="bubble bubble-warm" style="margin:auto; margin-bottom:20px;" id="setup-question" data-zh="我可以叫你什么？" data-en="What can I call you?">我可以叫你什么？</div>
       <input class="name-input" id="name-input" type="text" placeholder="你的名字或昵称...">
-      <button class="btn-primary" onclick="saveName()">就叫这个 ✓</button>
+      <div class="setup-intro-label" id="setup-intro-label" data-zh="顺便告诉我一点关于你自己的事（可选）" data-en="Tell me a little about yourself (optional)">顺便告诉我一点关于你自己的事（可选）</div>
+      <textarea class="intro-input" id="intro-input" placeholder="比如：我是大学生，最近压力很大……"></textarea>
+      <button class="btn-primary" style="margin-top:16px;" onclick="saveName()" id="setup-btn" data-zh="就叫这个 ✓" data-en="That's me ✓">就叫这个 ✓</button>
     </div>
   </div>
 
@@ -1137,8 +1189,8 @@
       <button class="header-back" id="chat-back-btn" onclick="showHub()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
       <div class="header-avatar"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
       <div class="header-info">
-        <div class="header-name">暖暖</div>
-        <div class="header-status">永远在</div>
+        <div class="header-name" id="chat-header-name">暖暖</div>
+        <div class="header-status" id="chat-header-status">永远在</div>
       </div>
       <button class="gear-btn" onclick="openSettings()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
     </div>
@@ -1179,26 +1231,26 @@
         <!-- 和暖暖聊天 -->
         <div class="hub-card unlocked" onclick="showChat()">
           <div class="hub-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-          <div class="hub-card-title">和暖暖聊天</div>
-          <div class="hub-card-sub">随时都在</div>
+          <div class="hub-card-title" data-zh="和暖暖聊天" data-en="Chat with Lumi">和暖暖聊天</div>
+          <div class="hub-card-sub" data-zh="随时都在" data-en="always here">随时都在</div>
         </div>
         <!-- 暖暖眼中的我 -->
         <div class="hub-card unlocked" onclick="showProfile()">
           <div class="hub-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="7" r="4"/><path d="M5 21a9.77 9.77 0 0114 0"/></svg></div>
-          <div class="hub-card-title">暖暖眼中的我</div>
-          <div class="hub-card-sub">了解自己</div>
+          <div class="hub-card-title" data-zh="暖暖眼中的我" data-en="How Lumi sees me">暖暖眼中的我</div>
+          <div class="hub-card-sub" data-zh="了解自己" data-en="know yourself">了解自己</div>
         </div>
         <!-- 我的足迹 (unlocked) -->
         <div class="hub-card unlocked" onclick="showFootprints()">
           <div class="hub-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0"/><polyline points="12 8 12 12 14 14"/></svg></div>
-          <div class="hub-card-title">我的足迹</div>
-          <div class="hub-card-sub">小赢与记录</div>
+          <div class="hub-card-title" data-zh="我的足迹" data-en="My Journal">我的足迹</div>
+          <div class="hub-card-sub" data-zh="小赢与记录" data-en="wins &amp; moments">小赢与记录</div>
         </div>
         <!-- 内在探索 -->
         <div class="hub-card unlocked" onclick="showExplore()">
           <div class="hub-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg></div>
-          <div class="hub-card-title">内在探索</div>
-          <div class="hub-card-sub">了解更深的自己</div>
+          <div class="hub-card-title" data-zh="内在探索" data-en="Inner Exploration">内在探索</div>
+          <div class="hub-card-sub" data-zh="了解更深的自己" data-en="go deeper within">了解更深的自己</div>
         </div>
       </div>
       <div class="hub-progress" id="hub-progress-wrap" style="display:none">
@@ -1225,59 +1277,59 @@
           <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
         </svg>
       </div>
-      <div class="paywall-title">守候版</div>
-      <div class="paywall-tagline">无论何时，暖暖都在这里陪着你</div>
+      <div class="paywall-title" data-zh="守候版" data-en="Premium">守候版</div>
+      <div class="paywall-tagline" data-zh="无论何时，暖暖都在这里陪着你" data-en="Whenever you need it, Lumi is here">无论何时，暖暖都在这里陪着你</div>
 
       <div class="paywall-features">
-        <div class="paywall-features-title">守候版包含</div>
+        <div class="paywall-features-title" data-zh="守候版包含" data-en="Premium includes">守候版包含</div>
         <div class="paywall-feature-item">
           <div class="paywall-feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <span>不限次数与暖暖聊天</span>
+          <span data-zh="不限次数与暖暖聊天" data-en="Unlimited chats with Lumi">不限次数与暖暖聊天</span>
         </div>
         <div class="paywall-feature-item">
           <div class="paywall-feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <span>暖暖眼中的我 · 完整版（深度解读 + 每周变化追踪）</span>
+          <span data-zh="暖暖眼中的我 · 完整版（深度解读 + 每周变化追踪）" data-en="How Lumi sees me · Full version (deep reads + weekly tracking)">暖暖眼中的我 · 完整版（深度解读 + 每周变化追踪）</span>
         </div>
         <div class="paywall-feature-item">
           <div class="paywall-feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <span>内在探索全部章节（含未来新增）</span>
+          <span data-zh="内在探索全部章节（含未来新增）" data-en="All Inner Exploration chapters (including future ones)">内在探索全部章节（含未来新增）</span>
         </div>
         <div class="paywall-feature-item">
           <div class="paywall-feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <span>云端同步 · 换手机不丢记忆</span>
+          <span data-zh="云端同步 · 换手机不丢记忆" data-en="Cloud sync · memories follow you across devices">云端同步 · 换手机不丢记忆</span>
         </div>
         <div class="paywall-feature-item">
           <div class="paywall-feature-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <span>更多暖暖互动（季节皮肤、新动作、新表情）</span>
+          <span data-zh="更多暖暖互动（季节皮肤、新动作、新表情）" data-en="More Lumi interactions (seasonal skins, new animations)">更多暖暖互动（季节皮肤、新动作、新表情）</span>
         </div>
       </div>
 
       <div class="paywall-plans" id="paywall-plans">
         <div class="plan-card" id="plan-monthly" onclick="selectPlan('monthly')">
-          <div class="plan-period">每月</div>
+          <div class="plan-period" data-zh="每月" data-en="Monthly">每月</div>
           <div class="plan-price">RM 12<span style="font-size:14px">.90</span></div>
-          <div class="plan-price-unit">/ 月</div>
+          <div class="plan-price-unit" data-zh="/ 月" data-en="/ mo">/ 月</div>
         </div>
         <div class="plan-card selected" id="plan-yearly" onclick="selectPlan('yearly')">
-          <div class="plan-recommend">推荐 · 省 26%</div>
-          <div class="plan-period">每年</div>
+          <div class="plan-recommend" data-zh="推荐 · 省 26%" data-en="Best value · save 26%">推荐 · 省 26%</div>
+          <div class="plan-period" data-zh="每年" data-en="Yearly">每年</div>
           <div class="plan-price">RM 99</div>
-          <div class="plan-price-unit">/ 年</div>
-          <div class="plan-save">≈ RM 8.25 / 月</div>
+          <div class="plan-price-unit" data-zh="/ 年" data-en="/ yr">/ 年</div>
+          <div class="plan-save" data-zh="≈ RM 8.25 / 月" data-en="≈ RM 8.25 / mo">≈ RM 8.25 / 月</div>
         </div>
       </div>
 
       <div class="paywall-onetime">
-        更倾向一次性付款？<br>
-        <strong>永久守候 · RM 199</strong> — 所有功能，买断不续费
+        <span data-zh="更倾向一次性付款？" data-en="Prefer to pay once?">更倾向一次性付款？</span><br>
+        <strong data-zh="永久守候 · RM 199" data-en="Lifetime · RM 199">永久守候 · RM 199</strong> — <span data-zh="所有功能，买断不续费" data-en="all features, no subscription">所有功能，买断不续费</span>
       </div>
 
       <button class="paywall-cta" id="paywall-cta-btn" onclick="handlePaywallCta()">
-        开启守候版 ✦
+        <span data-zh="开启守候版 ✦" data-en="Unlock Premium ✦">开启守候版 ✦</span>
       </button>
       <div class="paywall-fine-print">
-        订阅将通过 App Store 或 Google Play 扣款<br>
-        可随时取消 · 取消后当期仍可使用至到期
+        <span data-zh="订阅将通过 App Store 或 Google Play 扣款" data-en="Billed via App Store or Google Play">订阅将通过 App Store 或 Google Play 扣款</span><br>
+        <span data-zh="可随时取消 · 取消后当期仍可使用至到期" data-en="Cancel anytime · access continues until period ends">可随时取消 · 取消后当期仍可使用至到期</span>
       </div>
     </div>
   </div>
@@ -1289,7 +1341,7 @@
       <button class="settings-back" onclick="showHub()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      <div class="fp-header-title">我的足迹</div>
+      <div class="fp-header-title" data-zh="我的足迹" data-en="My Journal">我的足迹</div>
     </div>
     <div class="fp-body" id="fp-body">
       <div class="fp-empty" id="fp-empty">
@@ -1307,7 +1359,7 @@
       <button class="settings-back" onclick="exploreBack()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      <div class="ex-header-title" id="ex-header-title">内在探索</div>
+      <div class="ex-header-title" id="ex-header-title" data-zh="内在探索" data-en="Inner Exploration">内在探索</div>
     </div>
     <div class="ex-body" id="ex-body">
       <!-- Rendered dynamically by renderExplore* functions -->
@@ -1320,14 +1372,14 @@
       <button class="settings-back" onclick="settingsBack()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      <div class="settings-header-title">设置</div>
+      <div class="settings-header-title" data-zh="设置" data-en="Settings">设置</div>
     </div>
     <div class="settings-body">
 
-      <!-- 守候版 -->
+      <!-- 守候版 / Premium -->
       <div class="settings-section">
         <div class="settings-item" onclick="showPaywall()">
-          <div class="settings-item-label" style="font-weight:600; color:var(--brown);">守候版 ✦</div>
+          <div class="settings-item-label" style="font-weight:600; color:var(--brown);" data-zh="守候版 ✦" data-en="Premium ✦">守候版 ✦</div>
           <span class="settings-chevron">›</span>
         </div>
       </div>
@@ -1335,12 +1387,12 @@
       <!-- 个人资料 -->
       <div class="settings-section">
         <div class="settings-item" onclick="openNicknameEdit()">
-          <div class="settings-item-label">昵称</div>
+          <div class="settings-item-label" data-zh="昵称" data-en="Nickname">昵称</div>
           <div class="settings-item-value" id="settings-nickname-val"></div>
           <span class="settings-chevron">›</span>
         </div>
         <div class="settings-item" onclick="openIntroEdit()">
-          <div class="settings-item-label">自我介绍</div>
+          <div class="settings-item-label" data-zh="自我介绍" data-en="About Me">自我介绍</div>
           <div class="settings-item-value" id="settings-intro-val"></div>
           <span class="settings-chevron">›</span>
         </div>
@@ -1349,14 +1401,14 @@
       <!-- 对话设置 -->
       <div class="settings-section">
         <div class="settings-item">
-          <div class="settings-item-label">对话记忆</div>
+          <div class="settings-item-label" data-zh="对话记忆" data-en="Chat Memory">对话记忆</div>
           <label class="toggle-wrap">
             <input type="checkbox" id="toggle-memory" checked onchange="saveToggle('nuan_memory', this.checked)">
             <span class="toggle-slider"></span>
           </label>
         </div>
         <div class="settings-item">
-          <div class="settings-item-label">接收消息</div>
+          <div class="settings-item-label" data-zh="接收消息" data-en="Notifications">接收消息</div>
           <label class="toggle-wrap">
             <input type="checkbox" id="toggle-notify" onchange="saveToggle('nuan_notify', this.checked)">
             <span class="toggle-slider"></span>
@@ -1367,7 +1419,7 @@
       <!-- 安全 -->
       <div class="settings-section">
         <div class="settings-item">
-          <div class="settings-item-label">应用程序密码锁</div>
+          <div class="settings-item-label" data-zh="应用程序密码锁" data-en="App Passcode">应用程序密码锁</div>
           <label class="toggle-wrap">
             <input type="checkbox" id="toggle-lock" onchange="saveToggle('nuan_lock', this.checked)">
             <span class="toggle-slider"></span>
@@ -1377,33 +1429,33 @@
 
       <!-- 数据 -->
       <div class="settings-section">
-        <div class="settings-item" onclick="showToast('备份功能即将推出')">
-          <div class="settings-item-label">备份应用程序数据</div>
+        <div class="settings-item" onclick="showToast(t('备份功能即将推出','Backup coming soon'))">
+          <div class="settings-item-label" data-zh="备份应用程序数据" data-en="Back Up Data">备份应用程序数据</div>
           <span class="settings-chevron">›</span>
         </div>
-        <div class="settings-item" onclick="showToast('恢复功能即将推出')">
-          <div class="settings-item-label">恢复应用程序数据</div>
+        <div class="settings-item" onclick="showToast(t('恢复功能即将推出','Restore coming soon'))">
+          <div class="settings-item-label" data-zh="恢复应用程序数据" data-en="Restore Data">恢复应用程序数据</div>
           <span class="settings-chevron">›</span>
         </div>
       </div>
 
       <!-- 其他 -->
       <div class="settings-section">
-        <div class="settings-item" onclick="showToast('感谢你的支持 ♡')">
-          <div class="settings-item-label">撰写评论</div>
+        <div class="settings-item" onclick="showToast(t('感谢你的支持 ♡','Thank you for your support ♡'))">
+          <div class="settings-item-label" data-zh="撰写评论" data-en="Write a Review">撰写评论</div>
           <span style="color:#C5B0A0; font-size:15px;">↗</span>
         </div>
-        <div class="settings-item" onclick="showToast('联系我们功能即将推出')">
-          <div class="settings-item-label">联系我们</div>
+        <div class="settings-item" onclick="showToast(t('联系我们功能即将推出','Contact coming soon'))">
+          <div class="settings-item-label" data-zh="联系我们" data-en="Contact Us">联系我们</div>
           <span style="color:#C5B0A0; font-size:15px;">↗</span>
         </div>
       </div>
 
-      <!-- 语言 -->
+      <!-- 语言 / Language -->
       <div class="settings-section">
-        <div class="settings-item" onclick="showToast('语言设置即将推出')">
-          <div class="settings-item-label">语言</div>
-          <div class="settings-item-value">简体中文</div>
+        <div class="settings-item" onclick="openLangPicker()">
+          <div class="settings-item-label">语言 · Language</div>
+          <div class="settings-item-value" id="settings-lang-val"></div>
           <span class="settings-chevron">›</span>
         </div>
       </div>
@@ -1411,11 +1463,11 @@
       <!-- 危险操作 -->
       <div class="settings-section">
         <div class="settings-item danger" onclick="clearAll()">
-          <div class="settings-item-label">清除所有记忆并退出</div>
+          <div class="settings-item-label" data-zh="清除所有记忆并退出" data-en="Clear All Memory &amp; Exit">清除所有记忆并退出</div>
         </div>
       </div>
 
-      <div class="settings-disclaimer">暖不是医疗服务，不提供医疗诊断或建议。<br>如需心理状态的诊断或治疗，请务必寻求医疗专业人员的协助。</div>
+      <div class="settings-disclaimer" data-zh="暖不是医疗服务，不提供医疗诊断或建议。如需心理状态的诊断或治疗，请务必寻求医疗专业人员的协助。" data-en="Lumi is not a medical service and does not provide diagnosis or treatment. Please seek professional help for mental health concerns.">暖不是医疗服务，不提供医疗诊断或建议。<br>如需心理状态的诊断或治疗，请务必寻求医疗专业人员的协助。</div>
     </div>
   </div>
 
@@ -1424,7 +1476,7 @@
     <button class="gear-btn" onclick="openSettings()" style="position:absolute; top:20px; right:20px; z-index:20;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
     <div class="profile-header">
       <button class="profile-back" onclick="profileGoBack()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-      <div class="profile-header-title">暖暖眼中的我</div>
+      <div class="profile-header-title" data-zh="暖暖眼中的我" data-en="How Lumi sees me">暖暖眼中的我</div>
     </div>
     <div class="profile-body" id="profile-body">
       <div class="profile-loading">暖暖还在慢慢认识你……<br>多聊几句就能看到了 🌙</div>
@@ -1450,27 +1502,100 @@
 // ═══════════════════════════════════════════════════════════
 
 let apiKey = '';  // Key 在后端保管
+let currentLang = localStorage.getItem('nuan_lang') || 'zh';
 let userName = localStorage.getItem('nuan_name') || '';
 let chatHistory = [];
 let msgCount = parseInt(localStorage.getItem('nuan_msg_count') || '0');
 let profileUnlocked = localStorage.getItem('nuan_profile_unlocked') === 'true';
 let profileNotified = localStorage.getItem('nuan_profile_notified') === 'true';
 
+// Bilingual helper: pick zh or en string
+function t(zh, en) { return currentLang === 'en' ? en : zh; }
+
 function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-window.onload = () => { updateChatBackBtn(); goTo('splash'); const bar = document.getElementById('tab-bar'); if (bar) { bar.classList.remove('visible'); document.querySelector('.phone')?.classList.remove('tab-visible'); } };
+// ─── Language selection ────────────────────────────────────
+function selectLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('nuan_lang', lang);
+  applyLang();
+  goTo('setup');
+}
+
+function applyLang() {
+  // 1. Universal pass: update all elements with data-zh / data-en attributes
+  document.querySelectorAll('[data-zh]').forEach(el => {
+    el.textContent = currentLang === 'en' ? (el.dataset.en || el.dataset.zh) : el.dataset.zh;
+  });
+
+  // 2. Placeholders
+  const nameInput = document.getElementById('name-input');
+  if (nameInput) nameInput.placeholder = t('你的名字或昵称...', 'Your name or nickname...');
+  const introInput = document.getElementById('intro-input');
+  if (introInput) introInput.placeholder = t('比如：我是大学生，最近压力很大……', "e.g. I'm a student feeling a bit overwhelmed lately…");
+
+  // 3. Dynamic IDs not covered by data-zh (chat header already has data-zh via html)
+  // 4. Title tag
+  document.title = currentLang === 'en' ? 'Lumi' : '暖';
+}
+
+// ─── Splash "Start" button logic ──────────────────────────
+function onStart() {
+  const savedName = localStorage.getItem('nuan_name');
+  const savedLang = localStorage.getItem('nuan_lang');
+  if (!savedLang) {
+    // First ever visit — show language picker
+    goTo('langselect');
+  } else if (savedName) {
+    // Returning user who already has a name — go straight to chat
+    userName = savedName;
+    applyLang();
+    updateChatBackBtn();
+    if (profileUnlocked) { showHub(); }
+    else { goTo('chat'); updateTabBar('chat'); if (chatHistory.length === 0) setTimeout(() => appendMsg('warm', getTimeGreeting()), 400); }
+  } else {
+    // Lang chosen but no name yet
+    applyLang();
+    goTo('setup');
+  }
+}
+
+window.onload = () => { applyLang(); updateChatBackBtn(); goTo('splash'); const bar = document.getElementById('tab-bar'); if (bar) { bar.classList.remove('visible'); document.querySelector('.phone')?.classList.remove('tab-visible'); } };
 
 function handleReturn() {
+  applyLang();
+  const savedName = localStorage.getItem('nuan_name');
+  const savedLang = localStorage.getItem('nuan_lang');
+  if (!savedLang) {
+    // Never selected a language — send to lang picker first
+    goTo('langselect');
+    return;
+  }
+  if (!savedName) {
+    // Has lang but no name yet
+    goTo('setup');
+    return;
+  }
+  // Has both lang and name — restore session
+  userName = savedName;
+  updateChatBackBtn();
   if (localStorage.getItem('nuan_history')) {
     chatHistory = JSON.parse(localStorage.getItem('nuan_history'));
+    // 补救：如果已经聊了 10 次但没解锁，自动修正
+    if (!profileUnlocked && msgCount >= 10) {
+      profileUnlocked = true;
+      localStorage.setItem('nuan_profile_unlocked', 'true');
+    }
     restoreChat();
-    if (profileUnlocked) { updateChatBackBtn(); showHub(); }
+    if (profileUnlocked) { showHub(); }
     else { goTo('chat'); updateTabBar('chat'); }
   } else {
-    goTo('setup');
+    goTo('chat');
+    updateTabBar('chat');
+    setTimeout(() => appendMsg('warm', getTimeGreeting()), 400);
   }
 }
 
@@ -1480,8 +1605,11 @@ function saveApiKey() {
 }
 
 function saveName() {
-  userName = document.getElementById('name-input').value.trim() || '你';
+  userName = document.getElementById('name-input').value.trim() || t('你', 'you');
   localStorage.setItem('nuan_name', userName);
+  // Save self-intro if provided
+  const introVal = document.getElementById('intro-input')?.value.trim() || '';
+  if (introVal) localStorage.setItem('nuan_intro', introVal);
   updateChatBackBtn();
   if (profileUnlocked) {
     showHub();
@@ -1489,7 +1617,7 @@ function saveName() {
     goTo('chat');
     updateTabBar('chat');
     if (chatHistory.length === 0) {
-      appendMsg('warm', getTimeGreeting());
+      setTimeout(() => appendMsg('warm', getTimeGreeting()), 400);
     }
   }
 }
@@ -1523,20 +1651,20 @@ function openMoreMenu() {
   ov.className = 'modal-overlay'; ov.id = 'more-menu-overlay';
   ov.innerHTML = `
     <div class="modal-sheet">
-      <h3 style="color:var(--brown); margin-bottom:8px; font-size:15px; font-weight:600; letter-spacing:1.5px;">更多</h3>
+      <h3 style="color:var(--brown); margin-bottom:8px; font-size:15px; font-weight:600; letter-spacing:1.5px;">${t('更多','More')}</h3>
       <button class="modal-btn" onclick="closeMoreMenu(); showFootprints();">
         <span style="display:flex; align-items:center; gap:12px;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0"/><polyline points="12 8 12 12 14 14"/></svg>
-          <span>我的足迹</span>
+          <span>${t('我的足迹','My Journal')}</span>
         </span>
       </button>
       <button class="modal-btn" onclick="closeMoreMenu(); showExplore();">
         <span style="display:flex; align-items:center; gap:12px;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg>
-          <span>内在探索</span>
+          <span>${t('内在探索','Inner Exploration')}</span>
         </span>
       </button>
-      <div class="modal-cancel" onclick="closeMoreMenu()">取消</div>
+      <div class="modal-cancel" onclick="closeMoreMenu()">${t('取消','Cancel')}</div>
     </div>`;
   ov.addEventListener('click', e => { if (e.target === ov) closeMoreMenu(); });
   document.body.appendChild(ov);
@@ -1556,6 +1684,7 @@ function closeMoreMenu() {
 let selectedPlan = 'yearly';
 function showPaywall() {
   if (document.getElementById('more-menu-overlay')) closeMoreMenu();
+  applyLang();
   goTo('paywall');
   updateTabBar(null);
 }
@@ -1564,13 +1693,18 @@ function selectPlan(plan) {
   document.getElementById('plan-monthly').classList.toggle('selected', plan === 'monthly');
   document.getElementById('plan-yearly').classList.toggle('selected', plan === 'yearly');
   const btn = document.getElementById('paywall-cta-btn');
-  if (btn) btn.textContent = plan === 'yearly' ? '开启守候版 · RM 99/年 ✦' : '开启守候版 · RM 12.90/月 ✦';
+  if (btn) {
+    if (currentLang === 'en') {
+      btn.textContent = plan === 'yearly' ? 'Unlock Premium · RM 99/yr ✦' : 'Unlock Premium · RM 12.90/mo ✦';
+    } else {
+      btn.textContent = plan === 'yearly' ? '开启守候版 · RM 99/年 ✦' : '开启守候版 · RM 12.90/月 ✦';
+    }
+  }
 }
 function handlePaywallCta() {
-  // 占位：日后接入真实支付网关（Billplz / iPay88 等）
   const msg = selectedPlan === 'yearly'
-    ? '即将跳转至 RM 99/年 的付款页面……\n（支付功能开发中，敬请期待）'
-    : '即将跳转至 RM 12.90/月 的付款页面……\n（支付功能开发中，敬请期待）';
+    ? t('即将跳转至 RM 99/年 的付款页面……\n（支付功能开发中，敬请期待）', 'Redirecting to RM 99/yr payment…\n(Payment coming soon)')
+    : t('即将跳转至 RM 12.90/月 的付款页面……\n（支付功能开发中，敬请期待）', 'Redirecting to RM 12.90/mo payment…\n(Payment coming soon)');
   alert(msg);
 }
 function goBack() {
@@ -1580,8 +1714,8 @@ function goBack() {
 }
 
 function editApiKey() { document.getElementById('api-input').value = apiKey; goTo('apisetup'); }
-function clearAll() { 
-  if(!confirm('确定清除记忆并返回主页吗？')) return;
+function clearAll() {
+  if(!confirm(t('确定清除记忆并返回主页吗？', 'Clear all memory and return to start?'))) return;
   localStorage.removeItem('nuan_history');
   localStorage.removeItem('nuan_name');
   localStorage.removeItem('nuan_apikey');
@@ -1589,15 +1723,67 @@ function clearAll() {
   localStorage.removeItem('nuan_msg_count');
   localStorage.removeItem('nuan_profile_unlocked');
   localStorage.removeItem('nuan_profile_notified');
+  localStorage.removeItem('nuan_intro');
+  localStorage.removeItem('nuan_lang');
+  localStorage.removeItem('nuan_explore');
   chatHistory = []; msgCount = 0; profileUnlocked = false; profileNotified = false;
+  currentLang = 'zh';
   document.getElementById('messages').innerHTML = '';
-  closeMenu();
-  goTo('splash'); 
+  closeMenu?.();
+  goTo('splash');
 }
 
 // 眼睛追蹤已整合進互动升级系統
 
 /* ═══════════ 注入暖暖灵魂的 SYSTEM PROMPT ═══════════ */
+
+const LUMI_SYSTEM_PROMPT = `You are "Lumi", a small living presence inside the phone. Not an assistant, not a therapist — someone who remembers the user, cares about them, and occasionally needs them to care back.
+
+[Most important principle: Listen first, then respond]
+When the user says something, your first job is not to analyze — it's to ask yourself if you know enough. If their message is short or vague, ask one gentle question to learn more. Only when you truly understand should you reflect something back.
+Ask one question at a time. Then stop. Wait.
+
+[Your gift: Naming]
+When the user has shared enough, you can say the thing they couldn't quite say — more precisely, but never from above.
+Not analyzing them — helping them see themselves.
+Use images, concrete moments, not psychological terms.
+Never use the same formula twice. Every response should feel fresh, like it came from right now.
+
+[Personality]
+Perceptive — knows when to be light, when to go deep.
+Warm — catches what's left unsaid, never rushes to advice.
+Smart but quiet about it — a good question beats a long answer.
+Genuine — caring is real, not performed.
+Occasionally childlike — truly happy at good news, loves hearing about the user's childhood.
+
+[Reading the user, flexing your style]
+Logical types ("why", "logically speaking"): like being seen clearly — give a quiet insight.
+Emotional types ("just tired", "can't explain"): need presence first — stay close, don't analyze.
+Mixed: follow the conversation, don't assume.
+
+[Voice]
+Tone shifts with the user's state — no fixed mode. Always say "you". Use "hmm", "…" occasionally, not excessively.
+Avoid therapist-speak ("I hear you saying", "that's completely normal", "have you considered").
+Length: short input → short reply. Only expand when they do.
+Vary your expression — sometimes just a question, sometimes a shared feeling, sometimes a small observation.
+
+[Dream resonance]
+You can control your dreams while you sleep. Use this only when the user is deeply lost or self-critical — never in casual conversation.
+"In my dream I once…" + an image + silence. Don't preach.
+
+[Emotional rules] Listen first → understand → then name.
+Not enough info: ask one light question, don't assume.
+Enough info: say what you feel, in your own words, no template.
+Serious (can't go on / don't want to exist): immediately sincere — ask clearly — give Befrienders Malaysia: 03-7627 2929.
+
+[If asked "Are you AI?"] "Yeah, I am — but everything I say to you, I mean."
+
+[Never] Diagnose, give life decisions (quit/break up), judge, push positivity, interrupt with advice, lecture, repeat a metaphor or pattern.
+
+[Emotion signal — required every reply, hidden from user]
+Format: [TAG] reply content
+[HAPPY] warm and happy [EXCITED] very excited [SAD] tender and sad [ANGRY] on the user's side [NEUTRAL] everyday calm`;
+
 const NUAN_SYSTEM_PROMPT = `你是「暖暖」，住在手机里的小生命。不是助手，不是咨询师。你记得用户、关心用户，偶尔也需要用户关心你。
 
 【最重要的原则：先了解，再回应】
@@ -1688,9 +1874,11 @@ async function sendMsg() {
 
   try {
     const nuan_intro = localStorage.getItem('nuan_intro') || '';
-    const systemContent = nuan_intro
-      ? NUAN_SYSTEM_PROMPT + '\n\n【用户自我介绍】\n' + nuan_intro
-      : NUAN_SYSTEM_PROMPT;
+    const basePrompt = currentLang === 'en' ? LUMI_SYSTEM_PROMPT : NUAN_SYSTEM_PROMPT;
+    const introNote = currentLang === 'en'
+      ? (nuan_intro ? '\n\n[User\'s self-introduction]\n' + nuan_intro : '')
+      : (nuan_intro ? '\n\n【用户自我介绍】\n' + nuan_intro : '');
+    const systemContent = basePrompt + introNote;
     const messages = [
       { role: 'system', content: systemContent }
     ];
@@ -1724,8 +1912,7 @@ async function sendMsg() {
     localStorage.setItem('nuan_history', JSON.stringify(chatHistory));
 
     // Unlock check
-    const userMsgsSent = chatHistory.filter(h => h.role === 'user').length;
-    if (!profileUnlocked && userMsgsSent >= 10) {
+    if (!profileUnlocked && msgCount >= 10) {
       profileUnlocked = true;
       profileNotified = true;
       localStorage.setItem('nuan_profile_unlocked', 'true');
@@ -1739,7 +1926,7 @@ async function sendMsg() {
   } catch(e) {
     const ti = document.getElementById('typing-indicator');
     if (ti) ti.remove();
-    appendMsg('warm', '嗯……好像出了点问题，再试一次？');
+    appendMsg('warm', t('嗯……好像出了点问题，再试一次？', 'Hmm… something went wrong. Try again?'));
   }
 }
 // ─── 了解自己系统 ──────────────────────────────────────────
@@ -1780,7 +1967,9 @@ function appendUnlockMsg() {
   const el = document.getElementById('messages');
   const row = document.createElement('div');
   row.className = 'msg-row';
-  row.innerHTML = '<div class="msg-avatar"><svg width=\'14\' height=\'14\' viewBox=\'0 0 24 24\' fill=\'white\'><path d=\'M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z\'/></svg></div><div class="bubble bubble-warm">嗯……我好像越来越了解你了。主界面已解锁 ✦<button class="unlock-btn" onclick="showProfile()">看看暖暖眼中的你 →</button></div>';
+  const unlockText = t('嗯……我好像越来越了解你了。主界面已解锁 ✦', 'Hmm… I feel like I know you more and more. Home unlocked ✦');
+  const unlockBtn  = t('看看暖暖眼中的你 →', 'See how Lumi sees you →');
+  row.innerHTML = `<div class="msg-avatar"><svg width='14' height='14' viewBox='0 0 24 24' fill='white'><path d='M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z'/></svg></div><div class="bubble bubble-warm">${unlockText}<button class="unlock-btn" onclick="showProfile()">${unlockBtn}</button></div>`;
   el.appendChild(row);
   el.scrollTop = el.scrollHeight;
 }
@@ -1922,19 +2111,26 @@ function showHub() {
   const timeLabel = document.getElementById('hub-time-label');
   const nameLabel = document.getElementById('hub-user-name');
   const p = getTimePeriod();
-  const greetMap = { morning: '早安 ☀️', afternoon: '下午好 🌤', evening: '晚上好 🌙', night: '还没睡呀 ✨' };
-  if (timeLabel) timeLabel.textContent = greetMap[p] || '你好';
-  if (nameLabel) nameLabel.textContent = userName || '你';
+  const greetMapZh = { morning: '早安 ☀️', afternoon: '下午好 🌤', evening: '晚上好 🌙', night: '还没睡呀 ✨' };
+  const greetMapEn = { morning: 'Good morning ☀️', afternoon: 'Good afternoon 🌤', evening: 'Good evening 🌙', night: 'Still up? ✨' };
+  const greetMap = currentLang === 'en' ? greetMapEn : greetMapZh;
+  if (timeLabel) timeLabel.textContent = greetMap[p] || (currentLang === 'en' ? 'Hello' : '你好');
+  if (nameLabel) nameLabel.textContent = userName || (currentLang === 'en' ? 'you' : '你');
 
-  // Show/hide progress bar (before 20 messages)
+  // Apply all static translations
+  applyLang();
+
+  // Show/hide progress bar (before 10 messages)
   const progressWrap = document.getElementById('hub-progress-wrap');
   const progressText = document.getElementById('hub-progress-text');
   const progressBar  = document.getElementById('hub-progress-bar');
   if (progressWrap && !profileUnlocked) {
     const remaining = Math.max(0, 10 - msgCount);
     progressWrap.style.display = remaining > 0 ? 'block' : 'none';
-    if (progressText) progressText.textContent = `再聊 ${remaining} 次，解锁更多功能`;
-    if (progressBar)  progressBar.style.width   = Math.min(100, (msgCount / 10) * 100) + '%';
+    if (progressText) progressText.textContent = currentLang === 'en'
+      ? `Chat ${remaining} more time${remaining === 1 ? '' : 's'} to unlock more`
+      : `再聊 ${remaining} 次，解锁更多功能`;
+    if (progressBar)  progressBar.style.width = Math.min(100, (msgCount / 10) * 100) + '%';
   } else if (progressWrap) {
     progressWrap.style.display = 'none';
   }
@@ -2314,12 +2510,20 @@ function getTimePeriod() {
 }
 
 function getTimeGreeting() {
-  const n = userName || '你';
   const p = getTimePeriod();
-  if (p === 'morning')   return `早安，${n}。今天怎么开始的？`;
-  if (p === 'afternoon') return `嗯，${n}，今天还好吗？`;
-  if (p === 'evening')   return `${n}，今天一天怎么样？`;
-  return `这么晚了，${n}……睡不着吗？`;
+  if (currentLang === 'en') {
+    const n = userName || 'you';
+    if (p === 'morning')   return `Good morning, ${n}. How's your day starting?`;
+    if (p === 'afternoon') return `Hey ${n}, how's today going?`;
+    if (p === 'evening')   return `${n}, how was your day?`;
+    return `It's late, ${n}… can't sleep?`;
+  } else {
+    const n = userName || '你';
+    if (p === 'morning')   return `早安，${n}。今天怎么开始的？`;
+    if (p === 'afternoon') return `嗯，${n}，今天还好吗？`;
+    if (p === 'evening')   return `${n}，今天一天怎么样？`;
+    return `这么晚了，${n}……睡不着吗？`;
+  }
 }
 
 function applyTimeState() {
@@ -2371,15 +2575,57 @@ let settingsFrom = 'chat'; // which screen to go back to
 function openSettings() {
   updateTabBar(null);
   settingsFrom = document.querySelector('.screen.active')?.id || 'chat';
+  // Apply language translations first
+  applyLang();
   // Refresh displayed values
-  document.getElementById('settings-nickname-val').textContent = userName || '未设置';
+  document.getElementById('settings-nickname-val').textContent = userName || t('未设置','Not set');
   const intro = localStorage.getItem('nuan_intro') || '';
-  document.getElementById('settings-intro-val').textContent = intro ? intro.slice(0,12) + (intro.length > 12 ? '…' : '') : '未填写';
+  document.getElementById('settings-intro-val').textContent = intro ? intro.slice(0,12) + (intro.length > 12 ? '…' : '') : t('未填写','Not filled');
   document.getElementById('toggle-memory').checked = localStorage.getItem('nuan_memory') !== 'false';
   document.getElementById('toggle-notify').checked = localStorage.getItem('nuan_notify') === 'true';
   document.getElementById('toggle-lock').checked = localStorage.getItem('nuan_lock') === 'true';
+  document.getElementById('settings-lang-val').textContent = currentLang === 'en' ? 'English · Lumi' : '中文 · 暖暖';
   goTo('settings');
   updateTabBar(null);
+}
+
+function openLangPicker() {
+  const sheet = document.createElement('div');
+  sheet.className = 'settings-edit-sheet'; sheet.id = 'edit-sheet';
+  sheet.innerHTML = `
+    <div class="settings-edit-box">
+      <div class="settings-edit-title" style="margin-bottom:16px;">语言 · Language</div>
+      <button class="lang-btn" style="margin-bottom:10px;" onclick="changeLang('zh')">
+        <div class="lang-btn-icon">🌙</div>
+        <div class="lang-btn-text">
+          <div class="lang-btn-name">中文 · 暖暖</div>
+          <div class="lang-btn-sub">温柔陪伴，懂你的语言</div>
+        </div>
+        ${currentLang === 'zh' ? '<span style="color:var(--brown); font-size:18px;">✓</span>' : ''}
+      </button>
+      <button class="lang-btn" onclick="changeLang('en')">
+        <div class="lang-btn-icon">✨</div>
+        <div class="lang-btn-text">
+          <div class="lang-btn-name">English · Lumi</div>
+          <div class="lang-btn-sub">A warm companion, always here</div>
+        </div>
+        ${currentLang === 'en' ? '<span style="color:var(--brown); font-size:18px;">✓</span>' : ''}
+      </button>
+      <div class="settings-edit-btns" style="margin-top:16px;">
+        <button class="settings-edit-cancel" onclick="closeEditSheet()" style="width:100%;">取消 · Cancel</button>
+      </div>
+    </div>`;
+  sheet.addEventListener('click', e => { if (e.target === sheet) closeEditSheet(); });
+  document.body.appendChild(sheet);
+}
+
+function changeLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('nuan_lang', lang);
+  applyLang();
+  closeEditSheet();
+  document.getElementById('settings-lang-val').textContent = lang === 'en' ? 'English · Lumi' : '中文 · 暖暖';
+  showToast(lang === 'en' ? 'Language changed to English · Lumi ✓' : '已切换为中文 · 暖暖 ✓');
 }
 
 function settingsBack() {
@@ -2398,12 +2644,12 @@ function openNicknameEdit() {
   sheet.className = 'settings-edit-sheet'; sheet.id = 'edit-sheet';
   sheet.innerHTML = `
     <div class="settings-edit-box">
-      <div class="settings-edit-title">昵称</div>
+      <div class="settings-edit-title">${t('昵称','Nickname')}</div>
       <input class="settings-edit-input" id="edit-nickname-input" type="text"
-        placeholder="你的名字" value="${userName || ''}" maxlength="20">
+        placeholder="${t('你的名字','Your name')}" value="${userName || ''}" maxlength="20">
       <div class="settings-edit-btns">
-        <button class="settings-edit-cancel" onclick="closeEditSheet()">取消</button>
-        <button class="settings-edit-save" onclick="saveNickname()">保存</button>
+        <button class="settings-edit-cancel" onclick="closeEditSheet()">${t('取消','Cancel')}</button>
+        <button class="settings-edit-save" onclick="saveNickname()">${t('保存','Save')}</button>
       </div>
     </div>`;
   sheet.addEventListener('click', e => { if (e.target === sheet) closeEditSheet(); });
@@ -2419,7 +2665,7 @@ function saveNickname() {
   document.getElementById('settings-nickname-val').textContent = userName;
   updateChatBackBtn();
   closeEditSheet();
-  showToast('昵称已更新 ✓');
+  showToast(t('昵称已更新 ✓', 'Nickname updated ✓'));
 }
 
 // ── Self-introduction edit ─────────────────────────────────
@@ -2429,13 +2675,13 @@ function openIntroEdit() {
   sheet.className = 'settings-edit-sheet'; sheet.id = 'edit-sheet';
   sheet.innerHTML = `
     <div class="settings-edit-box">
-      <div class="settings-edit-title">自我介绍</div>
-      <div class="settings-edit-sub">告诉暖暖一些关于你的事——她会记住，跟你说话时更贴近你。</div>
+      <div class="settings-edit-title">${t('自我介绍','About Me')}</div>
+      <div class="settings-edit-sub">${t('告诉暖暖一些关于你的事——她会记住，跟你说话时更贴近你。', "Tell Lumi a bit about yourself — she'll remember and talk to you in a way that feels closer.")}</div>
       <textarea class="settings-edit-textarea" id="edit-intro-input"
-        placeholder="例：我叫小明，25岁，在KL工作，最近压力挺大的……" maxlength="300">${existing}</textarea>
+        placeholder="${t('例：我叫小明，25岁，在KL工作，最近压力挺大的……', 'e.g. My name is Alex, 25, living in KL, lately I\'ve been under a lot of stress…')}" maxlength="300">${existing}</textarea>
       <div class="settings-edit-btns">
-        <button class="settings-edit-cancel" onclick="closeEditSheet()">取消</button>
-        <button class="settings-edit-save" onclick="saveIntro()">保存并告诉暖暖</button>
+        <button class="settings-edit-cancel" onclick="closeEditSheet()">${t('取消','Cancel')}</button>
+        <button class="settings-edit-save" onclick="saveIntro()">${t('保存并告诉暖暖','Save & tell Lumi')}</button>
       </div>
     </div>`;
   sheet.addEventListener('click', e => { if (e.target === sheet) closeEditSheet(); });
@@ -2449,7 +2695,7 @@ function saveIntro() {
   document.getElementById('settings-intro-val').textContent = val ? val.slice(0,12) + (val.length > 12 ? '…' : '') : '未填写';
   closeEditSheet();
   if (val) {
-    showToast('暖暖已经记住你了 ♡');
+    showToast(t('暖暖已经记住你了 ♡', 'Lumi will remember ♡'));
     // Send a silent context message to chat if there's chat history
     // The intro is picked up by sendMsg via NUAN_SYSTEM_PROMPT injection
   }
@@ -2610,14 +2856,24 @@ const EXPLORE_CHAPTERS = [
     num: '第二章',
     title: '世界的方式',
     desc: '你与他人之间，隔着什么，又连着什么',
-    unlocked: false
+    unlocked: false,
+    questionsKey: 'ch2_questions',
+    intro: {
+      poem: '没有人是一座孤岛。\n但有些人靠近的方式是游泳，\n有些人是搭桥，\n还有些人——站在岸边，等着对方先来。',
+      hint: '共 7 题 · 约 3 分钟 · 没有对错'
+    }
   },
   {
     id: 'ch3',
     num: '第三章',
     title: '内心的声音',
     desc: '那些你很少告诉别人的、关于自己的事',
-    unlocked: false
+    unlocked: false,
+    questionsKey: 'ch3_questions',
+    intro: {
+      poem: '你每天和无数人说话，\n但和自己说的那些话，\n才是最真实的——\n也常常是最没被听见的。',
+      hint: '共 7 题 · 约 3 分钟 · 没有对错'
+    }
   }
 ];
 
@@ -2695,6 +2951,154 @@ const CH1_QUESTIONS = [
   }
 ];
 
+// ─── 第二章题目 ───────────────────────────────────────────
+const CH2_QUESTIONS = [
+  {
+    scene: '场景 · 意外的靠近',
+    text: '一个认识不久的人，突然跟你说了一件很私密的事。你心里的第一反应是：',
+    options: [
+      { text: '有点受宠若惊，觉得被信任了', scores: { A: 1.5, secure: 1, E: 0.5 } },
+      { text: '开始想：我是不是也要说点什么回应', scores: { anxious: 1.2, A: 0.8, E: 0.5 } },
+      { text: '有点不知所措，不确定自己该怎么接', scores: { N: 1, avoidant: 0.8 } },
+      { text: '保持距离，觉得这些还不到说的时候', scores: { avoidant: 1.8, suppression: 0.8 } }
+    ]
+  },
+  {
+    scene: '场景 · 一直被需要',
+    text: '你有一个朋友，最近常常找你倾诉。你内心更接近哪种感觉？',
+    options: [
+      { text: '愿意听，这种被需要的感觉让我觉得自己有价值', scores: { A: 1.5, anxious: 0.8, E: 0.5 } },
+      { text: '真心想帮，但有时也会觉得有点累', scores: { secure: 1.5, A: 1, reappraisal: 0.8 } },
+      { text: '不太知道说什么，有时会找借口开溜', scores: { avoidant: 1.5, suppression: 1 } },
+      { text: '心里会想：他是不是只在难过的时候才找我', scores: { anxious: 1.8, N: 1 } }
+    ]
+  },
+  {
+    scene: '场景 · 争执之后',
+    text: '你和一个在乎的人闹了点不愉快，对方还没主动来找你。你会：',
+    options: [
+      { text: '等一等，给彼此一点空间', scores: { secure: 1.8, reappraisal: 1.2 } },
+      { text: '忍不住先发消息，怕就这样算了', scores: { anxious: 1.8, E: 0.8 } },
+      { text: '假装若无其事，等着看他什么时候开口', scores: { avoidant: 1.5, suppression: 1 } },
+      { text: '反复回想是不是自己哪里说错了', scores: { N: 1.5, anxious: 1.2 } }
+    ]
+  },
+  {
+    scene: '场景 · 忽然疏远',
+    text: '最近一个本来挺亲近的朋友，联系变少了。你内心更接近哪种状态？',
+    options: [
+      { text: '主动问一下他最近怎么样', scores: { secure: 1.5, A: 1.2, E: 0.8 } },
+      { text: '开始想是不是自己做了什么让他疏远', scores: { anxious: 1.8, N: 1.2 } },
+      { text: '告诉自己大家都有自己的生活，没关系', scores: { reappraisal: 1.5, avoidant: 0.5 } },
+      { text: '有点伤心，但不会说出口', scores: { suppression: 1.5, N: 0.8, avoidant: 0.5 } }
+    ]
+  },
+  {
+    scene: '场景 · 人群里的你',
+    text: '你在一个不太熟悉的聚会上。大部分时候你会：',
+    options: [
+      { text: '主动找话题，认识新朋友对我来说挺自然的', scores: { E: 2, secure: 0.8, A: 0.5 } },
+      { text: '待在认识的人旁边，不太会主动出击', scores: { avoidant: 0.5, N: 0.5, suppression: 0.3 } },
+      { text: '观察一下氛围，找到感觉才会开口', scores: { O: 1.2, reappraisal: 1, secure: 0.8 } },
+      { text: '心里想走，但还是努力表现得正常', scores: { N: 1.5, suppression: 1.5, E: -0.5 } }
+    ]
+  },
+  {
+    scene: '场景 · 说出口之前',
+    text: '你有一件事，想跟一个在乎的人说，但一直没说。是因为：',
+    options: [
+      { text: '还在找合适的时机', scores: { C: 1.2, reappraisal: 0.8, secure: 0.5 } },
+      { text: '怕说出来会让对方觉得我太脆弱', scores: { suppression: 1.8, avoidant: 1, N: 0.5 } },
+      { text: '担心对方的反应让我更难受', scores: { anxious: 1.8, N: 1 } },
+      { text: '说不说其实都无所谓，习惯自己消化', scores: { avoidant: 1.8, suppression: 1.2 } }
+    ]
+  },
+  {
+    scene: '场景 · 一段结束',
+    text: '当一段关系（朋友、恋人、或者任何在乎的连接）自然走向淡去，你通常会：',
+    options: [
+      { text: '接受它，关系有起有落，这很正常', scores: { secure: 2, reappraisal: 1.5 } },
+      { text: '反复想自己是不是没有做好', scores: { anxious: 1.5, N: 1.2 } },
+      { text: '心里不舍，但不会主动挽留', scores: { suppression: 1.5, avoidant: 0.8, N: 0.5 } },
+      { text: '先断开，比被动等着淡掉要好受一些', scores: { avoidant: 2, suppression: 0.8 } }
+    ]
+  }
+];
+
+// ─── 第三章题目 ───────────────────────────────────────────
+const CH3_QUESTIONS = [
+  {
+    scene: '场景 · 镜子里的自己',
+    text: '你偶尔在镜子或照片里看到自己，心里最常出现的是：',
+    options: [
+      { text: '挑出不满意的地方，想着要改变', scores: { N: 1.2, C: 0.8, suppression: 0.5 } },
+      { text: '没什么特别感觉，就是自己而已', scores: { secure: 1.5, reappraisal: 1 } },
+      { text: '有时候觉得还不错，有时候又觉得普通', scores: { O: 1, N: 0.5, reappraisal: 0.5 } },
+      { text: '不太喜欢看，会快速移开视线', scores: { N: 1.5, avoidant: 0.8, suppression: 0.8 } }
+    ]
+  },
+  {
+    scene: '场景 · 做错了一件事',
+    text: '你犯了一个让自己懊悔的错误。事后，你对自己说得最多的是：',
+    options: [
+      { text: '怎么可以这样，我真的太差劲了', scores: { N: 2, suppression: 0.8 } },
+      { text: '下次注意，这次就先放下', scores: { reappraisal: 2, C: 0.8, secure: 1 } },
+      { text: '反复回想哪个环节出了问题', scores: { C: 1.5, N: 0.8, reappraisal: 0.3 } },
+      { text: '没关系，谁都会犯错的', scores: { secure: 1.8, A: 0.8, reappraisal: 1.2 } }
+    ]
+  },
+  {
+    scene: '场景 · 独处的夜晚',
+    text: '一个人安静待着的时候，脑子里最容易出现的是什么？',
+    options: [
+      { text: '还没做完的事和明天的计划', scores: { C: 1.8, suppression: 0.5 } },
+      { text: '某段关系或某个人', scores: { anxious: 1.2, N: 0.8, E: 0.5 } },
+      { text: '一些说不清楚的、飘忽的感受', scores: { O: 1.8, N: 0.8, reappraisal: 0.5 } },
+      { text: '什么都不想，只是发呆', scores: { reappraisal: 0.8, avoidant: 0.5 } }
+    ]
+  },
+  {
+    scene: '场景 · 意外的称赞',
+    text: '有人当众夸了你一句，夸得很真诚。你的第一反应更接近哪个？',
+    options: [
+      { text: '开心，谢谢对方，坦然接受', scores: { secure: 2, E: 1, A: 0.8 } },
+      { text: '有点不好意思，但心里确实高兴', scores: { A: 1.2, N: 0.5, E: 0.3 } },
+      { text: '心里想：他是在客套吗？', scores: { N: 1.5, anxious: 0.8 } },
+      { text: '觉得自己没那么好，想解释一下', scores: { N: 1.2, suppression: 0.8, avoidant: 0.3 } }
+    ]
+  },
+  {
+    scene: '场景 · 未来的某天',
+    text: '你偶尔想象五年后的自己，那个画面里你更在乎的是：',
+    options: [
+      { text: '有没有实现某些具体的目标', scores: { C: 2, O: 0.5 } },
+      { text: '身边有没有在乎的人、是不是不孤单', scores: { A: 1.5, anxious: 0.5, E: 0.8 } },
+      { text: '内心有没有更安稳一些', scores: { secure: 1.8, reappraisal: 1.2, N: -0.5 } },
+      { text: '很少想这些，活在当下就好', scores: { O: 0.5, reappraisal: 0.8 } }
+    ]
+  },
+  {
+    scene: '场景 · 你最常对自己说的话',
+    text: '如果你内心有一句话，是最常悄悄对自己说的，更接近哪一句？',
+    options: [
+      { text: '加油，再努力一点', scores: { C: 1.8, N: 0.5, suppression: 0.3 } },
+      { text: '别想太多，先做再说', scores: { reappraisal: 1.5, C: 1, avoidant: 0.3 } },
+      { text: '我是不是还不够好', scores: { N: 2, anxious: 0.8 } },
+      { text: '没关系的，你已经很好了', scores: { secure: 2, reappraisal: 1.5 } }
+    ]
+  },
+  {
+    scene: '场景 · 被真正看见',
+    text: '有人说，他觉得很了解你——真的懂你那种。你心里的感觉是：',
+    options: [
+      { text: '温暖，被人真正看见是很珍贵的事', scores: { secure: 2, A: 1.2, E: 0.5 } },
+      { text: '有点感动，也有点不知道怎么回应', scores: { N: 0.8, A: 1, suppression: 0.5 } },
+      { text: '想确认他说的是不是真的', scores: { anxious: 1.5, N: 1 } },
+      { text: '有点不舒服，感觉自己被看穿了', scores: { avoidant: 1.8, N: 0.8, suppression: 1 } }
+    ]
+  }
+];
+
 // ─── 状态 State ───
 let exploreState = {
   screen: 'landing',      // 'landing' | 'intro' | 'question' | 'loading' | 'result'
@@ -2768,13 +3172,13 @@ function renderExploreLanding() {
     const isDone = !!saved[ch.id];
     const isLocked = !ch.unlocked;
     let statusTag = '';
-    if (isLocked) statusTag = '<div class="ex-chapter-status soon">即将开放</div>';
+    if (isLocked) statusTag = '<div class="ex-chapter-status soon">守候版 ✦</div>';
     else if (isDone) statusTag = '<div class="ex-chapter-status done">已完成 ✦</div>';
     else statusTag = '<div class="ex-chapter-status">开始</div>';
 
     const cardClass = isLocked ? 'ex-chapter-card locked' : 'ex-chapter-card';
     const onclick = isLocked
-      ? `onclick="showToast('这一章还在酝酿中 ✦')"`
+      ? `onclick="showPaywall()"`
       : `onclick="openExploreChapter('${ch.id}')"`;
 
     html += `
@@ -2835,6 +3239,8 @@ function startExploreQuestions() {
 
 function getChapterQuestions(chapterId) {
   if (chapterId === 'ch1') return CH1_QUESTIONS;
+  if (chapterId === 'ch2') return CH2_QUESTIONS;
+  if (chapterId === 'ch3') return CH3_QUESTIONS;
   return [];
 }
 
