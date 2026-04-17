@@ -1623,6 +1623,7 @@ function saveName() {
   if (introVal) localStorage.setItem('nuan_intro', introVal);
   applyLang();
   updateChatBackBtn();
+  markInteraction(); // 唤醒暖暖
   if (profileUnlocked) {
     showHub();
   } else {
@@ -2131,6 +2132,7 @@ function showChat() {
   applyLang();
   updateTabBar('chat');
   goTo('chat');
+  markInteraction(); // 进入聊天时唤醒暖暖，重置闲置计时器
   // 如果聊天记录为空，或最后一条是用户说的，暖暖主动打招呼
   const lastMsg = chatHistory[chatHistory.length - 1];
   if (!lastMsg || lastMsg.role === 'user') {
