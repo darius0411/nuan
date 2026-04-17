@@ -2094,10 +2094,14 @@ function updateTabBar(activeTab) {
 // Show the "not yet unlocked" toast with dynamic progress.
 function showLockedToast() {
   const remaining = Math.max(0, 10 - msgCount);
+  const name = t('暖暖', 'Lumi');
   if (remaining > 0) {
-    showToast(`再和暖暖聊 ${remaining} 次，就能解锁其他功能 ✦`);
+    showToast(t(
+      `再和${name}聊 ${remaining} 次，就能解锁其他功能 ✦`,
+      `Chat with ${name} ${remaining} more time${remaining === 1 ? '' : 's'} to unlock ✦`
+    ));
   } else {
-    showToast('和暖暖对话十次即可解锁其他功能 ✦');
+    showToast(t('和暖暖对话十次即可解锁其他功能 ✦', 'Chat with Lumi 10 times to unlock ✦'));
   }
 }
 
@@ -2108,7 +2112,7 @@ function tabNavigate(tab) {
     return;
   }
   if (tab === 'hub')     { showHub(); }
-  else if (tab === 'chat')    { updateTabBar('chat'); goTo('chat'); }
+  else if (tab === 'chat')    { applyLang(); updateTabBar('chat'); goTo('chat'); }
   else if (tab === 'profile') { showProfile(); }
 }
 
@@ -2123,6 +2127,7 @@ function showToast(msg) {
 
 // ─── 主界面 Hub ────────────────────────────────────────────────────────────
 function showChat() {
+  applyLang();
   updateTabBar('chat');
   goTo('chat');
   // 如果聊天记录为空，或最后一条是用户说的，暖暖主动打招呼
