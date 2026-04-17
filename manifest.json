@@ -2,7 +2,8 @@
   "name": "暖",
   "short_name": "暖",
   "description": "暖暖陪伴你",
-  "start_url": "./nuanv3.html",
+  "start_url": "/nuan/nuanv3.html",
+  "scope": "/nuan/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#FDF8F4",
@@ -11,12 +12,14 @@
     {
       "src": "暖暖icon.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "暖暖icon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
