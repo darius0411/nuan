@@ -1240,7 +1240,36 @@
     #chat .input-area {
       z-index: 20;
     }
+
+    /* ══ 登录界面 ══════════════════════════════════════════════ */
+    #login {
+      background: linear-gradient(180deg, #FFF8F2 0%, #FEEFDA 60%, #FDE9CF 100%);
+      align-items: center; justify-content: center;
+      padding: 0 28px; gap: 0;
+    }
+    .login-brand { text-align: center; margin-bottom: 32px; }
+    .login-logo { width: 68px; height: 68px; background: linear-gradient(145deg,#E8924A,#B85C2A); border-radius: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; box-shadow: 0 8px 24px rgba(200,100,40,0.28); }
+    .login-title { font-size: 30px; font-weight: 800; color: #2A1808; letter-spacing: 6px; }
+    .login-sub { font-size: 13px; color: #A07050; margin-top: 6px; }
+    .login-social-btn { width: 100%; padding: 14px; border-radius: 14px; border: none; cursor: pointer; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 11px; transition: transform 0.15s, box-shadow 0.15s; -webkit-tap-highlight-color: transparent; }
+    .login-social-btn:active { transform: scale(0.97); }
+    .login-google { background: white; color: #3c4043; box-shadow: 0 2px 12px rgba(0,0,0,0.13); }
+    .login-facebook { background: #1877F2; color: white; box-shadow: 0 2px 12px rgba(24,119,242,0.28); }
+    .login-divider { display: flex; align-items: center; gap: 12px; margin: 14px 0; color: #C8A88A; font-size: 13px; }
+    .login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: rgba(200,150,100,0.3); }
+    .login-input { width: 100%; padding: 14px 16px; border-radius: 14px; border: 1.5px solid rgba(200,150,100,0.3); background: white; font-size: 15px; outline: none; color: #2A1808; margin-bottom: 10px; font-family: inherit; }
+    .login-input:focus { border-color: #E8924A; }
+    .login-submit { width: 100%; padding: 15px; border-radius: 14px; background: linear-gradient(135deg,#E8924A,#C0622A); color: white; font-size: 16px; font-weight: 700; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(200,100,40,0.32); margin-top: 2px; font-family: inherit; }
+    .login-submit:active { transform: scale(0.98); }
+    .login-toggle { text-align: center; margin-top: 14px; font-size: 13px; color: #A07050; }
+    .login-toggle span { color: #C0622A; font-weight: 600; cursor: pointer; }
+    .login-guest { text-align: center; margin-top: 20px; font-size: 13px; color: #C8A88A; cursor: pointer; text-decoration: underline; }
+    .login-error { color: #d32f2f; font-size: 13px; text-align: center; min-height: 18px; margin: 4px 0; }
+    .login-loading { opacity: 0.6; pointer-events: none; }
   </style>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 </head>
 <body>
 <div class="phone">
@@ -1252,9 +1281,41 @@
       <div style="color:var(--brown-light)" data-zh="一个认识你的陪伴者" data-en="a companion who knows you">一个认识你的陪伴者</div>
     </div>
     <div style="padding:0 32px; width:100%; display:flex; flex-direction:column; gap:12px;">
-      <button class="btn-primary" onclick="onStart()"><span data-zh="开始" data-en="Start">开始</span> &nbsp;<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg></button>
-      <button class="btn-ghost" onclick="handleReturn()" data-zh="我已经来过了" data-en="I've been here before">我已经来过了</button>
+      <button class="btn-primary" onclick="goToLogin('new')"><span data-zh="开始" data-en="Start">开始</span> &nbsp;<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg></button>
+      <button class="btn-ghost" onclick="goToLogin('return')" data-zh="我已经来过了" data-en="I've been here before">我已经来过了</button>
     </div>
+  </div>
+
+
+  <!-- ══ 登录 ══ -->
+  <div class="screen" id="login">
+    <div class="login-brand">
+      <div class="login-logo">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="white"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </div>
+      <div class="login-title">暖</div>
+      <div class="login-sub">你的情感陪伴</div>
+    </div>
+
+    <button class="login-social-btn login-google" onclick="loginGoogle()">
+      <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/></svg>
+      用 Google 继续
+    </button>
+
+    <button class="login-social-btn login-facebook" onclick="loginFacebook()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      用 Facebook 继续
+    </button>
+
+    <div class="login-divider">或用邮箱登录</div>
+
+    <input class="login-input" id="login-email" type="email" placeholder="电子邮件" autocomplete="email">
+    <input class="login-input" id="login-password" type="password" placeholder="密码（至少6位）" autocomplete="current-password">
+    <div class="login-error" id="login-error"></div>
+    <button class="login-submit" id="login-submit-btn" onclick="loginEmail()">登录</button>
+    <div class="login-toggle" id="login-toggle-row">没有账号？<span onclick="toggleLoginMode()">注册</span></div>
+
+    <div class="login-guest" onclick="continueAsGuest()">以游客身份继续 →</div>
   </div>
 
   <!-- ══ 语言选择 ══ -->
@@ -1715,6 +1776,131 @@ function applyLang() {
 }
 
 // ─── Splash "Start" button logic ──────────────────────────
+
+// ═══════════════════════════════════════════════════════════════
+// Firebase 配置 — 请替换为你的 Firebase 项目配置
+// ═══════════════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey:            "AIzaSyBAmIi19xDXOzsT-3eXbhUShh64VWh2Z3Y",
+  authDomain:        "nuan-app.firebaseapp.com",
+  projectId:         "nuan-app",
+  storageBucket:     "nuan-app.firebasestorage.app",
+  messagingSenderId: "783016980203",
+  appId:             "1:783016980203:web:930c74c228736a5111d8ae",
+  measurementId:     "G-9G7FY41KV1"
+};
+
+let auth = null;
+let currentUser = null;
+let loginIntent = 'new'; // 'new' or 'return'
+
+function initFirebase() {
+  try {
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    auth.languageCode = 'zh';
+  } catch(e) {
+    console.warn('Firebase init failed:', e);
+  }
+}
+
+function goToLogin(intent) {
+  loginIntent = intent || 'new';
+  // If Firebase is ready and user already logged in, skip login
+  if (auth) {
+    const user = auth.currentUser;
+    if (user) { afterLogin(user); return; }
+  }
+  goTo('login');
+}
+
+function afterLogin(user) {
+  currentUser = user;
+  // Auto-fill name from social profile if not set
+  if (user && user.displayName && !localStorage.getItem('nuan_name')) {
+    const name = user.displayName.split(' ')[0];
+    localStorage.setItem('nuan_name', name);
+  }
+  if (loginIntent === 'return') {
+    handleReturn();
+  } else {
+    onStart();
+  }
+}
+
+function setLoginLoading(on) {
+  const el = document.getElementById('login');
+  if (el) el.classList.toggle('login-loading', on);
+}
+
+function setLoginError(msg) {
+  const el = document.getElementById('login-error');
+  if (el) el.textContent = msg;
+}
+
+function getAuthError(err) {
+  const map = {
+    'auth/invalid-email':        '邮件格式不正确',
+    'auth/user-not-found':       '找不到此账号',
+    'auth/wrong-password':       '密码错误',
+    'auth/invalid-credential':   '邮件或密码错误',
+    'auth/email-already-in-use': '此邮件已被注册',
+    'auth/weak-password':        '密码至少需要6位',
+    'auth/popup-closed-by-user': '登录已取消',
+    'auth/network-request-failed':'网络连接失败，请检查网络',
+    'auth/cancelled-popup-request':'登录已取消',
+    'auth/popup-blocked':        '弹窗被浏览器拦截，请允许弹窗'
+  };
+  return map[err.code] || ('登录失败：' + (err.message || err.code));
+}
+
+function loginGoogle() {
+  if (!auth) { setLoginError('Firebase 未配置，请先设置'); return; }
+  setLoginError(''); setLoginLoading(true);
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .then(r => { setLoginLoading(false); afterLogin(r.user); })
+    .catch(e => { setLoginLoading(false); setLoginError(getAuthError(e)); });
+}
+
+function loginFacebook() {
+  if (!auth) { setLoginError('Firebase 未配置，请先设置'); return; }
+  setLoginError(''); setLoginLoading(true);
+  const provider = new firebase.auth.FacebookAuthProvider();
+  auth.signInWithPopup(provider)
+    .then(r => { setLoginLoading(false); afterLogin(r.user); })
+    .catch(e => { setLoginLoading(false); setLoginError(getAuthError(e)); });
+}
+
+let isRegisterMode = false;
+function toggleLoginMode() {
+  isRegisterMode = !isRegisterMode;
+  document.getElementById('login-submit-btn').textContent = isRegisterMode ? '注册' : '登录';
+  document.getElementById('login-toggle-row').innerHTML = isRegisterMode
+    ? '已有账号？<span onclick="toggleLoginMode()">登录</span>'
+    : '没有账号？<span onclick="toggleLoginMode()">注册</span>';
+  document.getElementById('login-password').autocomplete = isRegisterMode ? 'new-password' : 'current-password';
+  setLoginError('');
+}
+
+function loginEmail() {
+  if (!auth) { setLoginError('Firebase 未配置，请先设置'); return; }
+  const email = document.getElementById('login-email').value.trim();
+  const pw    = document.getElementById('login-password').value;
+  if (!email || !pw) { setLoginError('请填写邮件和密码'); return; }
+  setLoginError(''); setLoginLoading(true);
+  const action = isRegisterMode
+    ? auth.createUserWithEmailAndPassword(email, pw)
+    : auth.signInWithEmailAndPassword(email, pw);
+  action
+    .then(r => { setLoginLoading(false); afterLogin(r.user); })
+    .catch(e => { setLoginLoading(false); setLoginError(getAuthError(e)); });
+}
+
+function continueAsGuest() {
+  afterLogin(null); // null = guest, local storage only
+}
+
 function onStart() {
   const savedName = localStorage.getItem('nuan_name');
   const savedLang = localStorage.getItem('nuan_lang');
@@ -1736,7 +1922,7 @@ function onStart() {
   }
 }
 
-window.onload = () => { applyLang(); updateChatBackBtn(); goTo('splash'); const bar = document.getElementById('tab-bar'); if (bar) { bar.classList.remove('visible'); document.querySelector('.phone')?.classList.remove('tab-visible'); } };
+window.onload = () => { initFirebase(); applyLang(); updateChatBackBtn(); goTo('splash'); const bar = document.getElementById('tab-bar'); if (bar) { bar.classList.remove('visible'); document.querySelector('.phone')?.classList.remove('tab-visible'); } };
 
 function handleReturn() {
   applyLang();
