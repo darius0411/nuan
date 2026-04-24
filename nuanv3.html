@@ -1937,6 +1937,9 @@ function loginFacebook() {
   if (!auth) { setLoginError('Firebase 未配置，请先设置'); return; }
   setLoginError(''); setLoginLoading(true);
   const provider = new firebase.auth.FacebookAuthProvider();
+  provider.setCustomParameters({ auth_type: 'rerequest' });
+  // 只请求 public_profile，避免开发模式下 email 权限报错
+  provider.addScope('public_profile');
   auth.signInWithPopup(provider)
     .then(r => { setLoginLoading(false); afterLogin(r.user); })
     .catch(e => { setLoginLoading(false); setLoginError(getAuthError(e)); });
