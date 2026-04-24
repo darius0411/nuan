@@ -1683,6 +1683,17 @@
         </div>
       </div>
 
+      <!-- 账号 -->
+      <div class="settings-section">
+        <div class="settings-item" onclick="switchAccount()">
+          <div class="settings-item-label" data-zh="切换账号" data-en="Switch Account">切换账号</div>
+          <span class="settings-chevron">›</span>
+        </div>
+        <div class="settings-item danger" onclick="logout()">
+          <div class="settings-item-label" data-zh="登出" data-en="Sign Out">登出</div>
+        </div>
+      </div>
+
       <!-- 危险操作 -->
       <div class="settings-section">
         <div class="settings-item danger" onclick="clearAll()">
@@ -1814,8 +1825,57 @@ function goToLogin(intent) {
   goTo('login');
 }
 
+function clearUserData() {
+  // Clear all user-specific data (keep lang, lock, notif prefs, apikey)
+  ['nuan_name','nuan_intro','nuan_history','nuan_msg_count',
+   'nuan_profile_unlocked','nuan_profile_notified','nuan_memories',
+   'nuan_profile','nuan_footprints','nuan_explore',
+   'nuan_pending_care_msg','nuan_last_notif_morning',
+   'nuan_last_notif_evening','nuan_last_notif_random'].forEach(k => localStorage.removeItem(k));
+  chatHistory = [];
+  msgCount = 0;
+  profileUnlocked = false;
+  profileNotified = false;
+  userName = '';
+}
+
+function logout() {
+  const doLogout = () => {
+    clearUserData();
+    localStorage.removeItem('nuan_uid');
+    currentUser = null;
+    goTo('login');
+  };
+  if (auth && auth.currentUser) {
+    auth.signOut().then(doLogout).catch(doLogout);
+  } else {
+    doLogout();
+  }
+}
+
+function switchAccount() {
+  const doSwitch = () => {
+    clearUserData();
+    localStorage.removeItem('nuan_uid');
+    currentUser = null;
+    goTo('login');
+  };
+  if (auth && auth.currentUser) {
+    auth.signOut().then(doSwitch).catch(doSwitch);
+  } else {
+    doSwitch();
+  }
+}
+
 function afterLogin(user) {
   currentUser = user;
+  const newUid = user?.uid || 'guest';
+  const storedUid = localStorage.getItem('nuan_uid');
+  // If a different account is logging in, wipe the previous user's data
+  if (storedUid && storedUid !== newUid) {
+    clearUserData();
+  }
+  localStorage.setItem('nuan_uid', newUid);
   // Auto-fill name from social profile if not set
   if (user && user.displayName && !localStorage.getItem('nuan_name')) {
     const name = user.displayName.split(' ')[0];
@@ -1854,7 +1914,16 @@ function getAuthError(err) {
   return map[err.code] || ('登录失败：' + (err.message || err.code));
 }
 
+function checkProtocol() {
+  if (location.protocol === 'file:') {
+    setLoginError('请通过服务器访问：在终端运行 node server.js，然后打开 http://localhost:3000/');
+    return false;
+  }
+  return true;
+}
+
 function loginGoogle() {
+  if (!checkProtocol()) return;
   if (!auth) { setLoginError('Firebase 未配置，请先设置'); return; }
   setLoginError(''); setLoginLoading(true);
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -1864,6 +1933,7 @@ function loginGoogle() {
 }
 
 function loginFacebook() {
+  if (!checkProtocol()) return;
   if (!auth) { setLoginError('Firebase 未配置，请先设置'); return; }
   setLoginError(''); setLoginLoading(true);
   const provider = new firebase.auth.FacebookAuthProvider();
@@ -2076,27 +2146,16 @@ function goBack() {
 
 function editApiKey() { document.getElementById('api-input').value = apiKey; goTo('apisetup'); }
 function clearAll() {
-  if(!confirm(t('确定清除记忆并返回主页吗？', 'Clear all memory and return to start?'))) return;
-  localStorage.removeItem('nuan_history');
-  localStorage.removeItem('nuan_name');
-  localStorage.removeItem('nuan_apikey');
-  localStorage.removeItem('nuan_profile');
-  localStorage.removeItem('nuan_msg_count');
-  localStorage.removeItem('nuan_profile_unlocked');
-  localStorage.removeItem('nuan_profile_notified');
-  localStorage.removeItem('nuan_intro');
+  if(!confirm(t('确定清除所有记忆并退出吗？', 'Clear all memory and sign out?'))) return;
+  clearUserData();
+  localStorage.removeItem('nuan_uid');
   localStorage.removeItem('nuan_lang');
-  localStorage.removeItem('nuan_explore');
-  localStorage.removeItem('nuan_memories');
   localStorage.removeItem('nuan_notif_prefs');
-  localStorage.removeItem('nuan_last_notif_morning');
-  localStorage.removeItem('nuan_last_notif_evening');
-  localStorage.removeItem('nuan_last_notif_random');
-  chatHistory = []; msgCount = 0; profileUnlocked = false; profileNotified = false;
-  currentLang = 'zh';
+  localStorage.removeItem('nuan_apikey');
   document.getElementById('messages').innerHTML = '';
+  const doExit = () => { currentUser = null; goTo('splash'); };
+  if (auth && auth.currentUser) { auth.signOut().then(doExit).catch(doExit); } else { doExit(); }
   closeMenu?.();
-  goTo('splash');
 }
 
 // 眼睛追蹤已整合進互动升级系統
