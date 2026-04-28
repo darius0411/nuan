@@ -1684,20 +1684,16 @@
         </div>
       </div>
 
-      <!-- 账号 -->
-      <div class="settings-section">
-        <div class="settings-item" onclick="switchAccount()">
+      <!-- 账号 + 危险操作 -->
+      <div class="settings-section" style="display:block;">
+        <div class="settings-item" style="display:flex; min-height:52px;" onclick="switchAccount()">
           <div class="settings-item-label" data-zh="切换账号" data-en="Switch Account">切换账号</div>
           <span class="settings-chevron">›</span>
         </div>
-        <div class="settings-item danger" onclick="logout()">
-          <div class="settings-item-label" data-zh="登出" data-en="Sign Out">登出</div>
+        <div class="settings-item" style="display:flex; min-height:52px;" onclick="logout()">
+          <div class="settings-item-label" style="color:#C0622A;" data-zh="登出" data-en="Sign Out">登出</div>
         </div>
-      </div>
-
-      <!-- 危险操作 -->
-      <div class="settings-section">
-        <div class="settings-item danger" onclick="clearAll()">
+        <div class="settings-item danger" style="display:flex; min-height:52px;" onclick="clearAll()">
           <div class="settings-item-label" data-zh="清除所有记忆并退出" data-en="Clear All Memory &amp; Exit">清除所有记忆并退出</div>
         </div>
       </div>
@@ -4727,11 +4723,4 @@ function retakeExploreChapter() {
   startExploreQuestions();
 }
 
-function exploreBackToLanding() {
-  exploreState.screen = 'landing';
-  renderExploreLanding();
-}
-
-</script>
-</body>
-</html>
+function exploreBackToLanding()
