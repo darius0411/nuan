@@ -1700,6 +1700,7 @@
       </div>
 
       <div class="settings-disclaimer" data-zh="暖不是医疗服务，不提供医疗诊断或建议。如需心理状态的诊断或治疗，请务必寻求医疗专业人员的协助。" data-en="Lumi is not a medical service and does not provide diagnosis or treatment. Please seek professional help for mental health concerns.">暖不是医疗服务，不提供医疗诊断或建议。<br>如需心理状态的诊断或治疗，请务必寻求医疗专业人员的协助。</div>
+      <div style="text-align:center; font-size:12px; color:#C8B8A8; margin-top:8px;" data-zh="版本 1.0.0" data-en="Version 1.0.0">版本 1.0.0</div>
     </div>
   </div>
 
@@ -1960,6 +1961,7 @@ function loginFacebook() {
 }
 
 let isRegisterMode = false;
+let isSending = false;
 function toggleLoginMode() {
   isRegisterMode = !isRegisterMode;
   document.getElementById('login-submit-btn').textContent = isRegisterMode ? '注册' : '登录';
@@ -2307,11 +2309,16 @@ function appendMsg(role, text) {
 
 // ─── 发送消息 ──────────────────────────────────────────────
 async function sendMsg() {
+  if (isSending) return;
   const inp = document.getElementById('chat-input');
   const text = inp.value.trim();
   if (!text) return;
   inp.value = '';
   inp.style.height = 'auto';
+  isSending = true;
+  inp.disabled = true;
+  const sendBtn = document.querySelector('.send-btn');
+  if (sendBtn) sendBtn.style.opacity = '0.4';
 
   appendMsg('user', text);
   chatHistory.push({ role: 'user', text });
@@ -2402,6 +2409,12 @@ async function sendMsg() {
     const ti = document.getElementById('typing-indicator');
     if (ti) ti.remove();
     appendMsg('warm', t('嗯……好像出了点问题，再试一次？', 'Hmm… something went wrong. Try again?'));
+  } finally {
+    isSending = false;
+    const inp2 = document.getElementById('chat-input');
+    if (inp2) inp2.disabled = false;
+    const sendBtn2 = document.querySelector('.send-btn');
+    if (sendBtn2) sendBtn2.style.opacity = '1';
   }
 }
 // ─── 了解自己系统 ──────────────────────────────────────────
@@ -3218,19 +3231,26 @@ function saveToggle(key, val) {
 // ─── 密码锁系统 ────────────────────────────────────────────
 function onLockToggle(enabled) {
   if (enabled) {
-    // 开启时要求设置 PIN
     showPinSetup();
   } else {
-    // 关闭时先验证现有 PIN
     const existing = localStorage.getItem('nuan_pin');
     if (existing) {
       showPinEntry(t('输入密码以关闭锁屏', 'Enter passcode to disable'), (pin) => {
         if (pin === existing) {
           localStorage.setItem('nuan_lock', 'false');
           localStorage.removeItem('nuan_pin');
+          const tog = document.getElementById('toggle-lock');
+          if (tog) tog.checked = false;
+          window._pinPhase = 'done';
+          closePinOverlay();
           showToast(t('密码锁已关闭', 'Passcode disabled'));
         } else {
-          document.getElementById('toggle-lock').checked = true;
+          const dots = document.getElementById('pin-dots');
+          if (dots) { dots.style.animation = 'none'; dots.offsetHeight; dots.style.animation = 'pinShake 0.3s'; }
+          [0,1,2,3].forEach(i => { const d = document.getElementById('dot-'+i); if(d) d.style.background='transparent'; });
+          window._pinBuffer = '';
+          const tog = document.getElementById('toggle-lock');
+          if (tog) tog.checked = true;
           showToast(t('密码错误', 'Wrong passcode'));
         }
       });
@@ -3277,6 +3297,9 @@ function showPinSetup() {
       if (pin === window._firstPin) {
         localStorage.setItem('nuan_pin', pin);
         localStorage.setItem('nuan_lock', 'true');
+        const tog = document.getElementById('toggle-lock');
+        if (tog) tog.checked = true;
+        window._pinPhase = 'done';
         closePinOverlay();
         showToast(t('密码锁已开启 🔒', 'Passcode enabled 🔒'));
       } else {
