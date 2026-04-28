@@ -1742,6 +1742,22 @@ let msgCount = parseInt(localStorage.getItem('nuan_msg_count') || '0');
 let profileUnlocked = localStorage.getItem('nuan_profile_unlocked') === 'true';
 let profileNotified = localStorage.getItem('nuan_profile_notified') === 'true';
 
+const FREE_DAILY_LIMIT = 30;
+function getDailyCount() {
+  const today = new Date().toISOString().slice(0, 10);
+  const stored = JSON.parse(localStorage.getItem('nuan_daily') || '{}');
+  if (stored.date !== today) return 0;
+  return stored.count || 0;
+}
+function incrementDailyCount() {
+  const today = new Date().toISOString().slice(0, 10);
+  const count = getDailyCount() + 1;
+  localStorage.setItem('nuan_daily', JSON.stringify({ date: today, count }));
+}
+function isPremium() {
+  return localStorage.getItem('nuan_premium') === 'true';
+}
+
 // Bilingual helper: pick zh or en string
 function t(zh, en) { return currentLang === 'en' ? en : zh; }
 
@@ -2313,12 +2329,31 @@ async function sendMsg() {
   const inp = document.getElementById('chat-input');
   const text = inp.value.trim();
   if (!text) return;
+
+  // 每日上限检查（免费用户 30 条）
+  if (!isPremium()) {
+    const daily = getDailyCount();
+    if (daily >= FREE_DAILY_LIMIT) {
+      showToast(t(`今天的 ${FREE_DAILY_LIMIT} 条已用完，明天再来 ♡ 或升级守候版无限聊`, `Daily ${FREE_DAILY_LIMIT} messages used — come back tomorrow ♡ or upgrade for unlimited`));
+      showPaywall();
+      return;
+    }
+  }
+
+  // 消息长度限制
+  if (text.length > 300) {
+    showToast(t('每条消息最多 300 字哦', 'Max 300 characters per message'));
+    return;
+  }
+
   inp.value = '';
   inp.style.height = 'auto';
   isSending = true;
   inp.disabled = true;
   const sendBtn = document.querySelector('.send-btn');
   if (sendBtn) sendBtn.style.opacity = '0.4';
+
+  if (!isPremium()) incrementDailyCount();
 
   appendMsg('user', text);
   chatHistory.push({ role: 'user', text });
@@ -2347,8 +2382,10 @@ async function sendMsg() {
     const introNote = currentLang === 'en'
       ? (nuan_intro ? '\n\n[User\'s self-introduction]\n' + nuan_intro : '')
       : (nuan_intro ? '\n\n【用户自我介绍】\n' + nuan_intro : '');
-    // Inject silently remembered facts
-    const memories = JSON.parse(localStorage.getItem('nuan_memories') || '[]');
+    // Inject silently remembered facts (cap to prevent token explosion)
+    const MEM_LIMIT = isPremium() ? 50 : 15;
+    const allMemories = JSON.parse(localStorage.getItem('nuan_memories') || '[]');
+    const memories = allMemories.slice(-MEM_LIMIT); // most recent N only
     const memNote = memories.length > 0
       ? (currentLang === 'en'
         ? '\n\n[Things you already know about this user — weave naturally into replies when relevant]\n' + memories.map(m => '• ' + m.fact).join('\n')
@@ -2495,14 +2532,15 @@ async function extractMemories() {
       const newFacts = JSON.parse(match[0]);
       if (newFacts.length > 0) {
         const existing = JSON.parse(localStorage.getItem('nuan_memories') || '[]');
-        // Merge & deduplicate (by first 15 chars of fact), keep newest 25
+        // Merge & deduplicate (by first 15 chars of fact), keep newest N (free: 15, premium: 50)
+        const memCap = isPremium() ? 50 : 15;
         const all = [...existing, ...newFacts.map(f => ({ fact: f.fact, cat: f.cat, ts: Date.now() }))];
         const seen = new Set();
         const merged = all.filter(m => {
           const key = m.fact.slice(0, 15);
           if (seen.has(key)) return false;
           seen.add(key); return true;
-        }).slice(-25);
+        }).slice(-memCap);
         localStorage.setItem('nuan_memories', JSON.stringify(merged));
       }
     }
@@ -4682,92 +4720,4 @@ function buildRadarSVG(scores) {
         const v = (scores[k] || 0) / 100;
         const a = angles[i];
         const x = cx + Math.cos(a) * R * v;
-        const y = cy + Math.sin(a) * R * v;
-        return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="#C0622A"/>`;
-      }).join('')}
-      ${labelsSvg}
-    </svg>
-  `;
-}
-
-function renderExploreResult(payload) {
-  const ch = EXPLORE_CHAPTERS.find(c => c.id === payload.chapterId);
-  document.getElementById('ex-header-title').textContent = ch ? ch.title : '你的解读';
-  const body = document.getElementById('ex-body');
-  const { bigFive, attachment, emoStyle, poetic } = payload;
-
-  const attachInfo = ATTACHMENT_DESC[attachment] || ATTACHMENT_DESC.secure;
-  const emoInfo    = EMO_DESC[emoStyle] || EMO_DESC.balanced;
-
-  let html = `
-    <!-- 文艺层：上 -->
-    <div class="ex-result-hero">
-      <div class="ex-result-chapter-label">${ch ? ch.num + ' · ' + ch.title : ''}</div>
-      <div class="ex-result-title">${poetic.title || '静水流深的人'}</div>
-      <div class="ex-result-subtitle">—— 暖暖眼中的你 ——</div>
-      <div class="ex-result-letter">${(poetic.letter || '').replace(/\n/g, '<br>')}</div>
-      <div class="ex-result-letter-signature">—— 暖暖</div>
-    </div>
-
-    <!-- 分界 -->
-    <div class="ex-result-section-label">SCIENTIFIC LAYER</div>
-    <div class="ex-result-section-divider"></div>
-
-    <!-- 科学层：Big Five 雷达 -->
-    <div class="ex-radar-card">
-      <div class="ex-radar-title">Big Five · 大五人格</div>
-      <div class="ex-radar-sub">Costa & McCrae (1992) 五因素模型 · 心理学最经验支持的人格框架之一</div>
-      <div class="ex-radar-svg-wrap">${buildRadarSVG(bigFive)}</div>
-      <div class="ex-trait-list">
-        ${['O','C','E','A','N'].map(k => `
-          <div class="ex-trait-row">
-            <div class="ex-trait-label">${TRAIT_LABELS[k].name}</div>
-            <div class="ex-trait-bar-wrap"><div class="ex-trait-bar" style="width:${bigFive[k]}%"></div></div>
-            <div class="ex-trait-score">${bigFive[k]}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-
-    <!-- 依恋 -->
-    <div class="ex-insight-card">
-      <div class="ex-insight-type">${attachInfo.name}</div>
-      <div class="ex-insight-explain">${attachInfo.text}</div>
-      <div class="ex-insight-cite">参考：${attachInfo.cite}</div>
-    </div>
-
-    <!-- 情绪调节 -->
-    <div class="ex-insight-card">
-      <div class="ex-insight-type">情绪调节：${emoInfo.name}</div>
-      <div class="ex-insight-explain">${emoInfo.text}</div>
-      <div class="ex-insight-cite">参考：${emoInfo.cite}</div>
-    </div>
-
-    <!-- 操作 -->
-    <div class="ex-result-actions">
-      <button class="ex-result-btn-ghost" onclick="retakeExploreChapter()">重新做一次</button>
-      <button class="ex-result-btn-primary" onclick="exploreBackToLanding()">回到探索</button>
-    </div>
-  `;
-  body.innerHTML = html;
-  body.scrollTop = 0;
-}
-
-function retakeExploreChapter() {
-  // clear stored result for this chapter
-  const all = getExploreSaved();
-  if (exploreState.chapter && all[exploreState.chapter.id]) {
-    delete all[exploreState.chapter.id];
-    localStorage.setItem('nuan_explore', JSON.stringify(all));
-  }
-  startExploreQuestions();
-}
-
-function exploreBackToLanding() {
-  exploreState.screen = 'landing';
-  renderExploreLanding();
-}
-
-</script>
-</body>
-</html>
+        
