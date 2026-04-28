@@ -1315,6 +1315,7 @@
     <div class="login-error" id="login-error"></div>
     <button class="login-submit" id="login-submit-btn" onclick="loginEmail()">登录</button>
     <div class="login-toggle" id="login-toggle-row">没有账号？<span onclick="toggleLoginMode()">注册</span></div>
+    <div class="login-toggle" id="login-forgot-row" style="margin-top:6px;">忘记密码？<span onclick="resetPassword()">发送重置邮件</span></div>
 
     <div class="login-guest" onclick="continueAsGuest()">以游客身份继续 →</div>
   </div>
@@ -1981,6 +1982,15 @@ function loginEmail() {
   action
     .then(r => { setLoginLoading(false); afterLogin(r.user); })
     .catch(e => { setLoginLoading(false); setLoginError(getAuthError(e)); });
+}
+
+function resetPassword() {
+  if (!auth) { setLoginError('Firebase 未配置'); return; }
+  const email = document.getElementById('login-email').value.trim();
+  if (!email) { setLoginError('请先填写你的电子邮件地址'); return; }
+  auth.sendPasswordResetEmail(email)
+    .then(() => { setLoginError('✅ 重置邮件已发送，请检查你的邮箱'); })
+    .catch(e => { setLoginError(getAuthError(e)); });
 }
 
 function continueAsGuest() {
