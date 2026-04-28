@@ -515,6 +515,50 @@
 .paywall-fine-print {
   font-size: 11px; color: var(--text-light); text-align: center; line-height: 1.6; opacity: 0.8;
 }
+/* ════ 问卷体验界面 ════ */
+#survey { background: var(--cream); background-image: radial-gradient(circle,rgba(220,130,60,0.042) 1px,transparent 1px); background-size: 22px 22px; flex-direction: column; overflow: hidden; }
+.survey-header { padding: 16px 20px 0; display: flex; align-items: center; flex-shrink: 0; }
+.survey-back { background: none; border: none; color: var(--brown); cursor: pointer; padding: 8px; border-radius: 10px; display: flex; align-items: center; transition: background 0.15s; }
+.survey-back:active { background: rgba(220,130,60,0.1); }
+.survey-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 20px 24px 60px; }
+.survey-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 1.8px; color: var(--brown-light); text-transform: uppercase; margin-bottom: 6px; }
+.survey-main-title { font-size: 20px; font-weight: 800; color: var(--brown); margin-bottom: 4px; }
+.survey-main-sub { font-size: 13px; color: var(--text-light); margin-bottom: 28px; line-height: 1.5; }
+.survey-progress { display: flex; gap: 6px; margin-bottom: 28px; }
+.survey-dot { flex: 1; height: 3px; border-radius: 2px; background: rgba(176,125,84,0.18); transition: background 0.3s; }
+.survey-dot.done { background: var(--brown-light); }
+.survey-dot.active { background: var(--brown); }
+.survey-block { display: none; }
+.survey-block.visible { display: block; }
+.survey-q { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.45; margin-bottom: 18px; }
+.survey-options { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+.survey-option { padding: 10px 18px; border-radius: 24px; border: 1.5px solid rgba(176,125,84,0.28); background: white; font-size: 13.5px; color: var(--text); cursor: pointer; transition: all 0.15s; user-select: none; -webkit-user-select: none; }
+.survey-option.selected { border-color: var(--brown); background: rgba(220,130,60,0.09); color: var(--brown); font-weight: 600; }
+.survey-option:active { transform: scale(0.96); }
+.survey-hint { font-size: 11.5px; color: var(--text-light); margin-bottom: 18px; margin-top: -10px; }
+.survey-next { background: linear-gradient(145deg,#F09850,#B85C2A); color: white; border: none; border-radius: 28px; padding: 16px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; transition: transform 0.12s, opacity 0.2s; box-shadow: 0 5px 22px rgba(210,115,45,0.3); letter-spacing: 0.2px; }
+.survey-next:disabled { opacity: 0.35; pointer-events: none; }
+.survey-next:active { transform: scale(0.97); }
+.survey-complete { text-align: center; padding: 40px 0 20px; animation: fadeInUp 0.4s ease; }
+.survey-complete-icon { font-size: 60px; margin-bottom: 20px; display: block; }
+.survey-complete-title { font-size: 22px; font-weight: 800; color: var(--brown); margin-bottom: 10px; }
+.survey-complete-sub { font-size: 14px; color: var(--text-light); line-height: 1.6; margin-bottom: 32px; }
+.survey-complete-days { display: inline-block; font-size: 13px; font-weight: 700; color: var(--brown); background: rgba(220,130,60,0.12); border-radius: 20px; padding: 6px 16px; margin-bottom: 28px; }
+@keyframes fadeInUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+/* 问卷入口 - paywall底部 */
+.survey-entry { width: 100%; margin-top: 14px; padding: 15px 20px; background: rgba(255,255,255,0.65); border-radius: 16px; border: 1.5px dashed rgba(176,125,84,0.32); text-align: center; cursor: pointer; transition: all 0.15s; }
+.survey-entry:active { background: rgba(220,130,60,0.06); transform: scale(0.98); }
+.survey-entry-top { font-size: 12.5px; font-weight: 700; color: var(--brown); }
+.survey-entry-sub { font-size: 11px; color: var(--text-light); margin-top: 3px; }
+/* Hub 升级横幅 + 守候版状态 */
+.hub-trial-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; color: var(--brown); background: rgba(220,130,60,0.12); border-radius: 20px; padding: 5px 14px; margin-top: 12px; cursor: pointer; }
+.hub-trial-badge .trial-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brown); display: inline-block; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+/* Settings 守候版状态标签 */
+.settings-premium-tag { display: inline-flex; align-items: center; font-size: 10px; font-weight: 700; color: white; border-radius: 8px; padding: 2px 8px; margin-left: 8px; vertical-align: middle; }
+.settings-premium-tag.active { background: linear-gradient(135deg,#5C9E6A,#3D7A4E); }
+.settings-premium-tag.trial { background: linear-gradient(135deg,#E8924A,#B85C2A); }
+
 /* Hub 守候版横幅 */
 .hub-upgrade-banner {
   width: 100%; max-width: 320px; margin-top: 14px;
@@ -530,6 +574,63 @@
 .hub-upgrade-title { font-size: 14px; font-weight: 800; color: white; letter-spacing: 0.2px; }
 .hub-upgrade-sub { font-size: 11.5px; color: rgba(255,255,255,0.8); margin-top: 2px; }
 .hub-upgrade-arrow { color: rgba(255,255,255,0.7); flex-shrink: 0; }
+
+/* ════ 对话起点卡片 ════ */
+.chat-starters { position: absolute; bottom: 120px; left: 0; right: 0; padding: 0 16px; display: flex; flex-direction: column; gap: 8px; z-index: 5; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+.chat-starters.visible { opacity: 1; pointer-events: all; }
+.starter-label { font-size: 11px; color: var(--text-light); text-align: center; letter-spacing: 0.5px; margin-bottom: 2px; }
+.starter-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.starter-chip { background: white; border: 1.5px solid rgba(220,150,80,0.3); border-radius: 20px; padding: 9px 16px; font-size: 13px; color: var(--brown); cursor: pointer; transition: all 0.15s; box-shadow: 0 2px 8px rgba(200,120,50,0.1); white-space: nowrap; }
+.starter-chip:active { transform: scale(0.96); background: rgba(220,130,60,0.07); }
+
+/* ════ Hub 心情打卡 ════ */
+.hub-mood-row { display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: white; border-radius: 16px; margin-bottom: 14px; width: 100%; max-width: 320px; box-shadow: 0 2px 10px rgba(200,120,50,0.08); }
+.hub-mood-label { font-size: 11px; color: var(--text-light); flex-shrink: 0; letter-spacing: 0.3px; }
+.hub-mood-emojis { display: flex; gap: 2px; flex: 1; justify-content: center; }
+.mood-btn { background: none; border: none; font-size: 22px; cursor: pointer; padding: 4px 6px; border-radius: 10px; transition: all 0.15s; opacity: 0.6; line-height: 1; }
+.mood-btn.selected { background: rgba(220,130,60,0.1); opacity: 1; transform: scale(1.18); }
+.mood-btn:active { transform: scale(1.25); }
+.hub-mood-done { font-size: 11px; color: var(--brown); font-weight: 600; flex-shrink: 0; }
+
+/* ════ 记忆本 (Profile内) ════ */
+.memory-book-section { margin-top: 8px; }
+.memory-book-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 12px; cursor: pointer; }
+.memory-book-title { font-size: 13px; font-weight: 700; color: var(--brown); }
+.memory-book-count { font-size: 11px; color: var(--text-light); background: rgba(220,130,60,0.1); border-radius: 10px; padding: 2px 8px; }
+.memory-book-body { padding: 0 16px 16px; display: none; }
+.memory-book-body.open { display: block; }
+.memory-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 10px 14px; background: rgba(253,248,244,0.8); border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(237,217,200,0.5); }
+.memory-item:last-child { margin-bottom: 0; }
+.memory-item-text { font-size: 13.5px; color: var(--text); line-height: 1.4; flex: 1; }
+.memory-item-cat { font-size: 10px; color: var(--text-light); background: rgba(220,130,60,0.08); border-radius: 8px; padding: 1px 6px; flex-shrink: 0; margin-top: 2px; }
+.memory-del-btn { background: none; border: none; color: rgba(180,100,60,0.4); font-size: 14px; cursor: pointer; padding: 2px 4px; flex-shrink: 0; transition: color 0.15s; }
+.memory-del-btn:active { color: #C0622A; }
+.memory-book-empty { font-size: 13px; color: var(--text-light); text-align: center; padding: 16px 0; }
+.memory-cap-note { font-size: 11px; color: var(--text-light); text-align: center; margin-top: 10px; opacity: 0.75; }
+
+/* ════ 成就系统 ════ */
+.achievements-section { background: white; border-radius: 20px; border: 1px solid rgba(237,217,200,0.55); box-shadow: 0 4px 24px rgba(200,120,50,0.10); overflow: hidden; }
+.achievements-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 12px; cursor: pointer; }
+.achievements-title { font-size: 13px; font-weight: 700; color: var(--brown); }
+.achievements-sub { font-size: 11px; color: var(--text-light); }
+.achievements-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 0 16px 16px; }
+.achievement-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.achievement-icon { font-size: 28px; width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.achievement-icon.unlocked { background: rgba(220,130,60,0.1); box-shadow: 0 2px 8px rgba(220,130,60,0.18); }
+.achievement-icon.locked { filter: grayscale(1); opacity: 0.28; }
+.achievement-name { font-size: 10px; color: var(--text-light); text-align: center; line-height: 1.3; }
+
+/* ════ 足迹热力图 ════ */
+.fp-heatmap { padding: 0 0 16px; }
+.fp-heatmap-title { font-size: 11px; color: var(--text-light); letter-spacing: 0.5px; margin-bottom: 8px; }
+.fp-heatmap-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.fp-heat-cell { aspect-ratio: 1; border-radius: 4px; background: rgba(237,217,200,0.3); transition: background 0.2s; }
+.fp-heat-cell.lv1 { background: rgba(220,130,60,0.2); }
+.fp-heat-cell.lv2 { background: rgba(220,130,60,0.45); }
+.fp-heat-cell.lv3 { background: rgba(220,130,60,0.75); }
+.fp-heat-cell.lv4 { background: #C0622A; }
+.fp-heatmap-legend { display: flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 10px; color: var(--text-light); }
+.fp-heat-legend-cell { width: 12px; height: 12px; border-radius: 3px; }
 
 /* ════ 底部导航栏 Tab Bar ════ */
 .tab-bar {
@@ -1412,7 +1513,11 @@
     </div>
 
     <div class="messages" id="messages"></div>
-    
+    <!-- 对话起点卡片 (聊天为空时出现) -->
+    <div class="chat-starters" id="chat-starters">
+      <div class="starter-label" data-zh="或者，从这里开始 ↓" data-en="Or start from here ↓">或者，从这里开始 ↓</div>
+      <div class="starter-chips" id="starter-chips"></div>
+    </div>
     <div class="input-area">
       <input class="chat-input" id="chat-input" type="text" placeholder="说点什么..." onkeydown="if(event.key==='Enter') sendMsg()" autocomplete="off">
       <button class="send-btn" onclick="sendMsg()"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg></button>
@@ -1428,6 +1533,18 @@
         <div class="hub-greeting-name" id="hub-user-name">你好 ✦</div>
       </div>
       <div class="hub-nuan-mini"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
+      <!-- 心情打卡 -->
+      <div class="hub-mood-row" id="hub-mood-row">
+        <div class="hub-mood-label" id="hub-mood-label" data-zh="今天如何？" data-en="How's today?">今天如何？</div>
+        <div class="hub-mood-emojis">
+          <button class="mood-btn" data-mood="5" onclick="recordMood(5)" title="很好">😄</button>
+          <button class="mood-btn" data-mood="4" onclick="recordMood(4)" title="还不错">🙂</button>
+          <button class="mood-btn" data-mood="3" onclick="recordMood(3)" title="普通">😐</button>
+          <button class="mood-btn" data-mood="2" onclick="recordMood(2)" title="不太好">😔</button>
+          <button class="mood-btn" data-mood="1" onclick="recordMood(1)" title="很差">😞</button>
+        </div>
+        <div class="hub-mood-done" id="hub-mood-done" style="display:none;" data-zh="记录了 ✓" data-en="Logged ✓">记录了 ✓</div>
+      </div>
       <div class="hub-divider"></div>
       <div class="hub-grid">
         <!-- 和暖暖聊天 -->
@@ -1460,6 +1577,20 @@
         <div class="hub-progress-bar-wrap">
           <div class="hub-progress-bar" id="hub-progress-bar"></div>
         </div>
+      </div>
+      <!-- 守候版升级横幅 (非守候版用户) -->
+      <div class="hub-upgrade-banner" id="hub-upgrade-banner" style="display:none;" onclick="showPaywall()">
+        <div class="hub-upgrade-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        <div class="hub-upgrade-text">
+          <div class="hub-upgrade-title" data-zh="解锁守候版 ✦" data-en="Unlock Premium ✦">解锁守候版 ✦</div>
+          <div class="hub-upgrade-sub" id="hub-upgrade-sub" data-zh="无限聊天 · 深度记忆 · 更多功能" data-en="Unlimited chats · deep memory · more">无限聊天 · 深度记忆 · 更多功能</div>
+        </div>
+        <div class="hub-upgrade-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <!-- 守候版体验状态徽章 (守候版/体验中用户) -->
+      <div class="hub-trial-badge" id="hub-trial-badge" style="display:none;" onclick="openSettings()">
+        <span class="trial-dot"></span>
+        <span id="hub-trial-label"></span>
       </div>
     </div>
   </div>
@@ -1533,6 +1664,134 @@
         <span data-zh="订阅将通过 App Store 或 Google Play 扣款" data-en="Billed via App Store or Google Play">订阅将通过 App Store 或 Google Play 扣款</span><br>
         <span data-zh="可随时取消 · 取消后当期仍可使用至到期" data-en="Cancel anytime · access continues until period ends">可随时取消 · 取消后当期仍可使用至到期</span>
       </div>
+      <!-- 早期用户问卷入口 (仅未体验过的用户显示) -->
+      <div class="survey-entry" id="survey-entry-btn" onclick="showSurvey()" style="display:none;">
+        <div class="survey-entry-top" data-zh="🎁 早期用户福利 — 免费体验 7 天守候版" data-en="🎁 Early user perk — try 7 days Premium free">🎁 早期用户福利 — 免费体验 7 天守候版</div>
+        <div class="survey-entry-sub" data-zh="完成简短问卷即可解锁，无需绑定信用卡" data-en="Complete a short survey to unlock — no card required">完成简短问卷即可解锁，无需绑定信用卡</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 早期用户体验问卷 ═══════════════════════════════════ -->
+  <div class="screen" id="survey">
+    <div class="survey-header">
+      <button class="survey-back" onclick="closeSurvey()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+    </div>
+    <div class="survey-body">
+      <div class="survey-eyebrow" data-zh="早期用户专属" data-en="Early User Exclusive">早期用户专属</div>
+      <div class="survey-main-title" data-zh="帮助我们认识你 ♡" data-en="Help us know you better ♡">帮助我们认识你 ♡</div>
+      <div class="survey-main-sub" data-zh="完成 4 道小题，解锁 7 天守候版体验 — 完全免费，无需绑卡。" data-en="Complete 4 quick questions and unlock 7 days of Premium — free, no card needed.">完成 4 道小题，解锁 7 天守候版体验 — 完全免费，无需绑卡。</div>
+
+      <div class="survey-progress">
+        <div class="survey-dot" id="sdot-0"></div>
+        <div class="survey-dot" id="sdot-1"></div>
+        <div class="survey-dot" id="sdot-2"></div>
+        <div class="survey-dot" id="sdot-3"></div>
+        <div class="survey-dot" id="sdot-4"></div>
+        <div class="survey-dot" id="sdot-5"></div>
+      </div>
+
+      <!-- Q1: 渠道 -->
+      <div class="survey-block" id="sq-0">
+        <div class="survey-q" data-zh="你是怎么找到暖暖的？" data-en="How did you find Lumi?">你是怎么找到暖暖的？</div>
+        <div class="survey-hint" data-zh="选一项" data-en="Pick one">选一项</div>
+        <div class="survey-options">
+          <div class="survey-option" data-val="friend" onclick="toggleOption(this,true)"><span data-zh="朋友推荐" data-en="Friend recommendation">朋友推荐</span></div>
+          <div class="survey-option" data-val="social" onclick="toggleOption(this,true)"><span data-zh="社交媒体" data-en="Social media">社交媒体</span></div>
+          <div class="survey-option" data-val="store" onclick="toggleOption(this,true)"><span data-zh="App Store / Google Play" data-en="App Store / Google Play">App Store / Google Play</span></div>
+          <div class="survey-option" data-val="search" onclick="toggleOption(this,true)"><span data-zh="随手搜到的" data-en="Found it by searching">随手搜到的</span></div>
+          <div class="survey-option" data-val="other" onclick="toggleOption(this,true)"><span data-zh="其他" data-en="Other">其他</span></div>
+        </div>
+        <button class="survey-next" id="snext-0" onclick="surveyNext(0)" disabled data-zh="下一题 →" data-en="Next →">下一题 →</button>
+      </div>
+
+      <!-- Q2: 目的 -->
+      <div class="survey-block" id="sq-1">
+        <div class="survey-q" data-zh="你主要想用暖暖做什么？" data-en="What do you mainly want from Lumi?">你主要想用暖暖做什么？</div>
+        <div class="survey-hint" data-zh="可多选" data-en="Pick all that apply">可多选</div>
+        <div class="survey-options">
+          <div class="survey-option" data-val="chat" onclick="toggleOption(this)"><span data-zh="情感陪伴" data-en="Emotional company">情感陪伴</span></div>
+          <div class="survey-option" data-val="vent" onclick="toggleOption(this)"><span data-zh="倾诉心情" data-en="Vent &amp; release">倾诉心情</span></div>
+          <div class="survey-option" data-val="self" onclick="toggleOption(this)"><span data-zh="了解自己" data-en="Know myself better">了解自己</span></div>
+          <div class="survey-option" data-val="journal" onclick="toggleOption(this)"><span data-zh="记录日常" data-en="Daily journaling">记录日常</span></div>
+          <div class="survey-option" data-val="lonely" onclick="toggleOption(this)"><span data-zh="不那么孤单" data-en="Feel less alone">不那么孤单</span></div>
+          <div class="survey-option" data-val="fun" onclick="toggleOption(this)"><span data-zh="只是好玩" data-en="Just for fun">只是好玩</span></div>
+        </div>
+        <button class="survey-next" id="snext-1" onclick="surveyNext(1)" disabled data-zh="下一题 →" data-en="Next →">下一题 →</button>
+      </div>
+
+      <!-- Q3: 时机 -->
+      <div class="survey-block" id="sq-2">
+        <div class="survey-q" data-zh="你通常什么时候最需要暖暖？" data-en="When do you need Lumi the most?">你通常什么时候最需要暖暖？</div>
+        <div class="survey-hint" data-zh="可多选" data-en="Pick all that apply">可多选</div>
+        <div class="survey-options">
+          <div class="survey-option" data-val="night" onclick="toggleOption(this)"><span data-zh="睡前" data-en="Before bed">睡前</span></div>
+          <div class="survey-option" data-val="stress" onclick="toggleOption(this)"><span data-zh="压力大的时候" data-en="When stressed">压力大的时候</span></div>
+          <div class="survey-option" data-val="alone" onclick="toggleOption(this)"><span data-zh="一个人时" data-en="When I'm alone">一个人时</span></div>
+          <div class="survey-option" data-val="anytime" onclick="toggleOption(this)"><span data-zh="随时随地" data-en="Any time">随时随地</span></div>
+          <div class="survey-option" data-val="morning" onclick="toggleOption(this)"><span data-zh="早晨" data-en="In the morning">早晨</span></div>
+          <div class="survey-option" data-val="sad" onclick="toggleOption(this)"><span data-zh="情绪低落时" data-en="When I feel low">情绪低落时</span></div>
+        </div>
+        <button class="survey-next" id="snext-2" onclick="surveyNext(2)" disabled data-zh="下一题 →" data-en="Next →">下一题 →</button>
+      </div>
+
+      <!-- Q4: 吸引点 -->
+      <div class="survey-block" id="sq-3">
+        <div class="survey-q" data-zh="暖暖最吸引你的是什么？" data-en="What drew you to Lumi?">暖暖最吸引你的是什么？</div>
+        <div class="survey-hint" data-zh="可多选" data-en="Pick all that apply">可多选</div>
+        <div class="survey-options">
+          <div class="survey-option" data-val="memory" onclick="toggleOption(this)"><span data-zh="记得我说过的事" data-en="Remembers what I share">记得我说过的事</span></div>
+          <div class="survey-option" data-val="nojudge" onclick="toggleOption(this)"><span data-zh="不评判我" data-en="Doesn't judge me">不评判我</span></div>
+          <div class="survey-option" data-val="warm" onclick="toggleOption(this)"><span data-zh="温柔的感觉" data-en="The warmth &amp; care">温柔的感觉</span></div>
+          <div class="survey-option" data-val="know" onclick="toggleOption(this)"><span data-zh="越来越懂我" data-en="Understands me over time">越来越懂我</span></div>
+          <div class="survey-option" data-val="cute" onclick="toggleOption(this)"><span data-zh="暖暖的形象很可爱" data-en="Lumi's cute design">暖暖的形象很可爱</span></div>
+          <div class="survey-option" data-val="private" onclick="toggleOption(this)"><span data-zh="隐私安全" data-en="Privacy &amp; safety">隐私安全</span></div>
+        </div>
+        <button class="survey-next" id="snext-3" onclick="surveyNext(3)" disabled data-zh="下一题 →" data-en="Next →">下一题 →</button>
+      </div>
+
+      <!-- Q5: 记忆偏好 -->
+      <div class="survey-block" id="sq-4">
+        <div class="survey-q" data-zh="如果暖暖能记住你，你最希望她记住什么？" data-en="If Lumi could remember you, what matters most?">如果暖暖能记住你，你最希望她记住什么？</div>
+        <div class="survey-hint" data-zh="可多选" data-en="Pick all that apply">可多选</div>
+        <div class="survey-options">
+          <div class="survey-option" data-val="emotion" onclick="toggleOption(this)"><span data-zh="我的情绪模式" data-en="My emotional patterns">我的情绪模式</span></div>
+          <div class="survey-option" data-val="people" onclick="toggleOption(this)"><span data-zh="我在意的人" data-en="People I care about">我在意的人</span></div>
+          <div class="survey-option" data-val="happy" onclick="toggleOption(this)"><span data-zh="让我开心的事" data-en="What makes me happy">让我开心的事</span></div>
+          <div class="survey-option" data-val="pain" onclick="toggleOption(this)"><span data-zh="让我痛苦的事" data-en="What causes me pain">让我痛苦的事</span></div>
+          <div class="survey-option" data-val="habit" onclick="toggleOption(this)"><span data-zh="我的日常习惯" data-en="My daily habits">我的日常习惯</span></div>
+          <div class="survey-option" data-val="dream" onclick="toggleOption(this)"><span data-zh="我的目标和梦想" data-en="My goals and dreams">我的目标和梦想</span></div>
+        </div>
+        <button class="survey-next" id="snext-4" onclick="surveyNext(4)" disabled data-zh="下一题 →" data-en="Next →">下一题 →</button>
+      </div>
+
+      <!-- Q6: 未来期待 -->
+      <div class="survey-block" id="sq-5">
+        <div class="survey-q" data-zh="你最希望未来的暖暖加强什么？" data-en="What would you love Lumi to improve?">你最希望未来的暖暖加强什么？</div>
+        <div class="survey-hint" data-zh="可多选" data-en="Pick all that apply">可多选</div>
+        <div class="survey-options">
+          <div class="survey-option" data-val="themes" onclick="toggleOption(this)"><span data-zh="更多主题和背景" data-en="More themes &amp; backgrounds">更多主题和背景</span></div>
+          <div class="survey-option" data-val="voice" onclick="toggleOption(this)"><span data-zh="语音聊天" data-en="Voice chat">语音聊天</span></div>
+          <div class="survey-option" data-val="deeper" onclick="toggleOption(this)"><span data-zh="更深入了解我" data-en="Know me even deeper">更深入了解我</span></div>
+          <div class="survey-option" data-val="games" onclick="toggleOption(this)"><span data-zh="互动小游戏" data-en="Interactive mini-games">互动小游戏</span></div>
+          <div class="survey-option" data-val="cloud" onclick="toggleOption(this)"><span data-zh="换设备不丢记忆" data-en="Memory backup across devices">换设备不丢记忆</span></div>
+          <div class="survey-option" data-val="notif" onclick="toggleOption(this)"><span data-zh="更贴心的提醒" data-en="More thoughtful reminders">更贴心的提醒</span></div>
+        </div>
+        <button class="survey-next" id="snext-5" onclick="surveySubmit()" disabled data-zh="完成并解锁 7 天守候版 ✦" data-en="Done — unlock 7 days Premium ✦">完成并解锁 7 天守候版 ✦</button>
+      </div>
+
+      <!-- 完成 -->
+      <div class="survey-block" id="sq-done">
+        <div class="survey-complete">
+          <span class="survey-complete-icon">🌙</span>
+          <div class="survey-complete-title" data-zh="守候版已为你开启 ✦" data-en="Premium unlocked just for you ✦">守候版已为你开启 ✦</div>
+          <div class="survey-complete-days" id="survey-trial-label">7 天守候版体验</div>
+          <div class="survey-complete-sub" data-zh="谢谢你帮助暖暖变得更好。<br>接下来的 7 天，尽情体验所有守候版功能 ♡" data-en="Thank you for helping Lumi grow.<br>Enjoy all Premium features for the next 7 days ♡">谢谢你帮助暖暖变得更好。<br>接下来的 7 天，尽情体验所有守候版功能 ♡</div>
+          <button class="paywall-cta" onclick="closeSurveyDone()" data-zh="开始体验 →" data-en="Start exploring →">开始体验 →</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1546,6 +1805,8 @@
       <div class="fp-header-title" data-zh="我的足迹" data-en="My Journal">我的足迹</div>
     </div>
     <div class="fp-body" id="fp-body">
+      <!-- 热力图 -->
+      <div class="fp-heatmap" id="fp-heatmap"></div>
       <div class="fp-empty" id="fp-empty">
         <div class="fp-empty-icon">🌱</div>
         <div class="fp-empty-text" data-zh="还没有记录<br>每一个小赢都值得被看见" data-en="Nothing yet<br>Every small win deserves to be seen">还没有记录<br>每一个小赢都值得被看见</div>
@@ -1580,9 +1841,12 @@
 
       <!-- 守候版 / Premium -->
       <div class="settings-section">
-        <div class="settings-item" onclick="showPaywall()">
-          <div class="settings-item-label" style="font-weight:600; color:var(--brown);" data-zh="守候版 ✦" data-en="Premium ✦">守候版 ✦</div>
-          <span class="settings-chevron">›</span>
+        <div class="settings-item" id="settings-premium-item" onclick="onSettingsPremiumClick()">
+          <div class="settings-item-label" style="font-weight:600; color:var(--brown);" data-zh="守候版 ✦" data-en="Premium ✦">守候版 ✦<span class="settings-premium-tag" id="settings-premium-tag" style="display:none;"></span></div>
+          <span class="settings-chevron" id="settings-premium-chevron">›</span>
+        </div>
+        <div class="settings-item" id="settings-trial-detail" style="display:none;">
+          <div class="settings-item-label" style="font-size:12px; color:var(--text-light);" id="settings-trial-detail-text"></div>
         </div>
       </div>
 
@@ -1754,8 +2018,481 @@ function incrementDailyCount() {
   const count = getDailyCount() + 1;
   localStorage.setItem('nuan_daily', JSON.stringify({ date: today, count }));
 }
+// ─── Trial & Premium helpers ──────────────────────────────
+const TRIAL_DAYS = 7;
+
+function isTrialActive() {
+  const start = localStorage.getItem('nuan_trial_start');
+  if (!start) return false;
+  const ms = Date.now() - parseInt(start, 10);
+  return ms < TRIAL_DAYS * 24 * 60 * 60 * 1000;
+}
+
+function getTrialDaysLeft() {
+  const start = localStorage.getItem('nuan_trial_start');
+  if (!start) return 0;
+  const ms = TRIAL_DAYS * 24 * 60 * 60 * 1000 - (Date.now() - parseInt(start, 10));
+  return Math.max(0, Math.ceil(ms / (24 * 60 * 60 * 1000)));
+}
+
+function hasSurveyCompleted() {
+  return !!localStorage.getItem('nuan_survey_done');
+}
+
+function activateTrial() {
+  localStorage.setItem('nuan_trial_start', Date.now().toString());
+  localStorage.setItem('nuan_survey_done', '1');
+}
+
 function isPremium() {
-  return localStorage.getItem('nuan_premium') === 'true';
+  return localStorage.getItem('nuan_premium') === 'true' || isTrialActive();
+}
+
+// ─── Settings: 守候版动态显示 ──────────────────────────────
+function updateSettingsPremiumDisplay() {
+  const tag = document.getElementById('settings-premium-tag');
+  const detail = document.getElementById('settings-trial-detail');
+  const detailText = document.getElementById('settings-trial-detail-text');
+  const chevron = document.getElementById('settings-premium-chevron');
+  if (!tag) return;
+
+  if (localStorage.getItem('nuan_premium') === 'true') {
+    tag.style.display = 'inline-flex';
+    tag.className = 'settings-premium-tag active';
+    tag.textContent = currentLang === 'en' ? 'Active' : '已激活';
+    if (detail) detail.style.display = 'none';
+    if (chevron) chevron.style.display = 'none';
+  } else if (isTrialActive()) {
+    const days = getTrialDaysLeft();
+    tag.style.display = 'inline-flex';
+    tag.className = 'settings-premium-tag trial';
+    tag.textContent = currentLang === 'en' ? 'Trial' : '体验中';
+    if (detail) detail.style.display = 'flex';
+    if (detailText) detailText.textContent = currentLang === 'en'
+      ? `${days} day${days === 1 ? '' : 's'} remaining in your trial`
+      : `守候版体验还有 ${days} 天`;
+    if (chevron) chevron.style.display = 'none';
+  } else {
+    tag.style.display = 'none';
+    if (detail) detail.style.display = 'none';
+    if (chevron) chevron.style.display = '';
+  }
+}
+
+function onSettingsPremiumClick() {
+  if (isPremium()) return; // already premium, do nothing
+  showPaywall();
+}
+
+// ─── Hub 守候版状态 ───────────────────────────────────────
+function updateHubPremiumBanner() {
+  const banner = document.getElementById('hub-upgrade-banner');
+  const badge  = document.getElementById('hub-trial-badge');
+  const label  = document.getElementById('hub-trial-label');
+  const sub    = document.getElementById('hub-upgrade-sub');
+
+  if (localStorage.getItem('nuan_premium') === 'true') {
+    if (banner) banner.style.display = 'none';
+    if (badge) badge.style.display = 'flex';
+    if (label) label.textContent = currentLang === 'en' ? '✦ Premium · Active' : '✦ 守候版 · 已激活';
+  } else if (isTrialActive()) {
+    if (banner) banner.style.display = 'none';
+    if (badge) badge.style.display = 'flex';
+    const days = getTrialDaysLeft();
+    if (label) label.textContent = currentLang === 'en'
+      ? `✦ Trial · ${days} day${days === 1 ? '' : 's'} left`
+      : `✦ 守候版体验 · 还有 ${days} 天`;
+  } else {
+    if (badge) badge.style.display = 'none';
+    if (banner) banner.style.display = 'flex';
+    // Show survey perk in subtitle if not completed yet
+    if (sub && !hasSurveyCompleted()) {
+      sub.setAttribute('data-zh', '填问卷免费体验 7 天 · 点击了解');
+      sub.setAttribute('data-en', 'Free 7-day trial via survey · tap to learn more');
+      sub.textContent = currentLang === 'en' ? 'Free 7-day trial via survey · tap to learn more' : '填问卷免费体验 7 天 · 点击了解';
+    }
+  }
+}
+
+// ─── Paywall: 显示问卷入口 ────────────────────────────────
+function updatePaywallSurveyEntry() {
+  const btn = document.getElementById('survey-entry-btn');
+  if (!btn) return;
+  // Show only if survey not done and not premium
+  btn.style.display = (!hasSurveyCompleted() && !isPremium()) ? 'block' : 'none';
+}
+
+// ─── 问卷系统 ─────────────────────────────────────────────
+let surveyStep = 0;
+const surveyAnswers = {};
+
+const SURVEY_TOTAL = 6;
+
+function showSurvey() {
+  surveyStep = 0;
+  // Reset all blocks
+  for (let i = 0; i < SURVEY_TOTAL; i++) {
+    const block = document.getElementById('sq-' + i);
+    if (block) { block.classList.remove('visible'); block.querySelectorAll('.survey-option').forEach(o => o.classList.remove('selected')); }
+  }
+  const done = document.getElementById('sq-done');
+  if (done) done.classList.remove('visible');
+  // Reset progress dots
+  for (let i = 0; i < SURVEY_TOTAL; i++) { const d = document.getElementById('sdot-' + i); if(d) { d.classList.remove('active','done'); } }
+  // Show first block
+  const first = document.getElementById('sq-0');
+  if (first) first.classList.add('visible');
+  const dot0 = document.getElementById('sdot-0');
+  if (dot0) dot0.classList.add('active');
+  // Reset next buttons
+  for (let i = 0; i < SURVEY_TOTAL; i++) { const b = document.getElementById('snext-' + i); if(b) b.disabled = true; }
+  applyLang();
+  goTo('survey');
+  updateTabBar(null);
+}
+
+function closeSurvey() {
+  goBack();
+}
+
+function closeSurveyDone() {
+  applyLang();
+  updateHubPremiumBanner();
+  updateSettingsPremiumDisplay();
+  showHub();
+}
+
+function toggleOption(el, singleSelect) {
+  const block = el.closest('.survey-block');
+  if (singleSelect) {
+    // Deselect all others in block first
+    block.querySelectorAll('.survey-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  } else {
+    el.classList.toggle('selected');
+  }
+  const idx = parseInt(block.id.replace('sq-', ''), 10);
+  const btn = document.getElementById('snext-' + idx);
+  const anySelected = block.querySelectorAll('.survey-option.selected').length > 0;
+  if (btn) btn.disabled = !anySelected;
+}
+
+function surveyNext(step) {
+  // Collect answers
+  const block = document.getElementById('sq-' + step);
+  const selected = [...block.querySelectorAll('.survey-option.selected')].map(o => o.dataset.val);
+  surveyAnswers['q' + (step + 1)] = selected;
+
+  // Update dots
+  const currDot = document.getElementById('sdot-' + step);
+  if (currDot) { currDot.classList.remove('active'); currDot.classList.add('done'); }
+  if (step + 1 < SURVEY_TOTAL) {
+    const nextDot = document.getElementById('sdot-' + (step + 1));
+    if (nextDot) nextDot.classList.add('active');
+  }
+
+  // Hide current, show next
+  block.classList.remove('visible');
+  const nextBlock = document.getElementById('sq-' + (step + 1));
+  if (nextBlock) nextBlock.classList.add('visible');
+  surveyStep = step + 1;
+}
+
+function surveySubmit() {
+  // Collect last answer (Q6 = sq-5)
+  const block = document.getElementById('sq-5');
+  const selected = [...block.querySelectorAll('.survey-option.selected')].map(o => o.dataset.val);
+  surveyAnswers['q6'] = selected;
+  // Save answers
+  localStorage.setItem('nuan_survey_answers', JSON.stringify(surveyAnswers));
+
+  // Activate trial
+  activateTrial();
+
+  // Update all dots to done
+  for (let i = 0; i < 6; i++) {
+    const d = document.getElementById('sdot-' + i);
+    if (d) { d.classList.remove('active'); d.classList.add('done'); }
+  }
+
+  // Hide Q6, show done
+  block.classList.remove('visible');
+  const doneBlock = document.getElementById('sq-done');
+  if (doneBlock) {
+    doneBlock.classList.add('visible');
+    const lbl = document.getElementById('survey-trial-label');
+    if (lbl) lbl.textContent = currentLang === 'en' ? `${TRIAL_DAYS}-day Premium trial` : `${TRIAL_DAYS} 天守候版体验`;
+    applyLang();
+  }
+}
+
+// ─── 对话起点卡片 ─────────────────────────────────────────
+const STARTER_SETS = {
+  morning: {
+    zh: ['今天感觉怎么样？', '有什么让你期待今天的事吗？', '昨晚睡得好吗？', '今天有什么计划？'],
+    en: ["How are you feeling this morning?", "Anything you're looking forward to today?", "Did you sleep well?", "What's your plan for today?"]
+  },
+  afternoon: {
+    zh: ['今天上午过得怎么样？', '有没有遇到什么有趣的事？', '吃午饭了吗，吃了什么？', '下午有什么打算？'],
+    en: ["How was your morning?", "Anything interesting happen so far?", "Did you have lunch? What did you eat?", "What's next for your afternoon?"]
+  },
+  evening: {
+    zh: ['今天一天下来感觉如何？', '有什么让你开心的事吗？', '最近有没有让你烦恼的事？', '今晚有没有什么期待的事？'],
+    en: ["How was your day overall?", "What was a highlight of today?", "Anything on your mind lately?", "Any plans for tonight?"]
+  },
+  night: {
+    zh: ['这么晚了，还好吗？', '睡不着是为什么？', '今天有什么想说说的吗？', '需要我陪你聊聊吗？'],
+    en: ["It's late — you okay?", "Having trouble sleeping?", "Anything on your mind?", "Want to talk about your day?"]
+  }
+};
+
+function showStarterChips() {
+  const starters = document.getElementById('chat-starters');
+  const chips = document.getElementById('starter-chips');
+  if (!starters || !chips) return;
+  if (chatHistory.length > 0) { starters.classList.remove('visible'); return; }
+  const p = getTimePeriod();
+  const pool = currentLang === 'en' ? STARTER_SETS[p].en : STARTER_SETS[p].zh;
+  chips.innerHTML = pool.map(s => `<div class="starter-chip" onclick="useStarter(this)">${s}</div>`).join('');
+  starters.classList.add('visible');
+}
+
+function hideStarterChips() {
+  const starters = document.getElementById('chat-starters');
+  if (starters) starters.classList.remove('visible');
+}
+
+function useStarter(el) {
+  const inp = document.getElementById('chat-input');
+  if (inp) { inp.value = el.textContent; inp.focus(); }
+  hideStarterChips();
+}
+
+// ─── 续接问候 · 保存最后话题 ─────────────────────────────
+function saveLastTopic() {
+  // Save last 2 user messages as context hint
+  const userMsgs = chatHistory.filter(m => m.role === 'user').slice(-2).map(m => m.content);
+  if (userMsgs.length > 0) {
+    localStorage.setItem('nuan_last_topic', JSON.stringify({ msgs: userMsgs, ts: Date.now() }));
+  }
+}
+
+function getContextGreeting() {
+  const raw = localStorage.getItem('nuan_last_topic');
+  if (!raw) return getTimeGreeting();
+  try {
+    const { msgs, ts } = JSON.parse(raw);
+    const hoursSince = (Date.now() - ts) / 3600000;
+    // Only reference last topic if it was within 48h
+    if (hoursSince > 48 || !msgs.length) return getTimeGreeting();
+    const snippet = msgs[msgs.length - 1].slice(0, 20);
+    const n = userName || (currentLang === 'en' ? 'you' : '你');
+    if (currentLang === 'en') {
+      return hoursSince < 6
+        ? `Welcome back, ${n} — we were just talking. What's on your mind?`
+        : `Hey ${n}, how are things since we last talked?`;
+    } else {
+      return hoursSince < 6
+        ? `又回来啦，${n} ♡ 刚才说到……现在感觉怎么样？`
+        : `${n}，上次聊过之后，一切还好吗？`;
+    }
+  } catch(e) { return getTimeGreeting(); }
+}
+
+// ─── 心情打卡 ─────────────────────────────────────────────
+function recordMood(level) {
+  const today = new Date().toISOString().slice(0, 10);
+  const log = JSON.parse(localStorage.getItem('nuan_mood_log') || '[]');
+  // Remove today's entry if exists
+  const filtered = log.filter(e => e.date !== today);
+  filtered.push({ date: today, mood: level });
+  // Keep last 90 days
+  filtered.sort((a,b) => a.date.localeCompare(b.date));
+  localStorage.setItem('nuan_mood_log', JSON.stringify(filtered.slice(-90)));
+
+  // Update UI
+  document.querySelectorAll('.mood-btn').forEach(b => {
+    b.classList.toggle('selected', parseInt(b.dataset.mood) === level);
+  });
+  const doneEl = document.getElementById('hub-mood-done');
+  const labelEl = document.getElementById('hub-mood-label');
+  if (doneEl) doneEl.style.display = '';
+  if (labelEl) labelEl.style.display = 'none';
+
+  // Check achievements
+  checkAchievements();
+}
+
+function initMoodRow() {
+  const today = new Date().toISOString().slice(0, 10);
+  const log = JSON.parse(localStorage.getItem('nuan_mood_log') || '[]');
+  const todayEntry = log.find(e => e.date === today);
+  if (todayEntry) {
+    document.querySelectorAll('.mood-btn').forEach(b => {
+      b.classList.toggle('selected', parseInt(b.dataset.mood) === todayEntry.mood);
+    });
+    const doneEl = document.getElementById('hub-mood-done');
+    const labelEl = document.getElementById('hub-mood-label');
+    if (doneEl) doneEl.style.display = '';
+    if (labelEl) labelEl.style.display = 'none';
+  } else {
+    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+    const doneEl = document.getElementById('hub-mood-done');
+    const labelEl = document.getElementById('hub-mood-label');
+    if (doneEl) doneEl.style.display = 'none';
+    if (labelEl) labelEl.style.display = '';
+  }
+}
+
+// ─── 记忆可视化 ────────────────────────────────────────────
+function renderMemoryBook(container) {
+  const memories = JSON.parse(localStorage.getItem('nuan_memories') || '[]');
+  const cap = isPremium() ? 50 : 15;
+  const catLabels = { like:'喜欢', dislike:'不喜欢', family:'家人', work:'工作/学业', event:'事件', mood:'情绪', other:'其他' };
+  const catLabelsEn = { like:'Like', dislike:'Dislikes', family:'Family', work:'Work/Study', event:'Event', mood:'Mood', other:'Other' };
+
+  if (!memories.length) {
+    container.innerHTML = `<div class="memory-book-empty">${t('暖暖还在慢慢认识你…<br>多聊聊，记忆会慢慢积累 ♡', "Lumi is getting to know you…<br>Chat more and memories will grow ♡")}</div>`;
+    return;
+  }
+
+  const catMap = currentLang === 'en' ? catLabelsEn : catLabels;
+  container.innerHTML = memories.slice(-cap).reverse().map((m, i) => {
+    const cat = catMap[m.cat] || m.cat || '其他';
+    return `<div class="memory-item">
+      <div class="memory-item-text">${m.fact}</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
+        <span class="memory-item-cat">${cat}</span>
+        <button class="memory-del-btn" onclick="deleteMemory(${memories.length - 1 - i})" title="${t('删除','Remove')}">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+  container.innerHTML += `<div class="memory-cap-note">${t(`已记住 ${memories.length} / ${cap} 条`, `${memories.length} / ${cap} memories stored`)}</div>`;
+}
+
+function deleteMemory(idx) {
+  const memories = JSON.parse(localStorage.getItem('nuan_memories') || '[]');
+  memories.splice(idx, 1);
+  localStorage.setItem('nuan_memories', JSON.stringify(memories));
+  // Re-render
+  const container = document.getElementById('memory-book-body');
+  if (container) renderMemoryBook(container);
+}
+
+function toggleAchievements() {
+  const grid = document.getElementById('achievements-grid');
+  const label = document.getElementById('ach-toggle-label');
+  if (!grid) return;
+  const isOpen = grid.style.display !== 'none';
+  if (isOpen) {
+    grid.style.display = 'none';
+    if (label) label.textContent = t('展开','Expand');
+  } else {
+    grid.style.display = 'grid';
+    renderAchievements(grid);
+    if (label) label.textContent = t('收起','Collapse');
+  }
+}
+
+function toggleMemoryBook() {
+  const body = document.getElementById('memory-book-body');
+  const arrow = document.getElementById('memory-book-arrow');
+  if (!body) return;
+  const isOpen = body.classList.toggle('open');
+  if (isOpen) renderMemoryBook(body);
+  if (arrow) arrow.textContent = isOpen ? '↑' : '↓';
+}
+
+// ─── 成就系统 ─────────────────────────────────────────────
+const ACHIEVEMENTS = [
+  { id: 'first_chat',   icon: '🌱', name: { zh: '初次相遇', en: 'First Words' },    check: () => msgCount >= 1 },
+  { id: 'chat_10',      icon: '💬', name: { zh: '聊了 10 次', en: '10 Chats' },      check: () => msgCount >= 10 },
+  { id: 'chat_50',      icon: '✨', name: { zh: '聊了 50 次', en: '50 Chats' },      check: () => msgCount >= 50 },
+  { id: 'mood_3',       icon: '🌈', name: { zh: '打卡 3 天', en: '3-Day Mood' },     check: () => getMoodStreak() >= 3 },
+  { id: 'mood_7',       icon: '🌙', name: { zh: '打卡 7 天', en: '7-Day Mood' },     check: () => getMoodStreak() >= 7 },
+  { id: 'memory_5',     icon: '🧠', name: { zh: '5 条记忆', en: '5 Memories' },      check: () => (JSON.parse(localStorage.getItem('nuan_memories')||'[]')).length >= 5 },
+  { id: 'explore_ch1',  icon: '🧭', name: { zh: '探索者', en: 'Explorer' },          check: () => !!JSON.parse(localStorage.getItem('nuan_explore')||'{}')['ch1'] },
+  { id: 'footprint_1',  icon: '📝', name: { zh: '第一步', en: 'First Step' },        check: () => (JSON.parse(localStorage.getItem('nuan_footprints')||'[]')).length >= 1 },
+];
+
+function getMoodStreak() {
+  const log = JSON.parse(localStorage.getItem('nuan_mood_log') || '[]');
+  if (!log.length) return 0;
+  const sorted = [...log].sort((a,b) => b.date.localeCompare(a.date));
+  let streak = 0;
+  let prev = null;
+  for (const entry of sorted) {
+    if (!prev) { prev = entry.date; streak = 1; continue; }
+    const diff = (new Date(prev) - new Date(entry.date)) / 86400000;
+    if (diff === 1) { streak++; prev = entry.date; }
+    else break;
+  }
+  return streak;
+}
+
+function checkAchievements() {
+  const unlocked = JSON.parse(localStorage.getItem('nuan_achievements') || '[]');
+  let changed = false;
+  ACHIEVEMENTS.forEach(a => {
+    if (!unlocked.includes(a.id) && a.check()) {
+      unlocked.push(a.id);
+      changed = true;
+      // Show toast
+      setTimeout(() => showToast(t(`🏅 成就解锁：${a.name.zh}`, `🏅 Achievement: ${a.name.en}`)), 500);
+    }
+  });
+  if (changed) localStorage.setItem('nuan_achievements', JSON.stringify(unlocked));
+}
+
+function renderAchievements(container) {
+  const unlocked = JSON.parse(localStorage.getItem('nuan_achievements') || '[]');
+  container.innerHTML = ACHIEVEMENTS.map(a => {
+    const isUnlocked = unlocked.includes(a.id);
+    const name = currentLang === 'en' ? a.name.en : a.name.zh;
+    return `<div class="achievement-item">
+      <div class="achievement-icon ${isUnlocked ? 'unlocked' : 'locked'}">${a.icon}</div>
+      <div class="achievement-name">${name}</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── 足迹热力图 ────────────────────────────────────────────
+function renderHeatmap(container) {
+  const moodLog = JSON.parse(localStorage.getItem('nuan_mood_log') || '[]');
+  const footprints = JSON.parse(localStorage.getItem('nuan_footprints') || '[]');
+  // Build date→activity map (mood + footprint = level 2, just mood or footprint = 1)
+  const dateMap = {};
+  moodLog.forEach(e => { dateMap[e.date] = (dateMap[e.date] || 0) + 1; });
+  footprints.forEach(e => {
+    const d = new Date(e.ts).toISOString().slice(0,10);
+    dateMap[d] = (dateMap[d] || 0) + 1;
+  });
+  // Last 35 days (5 weeks)
+  const cells = [];
+  for (let i = 34; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0, 10);
+    const count = dateMap[key] || 0;
+    cells.push({ key, count });
+  }
+  const title = t('过去 35 天', 'Last 35 days');
+  container.innerHTML = `
+    <div class="fp-heatmap-title">${title}</div>
+    <div class="fp-heatmap-grid">
+      ${cells.map(c => {
+        const lv = c.count === 0 ? '' : c.count === 1 ? 'lv1' : c.count === 2 ? 'lv2' : c.count <= 3 ? 'lv3' : 'lv4';
+        return `<div class="fp-heat-cell ${lv}" title="${c.key}"></div>`;
+      }).join('')}
+    </div>
+    <div class="fp-heatmap-legend">
+      <span>${t('少','Less')}</span>
+      <div class="fp-heat-legend-cell" style="background:rgba(237,217,200,0.3)"></div>
+      <div class="fp-heat-legend-cell lv1 fp-heat-cell"></div>
+      <div class="fp-heat-legend-cell lv2 fp-heat-cell"></div>
+      <div class="fp-heat-legend-cell lv3 fp-heat-cell"></div>
+      <div class="fp-heat-legend-cell lv4 fp-heat-cell"></div>
+      <span>${t('多','More')}</span>
+    </div>`;
 }
 
 // Bilingual helper: pick zh or en string
@@ -2166,6 +2903,7 @@ let selectedPlan = 'yearly';
 function showPaywall() {
   if (document.getElementById('more-menu-overlay')) closeMoreMenu();
   applyLang();
+  updatePaywallSurveyEntry();
   goTo('paywall');
   updateTabBar(null);
 }
@@ -2340,9 +3078,10 @@ async function sendMsg() {
     }
   }
 
-  // 消息长度限制
-  if (text.length > 300) {
-    showToast(t('每条消息最多 300 字哦', 'Max 300 characters per message'));
+  // 消息长度限制 (免费 500 / 守候版 1000)
+  const CHAR_LIMIT = isPremium() ? 1000 : 500;
+  if (text.length > CHAR_LIMIT) {
+    showToast(t(`每条消息最多 ${CHAR_LIMIT} 字哦`, `Max ${CHAR_LIMIT} characters per message`));
     return;
   }
 
@@ -2352,6 +3091,7 @@ async function sendMsg() {
   inp.disabled = true;
   const sendBtn = document.querySelector('.send-btn');
   if (sendBtn) sendBtn.style.opacity = '0.4';
+  hideStarterChips();
 
   if (!isPremium()) incrementDailyCount();
 
@@ -2440,6 +3180,9 @@ async function sendMsg() {
       if (msgCount % 5 === 0) runPersonalityAnalysis();
       if (msgCount % 3 === 0) extractMemories();
     }
+    // Save last topic for context greeting & check achievements
+    saveLastTopic();
+    checkAchievements();
 
   } catch(e) {
     clearTimeout(coldStartTimer);
@@ -2498,6 +3241,7 @@ async function runPersonalityAnalysis() {
     if (match) {
       const profile = JSON.parse(match[0]);
       profile.msgCount = msgCount;
+      profile.updatedAt = Date.now();
       localStorage.setItem('nuan_profile', JSON.stringify(profile));
     }
   } catch(e) { /* 靜默失敗 */ }
@@ -2579,7 +3323,14 @@ function showProfile() {
   const fearLabel  = t('你担心的事', 'What you worry about');
   const patLabel   = t('你的模式', 'Your patterns');
   const deepLabel  = t('深一点说', 'Going deeper');
-  const metaLabel  = t(`基于我们 ${p.msgCount || msgCount} 次对话的观察`, `Based on ${p.msgCount || msgCount} conversations`);
+  const updatedAgo = p.updatedAt ? (() => {
+    const mins = Math.floor((Date.now() - p.updatedAt) / 60000);
+    if (mins < 60) return t(`${mins} 分钟前更新`, `Updated ${mins}m ago`);
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return t(`${hrs} 小时前更新`, `Updated ${hrs}h ago`);
+    return t(`${Math.floor(hrs/24)} 天前更新`, `Updated ${Math.floor(hrs/24)}d ago`);
+  })() : '';
+  const metaLabel  = t(`基于我们 ${p.msgCount || msgCount} 次对话的观察`, `Based on ${p.msgCount || msgCount} conversations`) + (updatedAgo ? ` · ${updatedAgo}` : '');
   body.innerHTML = `
     <div class="profile-card">
       <div class="profile-avatar-row">
@@ -2608,7 +3359,23 @@ function showProfile() {
         <div class="profile-detail-text">${p.detail || ''}</div>
       </div>
     </div>
-    <div class="profile-meta">${metaLabel}</div>`;
+    <div class="profile-meta">${metaLabel}</div>
+    <div class="memory-book-section">
+      <div class="profile-card" style="padding:0; overflow:hidden;">
+        <div class="memory-book-header" onclick="toggleMemoryBook()">
+          <div class="memory-book-title">${t('暖暖的记忆本', "Lumi's Memory Book")} <span id="memory-book-arrow">↓</span></div>
+          <span class="memory-book-count">${JSON.parse(localStorage.getItem('nuan_memories')||'[]').length} ${t('条','')}</span>
+        </div>
+        <div class="memory-book-body" id="memory-book-body"></div>
+      </div>
+    </div>
+    <div class="achievements-section">
+      <div class="achievements-header" onclick="toggleAchievements()">
+        <div class="achievements-title">${t('我的成就', 'Achievements')}</div>
+        <div class="achievements-sub" id="ach-toggle-label">${t('展开','Expand')}</div>
+      </div>
+      <div class="achievements-grid" id="achievements-grid" style="display:none;"></div>
+    </div>`;
   updateTabBar('profile');
   goTo('profile');
 }
@@ -2702,8 +3469,12 @@ function showChat() {
   // 如果聊天记录为空，或最后一条是用户说的，暖暖主动打招呼
   const lastMsg = chatHistory[chatHistory.length - 1];
   if (!lastMsg || lastMsg.role === 'user') {
-    setTimeout(() => appendMsg('warm', getTimeGreeting()), 400);
+    // Use context-aware greeting if returning user, standard if new
+    const greeting = chatHistory.length === 0 ? getTimeGreeting() : getContextGreeting();
+    setTimeout(() => appendMsg('warm', greeting), 400);
   }
+  // Show starter chips if empty
+  setTimeout(() => showStarterChips(), 600);
   // Show pending care notification message if any
   showPendingCareMsg();
 }
@@ -2736,6 +3507,8 @@ function showHub() {
   } else if (progressWrap) {
     progressWrap.style.display = 'none';
   }
+  updateHubPremiumBanner();
+  initMoodRow();
   updateTabBar('hub');
   goTo('hub');
 }
@@ -3213,6 +3986,7 @@ function openSettings() {
   if (notifPrefs.evening) document.getElementById('notif-evening').value = notifPrefs.evening;
   document.getElementById('toggle-notif-random').checked = !!notifPrefs.random;
   document.getElementById('settings-lang-val').textContent = currentLang === 'en' ? 'English · Lumi' : '中文 · 暖暖';
+  updateSettingsPremiumDisplay();
   goTo('settings');
   updateTabBar(null);
 }
@@ -3699,6 +4473,9 @@ function renderFootprints() {
   const list = getFootprints();
   const empty = document.getElementById('fp-empty');
   const timeline = document.getElementById('fp-timeline');
+  // Render heatmap always
+  const heatmap = document.getElementById('fp-heatmap');
+  if (heatmap) renderHeatmap(heatmap);
   if (!timeline) return;
   timeline.innerHTML = '';
   if (list.length === 0) {
@@ -4720,4 +5497,92 @@ function buildRadarSVG(scores) {
         const v = (scores[k] || 0) / 100;
         const a = angles[i];
         const x = cx + Math.cos(a) * R * v;
-        
+        const y = cy + Math.sin(a) * R * v;
+        return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="#C0622A"/>`;
+      }).join('')}
+      ${labelsSvg}
+    </svg>
+  `;
+}
+
+function renderExploreResult(payload) {
+  const ch = EXPLORE_CHAPTERS.find(c => c.id === payload.chapterId);
+  document.getElementById('ex-header-title').textContent = ch ? ch.title : '你的解读';
+  const body = document.getElementById('ex-body');
+  const { bigFive, attachment, emoStyle, poetic } = payload;
+
+  const attachInfo = ATTACHMENT_DESC[attachment] || ATTACHMENT_DESC.secure;
+  const emoInfo    = EMO_DESC[emoStyle] || EMO_DESC.balanced;
+
+  let html = `
+    <!-- 文艺层：上 -->
+    <div class="ex-result-hero">
+      <div class="ex-result-chapter-label">${ch ? ch.num + ' · ' + ch.title : ''}</div>
+      <div class="ex-result-title">${poetic.title || '静水流深的人'}</div>
+      <div class="ex-result-subtitle">—— 暖暖眼中的你 ——</div>
+      <div class="ex-result-letter">${(poetic.letter || '').replace(/\n/g, '<br>')}</div>
+      <div class="ex-result-letter-signature">—— 暖暖</div>
+    </div>
+
+    <!-- 分界 -->
+    <div class="ex-result-section-label">SCIENTIFIC LAYER</div>
+    <div class="ex-result-section-divider"></div>
+
+    <!-- 科学层：Big Five 雷达 -->
+    <div class="ex-radar-card">
+      <div class="ex-radar-title">Big Five · 大五人格</div>
+      <div class="ex-radar-sub">Costa & McCrae (1992) 五因素模型 · 心理学最经验支持的人格框架之一</div>
+      <div class="ex-radar-svg-wrap">${buildRadarSVG(bigFive)}</div>
+      <div class="ex-trait-list">
+        ${['O','C','E','A','N'].map(k => `
+          <div class="ex-trait-row">
+            <div class="ex-trait-label">${TRAIT_LABELS[k].name}</div>
+            <div class="ex-trait-bar-wrap"><div class="ex-trait-bar" style="width:${bigFive[k]}%"></div></div>
+            <div class="ex-trait-score">${bigFive[k]}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- 依恋 -->
+    <div class="ex-insight-card">
+      <div class="ex-insight-type">${attachInfo.name}</div>
+      <div class="ex-insight-explain">${attachInfo.text}</div>
+      <div class="ex-insight-cite">参考：${attachInfo.cite}</div>
+    </div>
+
+    <!-- 情绪调节 -->
+    <div class="ex-insight-card">
+      <div class="ex-insight-type">情绪调节：${emoInfo.name}</div>
+      <div class="ex-insight-explain">${emoInfo.text}</div>
+      <div class="ex-insight-cite">参考：${emoInfo.cite}</div>
+    </div>
+
+    <!-- 操作 -->
+    <div class="ex-result-actions">
+      <button class="ex-result-btn-ghost" onclick="retakeExploreChapter()">重新做一次</button>
+      <button class="ex-result-btn-primary" onclick="exploreBackToLanding()">回到探索</button>
+    </div>
+  `;
+  body.innerHTML = html;
+  body.scrollTop = 0;
+}
+
+function retakeExploreChapter() {
+  // clear stored result for this chapter
+  const all = getExploreSaved();
+  if (exploreState.chapter && all[exploreState.chapter.id]) {
+    delete all[exploreState.chapter.id];
+    localStorage.setItem('nuan_explore', JSON.stringify(all));
+  }
+  startExploreQuestions();
+}
+
+function exploreBackToLanding() {
+  exploreState.screen = 'landing';
+  renderExploreLanding();
+}
+
+</script>
+</body>
+</html>
