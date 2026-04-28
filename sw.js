@@ -1,4 +1,4 @@
-const CACHE = 'nuan-v3';
+const CACHE = 'nuan-v4';
 const ASSETS = [
   './nuanv3.html',
   './manifest.json',
