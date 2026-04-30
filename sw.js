@@ -1,4 +1,4 @@
-const CACHE = 'nuan-v5';
+const CACHE = 'nuan-v6';
 const ASSETS = [
   './nuanv3.html',
   './manifest.json',
@@ -7,7 +7,22 @@ const ASSETS = [
   './eye_left.png',
   './eye_right.png',
   './blush.png',
-  './antennas.png'
+  './antennas.png',
+  './nuan-assets/nn-watching.png',
+  './nuan-assets/nn-peeking.png',
+  './nuan-assets/nn-thinking.png',
+  './nuan-assets/nn-lying.png',
+  './nuan-assets/nn-sleepy.png',
+  './nuan-assets/nn-pointing.png',
+  './nuan-assets/nn-angry-pout.png',
+  './nuan-assets/nn-angry-hands.png',
+  './nuan-assets/nn-angry-circles.png',
+  './nuan-assets/nn-frazzled.png',
+  './nuan-assets/nn-eat-cake.png',
+  './nuan-assets/nn-eat-riceball.png',
+  './nuan-assets/nn-happy-walk.png',
+  './nuan-assets/nn-guard.png',
+  './nuan-assets/nn-guard-armor.png'
 ];
 
 self.addEventListener('install', e => {

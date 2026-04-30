@@ -15,11 +15,15 @@
   <style>
     /* ═══════════ 原版基础样式 ═══════════ */
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; background: #2A1A10; height: 100dvh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .phone { width: 100%; max-width: 390px; height: 100dvh; max-height: 844px; background: #FDF8F4; position: relative; overflow: hidden; }
+    body { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; background: var(--body-bg, #2A1A10); height: 100dvh; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: background 0.5s ease; }
+    .phone { width: 100%; max-width: 390px; height: 100dvh; max-height: 844px; background: var(--phone-bg, #FDF8F4); position: relative; overflow: hidden; transition: background 0.5s ease; }
     .screen { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.38s cubic-bezier(0.4,0,0.2,1); z-index: 0; }
     .screen.active { opacity: 1; pointer-events: all; z-index: 10; }
-    :root { --brown: #C0622A; --brown-light: #E8924A; --brown-pale: #FCDFC5; --cream: #FFF8F0; --cream-dark: #FEF1DC; --text: #2A1808; --text-light: #A07050; }
+    :root {
+      --brown: #C0622A; --brown-light: #E8924A; --brown-pale: #FCDFC5;
+      --cream: #FFF8F0; --cream-dark: #FEF1DC; --text: #2A1808; --text-light: #A07050;
+      --body-bg: #2A1A10; --phone-bg: #FDF8F4;
+    }
 
     /* ═══════════ 通用组件 ═══════════ */
     .btn-primary { background: linear-gradient(145deg,#F09850,#B85C2A); color: white; border: none; border-radius: 28px; padding: 16px; font-size: 16px; font-family: inherit; font-weight: 600; cursor: pointer; width: 100%; transition: transform 0.12s,box-shadow 0.12s; letter-spacing: 0.3px; box-shadow: 0 5px 22px rgba(210,115,45,0.36), 0 2px 6px rgba(0,0,0,0.08); }
@@ -632,6 +636,104 @@
 .fp-heatmap-legend { display: flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 10px; color: var(--text-light); }
 .fp-heat-legend-cell { width: 12px; height: 12px; border-radius: 3px; }
 
+/* ════ 主题选择器 ════ */
+.theme-picker-wrap { padding: 4px 16px 16px; }
+.theme-picker-label { font-size: 11px; color: var(--text-light); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 12px; }
+.theme-swatches { display: flex; gap: 14px; justify-content: flex-start; }
+.theme-swatch { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+.theme-swatch-circle {
+  width: 46px; height: 46px; border-radius: 50%;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+  transition: transform 0.18s, box-shadow 0.18s;
+  position: relative;
+}
+.theme-swatch-circle.active {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 3.5px var(--brown), 0 3px 14px rgba(0,0,0,0.2);
+}
+.theme-swatch-circle.locked::after {
+  content: '🔒'; position: absolute; bottom: -3px; right: -3px;
+  font-size: 13px; line-height: 1;
+}
+.theme-swatch:active .theme-swatch-circle { transform: scale(0.94); }
+.theme-swatch-name { font-size: 10.5px; color: var(--text-light); text-align: center; font-weight: 500; }
+.theme-swatch-name.active-name { color: var(--brown); font-weight: 700; }
+
+/* ════ 暖暖 IP 图片资产系统 ════ */
+.nn-empty-img {
+  width: 130px; height: 130px; object-fit: contain;
+  display: block; margin: 0 auto 8px;
+  animation: float 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.12));
+}
+.nn-starters-peek { display: flex; justify-content: center; margin-bottom: 4px; }
+.nn-starters-peek img {
+  width: 96px; height: 96px; object-fit: contain;
+  animation: float 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));
+}
+.nn-paywall-img {
+  width: 130px; height: 130px; object-fit: contain;
+  display: block; margin: 0 auto 8px;
+  animation: float 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.14));
+}
+.hub-nuan-char {
+  width: 120px; height: 120px;
+  margin: 0 auto 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.hub-nuan-char img {
+  width: 120px; height: 120px; object-fit: contain;
+  animation: float 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.15));
+}
+.msg-avatar-nn { background: transparent !important; box-shadow: none !important; }
+.msg-avatar-nn img { width: 32px; height: 32px; object-fit: contain; }
+
+/* ════ 暖暖装饰形象 (各界面) ════ */
+.nn-deco { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; position: relative; }
+.nn-deco-avatar {
+  width: 72px; height: 72px;
+  background: linear-gradient(145deg, var(--brown-light), var(--brown));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  animation: float 3.2s ease-in-out infinite;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.15), 0 0 0 10px rgba(200,120,50,0.08);
+  flex-shrink: 0;
+}
+.nn-deco-avatar svg { opacity: 0.95; }
+.nn-deco-bubble {
+  background: white; border-radius: 16px 16px 16px 4px;
+  padding: 10px 16px; font-size: 13px; color: var(--text);
+  margin-top: 12px; box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  max-width: 230px; line-height: 1.6; text-align: center;
+  border: 1px solid rgba(237,217,200,0.6);
+}
+/* Sparkle dots floating around deco avatar */
+.nn-deco-sparks { position: absolute; width: 100px; height: 100px; top: -14px; pointer-events: none; }
+.nn-deco-sparks::before, .nn-deco-sparks::after {
+  content: '✦'; position: absolute; font-size: 10px;
+  color: var(--brown-light); opacity: 0.5;
+  animation: twinkle 2.8s ease-in-out infinite;
+}
+.nn-deco-sparks::before { top: 4px; right: 0; animation-delay: 0.4s; font-size: 8px; }
+.nn-deco-sparks::after  { top: 18px; left: 0; animation-delay: 1.2s; }
+@keyframes twinkle { 0%,100%{opacity:0.2;transform:scale(0.8)} 50%{opacity:0.7;transform:scale(1.1)} }
+
+/* Settings header 暖暖小头像 */
+.settings-nn-header {
+  display: flex; align-items: center; gap: 12px; padding: 20px 20px 0;
+}
+.settings-nn-avatar {
+  width: 40px; height: 40px;
+  background: linear-gradient(145deg, var(--brown-light), var(--brown));
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12); flex-shrink: 0;
+}
+.settings-nn-greeting { font-size: 13px; color: var(--text-light); }
+.settings-nn-name { font-size: 15px; font-weight: 700; color: var(--brown); }
+
 /* ════ 底部导航栏 Tab Bar ════ */
 .tab-bar {
   position: absolute; bottom: 0; left: 0; right: 0; height: 58px;
@@ -696,7 +798,7 @@
     /* ══════════════════════════════════════════════════════
        SETTINGS SCREEN
     ══════════════════════════════════════════════════════ */
-    #settings { background: #F5F0EB; flex-direction: column; }
+    #settings { background: var(--cream-dark, #F5F0EB); flex-direction: column; transition: background 0.5s ease; }
     .settings-header {
       background: rgba(255,250,244,0.97);
       padding: 16px 20px 14px;
@@ -706,7 +808,7 @@
     }
     .settings-header-title { font-size: 17px; font-weight: 700; color: var(--text); flex: 1; }
     .settings-back { background: none; border: none; color: var(--brown); cursor: pointer; padding: 4px; display: flex; align-items: center; }
-    .settings-body { position: absolute; top: 53px; bottom: 0; left: 0; right: 0; overflow-y: scroll; -webkit-overflow-scrolling: touch; padding: 20px 16px 80px; display: block; scrollbar-width: none; }
+    .settings-body { position: absolute; top: 122px; bottom: 0; left: 0; right: 0; overflow-y: scroll; -webkit-overflow-scrolling: touch; padding: 20px 16px 80px; display: block; scrollbar-width: none; }
     .settings-body::-webkit-scrollbar { display: none; }
     .settings-section {
       background: white;
@@ -1515,6 +1617,9 @@
     <div class="messages" id="messages"></div>
     <!-- 对话起点卡片 (聊天为空时出现) -->
     <div class="chat-starters" id="chat-starters">
+      <div class="nn-starters-peek">
+        <img src="./nuan-assets/nn-peeking.png" alt="暖暖">
+      </div>
       <div class="starter-label" data-zh="或者，从这里开始 ↓" data-en="Or start from here ↓">或者，从这里开始 ↓</div>
       <div class="starter-chips" id="starter-chips"></div>
     </div>
@@ -1532,7 +1637,9 @@
         <div class="hub-greeting-time" id="hub-time-label"></div>
         <div class="hub-greeting-name" id="hub-user-name">你好 ✦</div>
       </div>
-      <div class="hub-nuan-mini"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
+      <div class="hub-nuan-char">
+        <img src="./nuan-assets/nn-watching.png" alt="暖暖">
+      </div>
       <!-- 心情打卡 -->
       <div class="hub-mood-row" id="hub-mood-row">
         <div class="hub-mood-label" id="hub-mood-label" data-zh="今天如何？" data-en="How's today?">今天如何？</div>
@@ -1605,11 +1712,7 @@
       </button>
     </div>
     <div class="paywall-body">
-      <div class="paywall-badge">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-        </svg>
-      </div>
+      <img src="./nuan-assets/nn-guard.png" class="nn-paywall-img" id="paywall-nn-img" alt="暖暖">
       <div class="paywall-title" data-zh="守候版" data-en="Premium">守候版</div>
       <div class="paywall-tagline" data-zh="无论何时，暖暖都在这里陪着你" data-en="Whenever you need it, Lumi is here">无论何时，暖暖都在这里陪着你</div>
 
@@ -1808,8 +1911,9 @@
       <!-- 热力图 -->
       <div class="fp-heatmap" id="fp-heatmap"></div>
       <div class="fp-empty" id="fp-empty">
-        <div class="fp-empty-icon">🌱</div>
-        <div class="fp-empty-text" data-zh="还没有记录<br>每一个小赢都值得被看见" data-en="Nothing yet<br>Every small win deserves to be seen">还没有记录<br>每一个小赢都值得被看见</div>
+        <img src="./nuan-assets/nn-lying.png" class="nn-empty-img" alt="暖暖">
+        <div class="nn-deco-bubble" style="display:inline-block;" data-zh="每一个小小的好，都值得被记住 ♡" data-en="Every little good moment deserves to be remembered ♡">每一个小小的好，都值得被记住 ♡</div>
+        <div class="fp-empty-text" data-zh="按下 + 开始第一条记录" data-en="Tap + to add your first entry">按下 + 开始第一条记录</div>
       </div>
       <div class="fp-timeline" id="fp-timeline"></div>
     </div>
@@ -1837,6 +1941,16 @@
       </button>
       <div class="settings-header-title" data-zh="设置" data-en="Settings">设置</div>
     </div>
+    <!-- 暖暖小头像 -->
+    <div class="settings-nn-header">
+      <div class="settings-nn-avatar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </div>
+      <div>
+        <div class="settings-nn-greeting" id="settings-nn-greeting" data-zh="嗨，" data-en="Hey,">嗨，</div>
+        <div class="settings-nn-name" id="settings-nn-name">你好</div>
+      </div>
+    </div>
     <div class="settings-body">
 
       <!-- 守候版 / Premium -->
@@ -1847,6 +1961,16 @@
         </div>
         <div class="settings-item" id="settings-trial-detail" style="display:none;">
           <div class="settings-item-label" style="font-size:12px; color:var(--text-light);" id="settings-trial-detail-text"></div>
+        </div>
+      </div>
+
+      <!-- 主题 / Theme -->
+      <div class="settings-section" id="settings-theme-section">
+        <div class="settings-item" style="flex-direction:column; align-items:flex-start; padding-bottom:4px; cursor:default;">
+          <div class="settings-item-label" style="font-weight:600;" data-zh="暖暖主题" data-en="Lumi Theme">暖暖主题</div>
+        </div>
+        <div class="theme-picker-wrap">
+          <div class="theme-swatches" id="theme-swatches"></div>
         </div>
       </div>
 
@@ -2081,7 +2205,7 @@ function updateSettingsPremiumDisplay() {
 
 function onSettingsPremiumClick() {
   if (isPremium()) return; // already premium, do nothing
-  showPaywall();
+  showPaywall('settings');
 }
 
 // ─── Hub 守候版状态 ───────────────────────────────────────
@@ -2495,6 +2619,98 @@ function renderHeatmap(container) {
     </div>`;
 }
 
+// ─── 主题系统 ─────────────────────────────────────────────
+const THEMES = {
+  orange: {
+    name: { zh: '暖橙', en: 'Warm Orange' }, emoji: '🍊', free: true,
+    gradient: 'linear-gradient(145deg, #F09850, #B85C2A)',
+    swatch: 'linear-gradient(135deg, #F09850, #C06028)',
+    chatBg: 'linear-gradient(180deg, #FFF8F2 0%, #FEEFDA 60%, #FDE9CF 100%)',
+    vars: { '--brown':'#C0622A','--brown-light':'#E8924A','--brown-pale':'#FCDFC5','--cream':'#FFF8F0','--cream-dark':'#FEF1DC','--text':'#2A1808','--text-light':'#A07050','--body-bg':'#2A1A10','--phone-bg':'#FDF8F4' }
+  },
+  blue: {
+    name: { zh: '月夜蓝', en: 'Moonlit Blue' }, emoji: '🌙', free: false,
+    gradient: 'linear-gradient(145deg, #7BA3D4, #3A5FA0)',
+    swatch: 'linear-gradient(135deg, #7BA3D4, #4A6FA5)',
+    chatBg: 'linear-gradient(180deg, #F0F5FC 0%, #E0EAFA 60%, #D5E5F8 100%)',
+    vars: { '--brown':'#4A6FA5','--brown-light':'#7BA3D4','--brown-pale':'#C5D8F0','--cream':'#F0F5FC','--cream-dark':'#E0EAFA','--text':'#1A2840','--text-light':'#5A7090','--body-bg':'#0D1B2A','--phone-bg':'#EFF5FC' }
+  },
+  pink: {
+    name: { zh: '樱花粉', en: 'Sakura' }, emoji: '🌸', free: false,
+    gradient: 'linear-gradient(145deg, #E88AA8, #B04068)',
+    swatch: 'linear-gradient(135deg, #E88AA8, #C05278)',
+    chatBg: 'linear-gradient(180deg, #FFF5F8 0%, #FAE8F0 60%, #F5DCE8 100%)',
+    vars: { '--brown':'#C05278','--brown-light':'#E88AA8','--brown-pale':'#F9D5E2','--cream':'#FFF5F8','--cream-dark':'#FDE8F0','--text':'#2A1020','--text-light':'#A07090','--body-bg':'#2A0A18','--phone-bg':'#FFF5F8' }
+  },
+  purple: {
+    name: { zh: '星空紫', en: 'Starry Night' }, emoji: '✨', free: false,
+    gradient: 'linear-gradient(145deg, #A87DD4, #6040A0)',
+    swatch: 'linear-gradient(135deg, #A87DD4, #7B5EA7)',
+    chatBg: 'linear-gradient(180deg, #F8F5FD 0%, #EDE5FA 60%, #E5D8FA 100%)',
+    vars: { '--brown':'#7B5EA7','--brown-light':'#A87DD4','--brown-pale':'#E0D0F5','--cream':'#F8F5FD','--cream-dark':'#EDE5FA','--text':'#1A1030','--text-light':'#7060A0','--body-bg':'#120A22','--phone-bg':'#F8F5FD' }
+  }
+};
+
+let currentTheme = 'orange';
+
+function applyTheme(themeId, save = true) {
+  const theme = THEMES[themeId];
+  if (!theme) return;
+  // Check lock
+  if (!theme.free && !isPremium()) { showPaywall(); return; }
+
+  currentTheme = themeId;
+  const root = document.documentElement;
+
+  // Apply CSS variables
+  Object.entries(theme.vars).forEach(([k, v]) => root.style.setProperty(k, v));
+
+  // Override dynamic gradient elements via injected style tag
+  let st = document.getElementById('theme-gradient-override');
+  if (!st) { st = document.createElement('style'); st.id = 'theme-gradient-override'; document.head.appendChild(st); }
+  const g = theme.gradient;
+  st.textContent = `
+    .btn-primary, .paywall-cta, .survey-next { background: ${g} !important; }
+    .blob, .header-avatar, .profile-nuan-icon,
+    .nn-deco-avatar, .settings-nn-avatar { background: ${g} !important; }
+    .send-btn { background: ${g} !important; }
+    .settings-premium-tag.trial { background: ${g} !important; }
+    .hub-upgrade-banner { background: ${g} !important; }
+    .survey-complete-days { color: var(--brown); background: rgba(0,0,0,0.06); }
+  `;
+
+  // Chat screen gradient
+  const chatScreen = document.getElementById('chat');
+  if (chatScreen) chatScreen.style.backgroundImage = theme.chatBg;
+
+  // Save preference
+  if (save) localStorage.setItem('nuan_theme', themeId);
+
+  // Update swatch UI if visible
+  renderThemeSwatches();
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('nuan_theme') || 'orange';
+  applyTheme(saved, false);
+}
+
+function renderThemeSwatches() {
+  const container = document.getElementById('theme-swatches');
+  if (!container) return;
+  container.innerHTML = Object.entries(THEMES).map(([id, theme]) => {
+    const isActive  = id === currentTheme;
+    const isLocked  = !theme.free && !isPremium();
+    const name = currentLang === 'en' ? theme.name.en : theme.name.zh;
+    return `
+      <div class="theme-swatch" onclick="applyTheme('${id}')">
+        <div class="theme-swatch-circle ${isActive ? 'active' : ''} ${isLocked ? 'locked' : ''}"
+             style="background: ${theme.swatch};"></div>
+        <div class="theme-swatch-name ${isActive ? 'active-name' : ''}">${theme.emoji} ${name}</div>
+      </div>`;
+  }).join('');
+}
+
 // Bilingual helper: pick zh or en string
 function t(zh, en) { return currentLang === 'en' ? en : zh; }
 
@@ -2775,7 +2991,7 @@ function onStart() {
 }
 
 window.onload = () => {
-  initFirebase(); applyLang(); updateChatBackBtn();
+  initFirebase(); applyLang(); updateChatBackBtn(); initTheme();
   const bar = document.getElementById('tab-bar');
   if (bar) { bar.classList.remove('visible'); document.querySelector('.phone')?.classList.remove('tab-visible'); }
   checkLockOnOpen(() => { goTo('splash'); });
@@ -2900,8 +3116,15 @@ function closeMoreMenu() {
 }
 // ─── 守候版付费界面 ──────────────────────────────────────
 let selectedPlan = 'yearly';
-function showPaywall() {
+function showPaywall(source) {
   if (document.getElementById('more-menu-overlay')) closeMoreMenu();
+  // 根据来源切换暖暖图片：从设置进来用有盔甲，其他触发用无盔甲
+  const img = document.getElementById('paywall-nn-img');
+  if (img) {
+    img.src = source === 'settings'
+      ? './nuan-assets/nn-guard-armor.png'
+      : './nuan-assets/nn-guard.png';
+  }
   applyLang();
   updatePaywallSurveyEntry();
   goTo('paywall');
@@ -3107,7 +3330,7 @@ async function sendMsg() {
   const typingRow = document.createElement('div');
   typingRow.className = 'msg-row';
   typingRow.id = 'typing-indicator';
-  typingRow.innerHTML = `<div class="msg-avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div><div class="bubble bubble-warm" style="opacity:0.6" id="typing-bubble">……</div>`;
+  typingRow.innerHTML = `<div class="msg-avatar msg-avatar-nn"><img src="./nuan-assets/nn-thinking.png" alt=""></div><div class="bubble bubble-warm" style="opacity:0.6" id="typing-bubble">……</div>`;
   el.appendChild(typingRow);
   el.scrollTop = el.scrollHeight;
   // Render 冷启动提示：超过5秒还没回应，温柔提醒
@@ -3311,7 +3534,12 @@ function showProfile() {
   const raw = localStorage.getItem('nuan_profile');
   const body = document.getElementById('profile-body');
   if (!raw) {
-    body.innerHTML = `<div class="profile-loading">${t('暖暖还在慢慢认识你……<br>多聊几句就能看到了 🌙', 'Lumi is still getting to know you…<br>Chat a little more to unlock this 🌙')}</div>`;
+    body.innerHTML = `<div class="profile-loading" style="padding-top:40px;">
+      <div style="text-align:center;">
+        <img src="./nuan-assets/nn-sleepy.png" class="nn-empty-img" alt="暖暖">
+        <div class="nn-deco-bubble" style="display:inline-block;">${t('暖暖还在慢慢认识你……<br>多聊几句就能看到了 🌙', 'Still getting to know you…<br>Chat a little more to unlock this 🌙')}</div>
+      </div>
+    </div>`;
     goTo('profile');
     return;
   }
@@ -3987,6 +4215,10 @@ function openSettings() {
   document.getElementById('toggle-notif-random').checked = !!notifPrefs.random;
   document.getElementById('settings-lang-val').textContent = currentLang === 'en' ? 'English · Lumi' : '中文 · 暖暖';
   updateSettingsPremiumDisplay();
+  renderThemeSwatches();
+  // Update settings header greeting
+  const nnName = document.getElementById('settings-nn-name');
+  if (nnName) nnName.textContent = userName || (currentLang === 'en' ? 'you' : '你');
   goTo('settings');
   updateTabBar(null);
 }
@@ -5066,8 +5298,13 @@ function renderExploreLanding() {
     'This isn\'t a personality quiz.<br>It\'s a slow conversation about who you are.<br>One chapter at a time — and when you\'re done, Lumi writes you a letter.'
   );
 
+  const decoMsg = t('准备好了吗？我们慢慢来 ♡', "Ready? Let's take it slowly ♡");
   let html = `
     <div class="ex-landing-intro">
+      <div style="text-align:center; margin-top:8px;">
+        <img src="./nuan-assets/nn-pointing.png" class="nn-empty-img" alt="暖暖">
+        <div class="nn-deco-bubble" style="display:inline-block;">${decoMsg}</div>
+      </div>
       <div class="ex-landing-title">${t('内在探索','Inner Exploration')}</div>
       <div class="ex-landing-sub">${landingSub}</div>
       <div class="ex-landing-divider"></div>
