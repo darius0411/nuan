@@ -1,4 +1,4 @@
-const CACHE = 'nuan-v10';
+const CACHE = 'nuan-v20';
 const ASSETS = [
   './nuanv3.html',
   './manifest.json',
@@ -9,6 +9,11 @@ const ASSETS = [
   './blush.png',
   './antennas.png',
   './nuan-assets/nn-watching.png',
+  './nuan-assets/nn-hero.png',
+  './nuan-assets/nn-card-chat.png',
+  './nuan-assets/nn-card-profile.png',
+  './nuan-assets/nn-card-journal.png',
+  './nuan-assets/nn-card-explore.png',
   './nuan-assets/nn-peeking.png',
   './nuan-assets/nn-thinking.png',
   './nuan-assets/nn-lying.png',
