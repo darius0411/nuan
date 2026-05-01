@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.darius.nuan",
+    "sha256_cert_fingerprints": ["BC:01:BA:6D:ED:1C:BF:18:6B:34:CE:7C:58:C1:81:6F:E9:C9:16:34:AE:5F:48:FB:30:73:35:20:D2:88:51:D0"]
+  }
+}]
