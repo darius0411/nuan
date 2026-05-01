@@ -1,8 +1,14 @@
-const CACHE = 'nuan-v20';
-const ASSETS = [
+const CACHE = 'nuan-v21';
+
+// Core files — MUST cache for app to work offline
+const CORE = [
   './nuanv3.html',
   './manifest.json',
   './icon.png',
+];
+
+// Optional assets — cached best-effort, failure won't block install
+const OPTIONAL = [
   './body.png',
   './eye_left.png',
   './eye_right.png',
@@ -37,14 +43,27 @@ const ASSETS = [
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE).then(async cache => {
+      // Core files must succeed
+      await cache.addAll(CORE);
+      // Optional assets: cache individually, ignore failures
+      await Promise.allSettled(
+        OPTIONAL.map(url =>
+          cache.add(url).catch(() => { /* ignore individual failures */ })
+        )
+      );
+    }).then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE && k !== 'nuan-settings-v1').map(k => caches.delete(k)))
+      Promise.all(
+        keys
+          .filter(k => k !== CACHE && k !== 'nuan-settings-v1')
+          .map(k => caches.delete(k))
+      )
     ).then(() => self.clients.claim())
   );
 });
@@ -104,16 +123,11 @@ async function sendCareNotification() {
     const title = isEn ? 'Lumi' : '暖暖';
     let body = null;
 
-    // Morning window ±45 min
     if (Math.abs(curMin - morMin) <= 45) {
       body = pick('morning');
-    }
-    // Evening window ±45 min
-    else if (Math.abs(curMin - eveMin) <= 45) {
+    } else if (Math.abs(curMin - eveMin) <= 45) {
       body = pick('evening');
-    }
-    // Random: ~20% chance when periodic sync fires outside time windows
-    else if (prefs.random && Math.random() < 0.2) {
+    } else if (prefs.random && Math.random() < 0.2) {
       body = pick('random');
     }
 
