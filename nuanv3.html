@@ -12,6 +12,21 @@
   <link rel="apple-touch-icon" href="icon.png">
   <meta name="theme-color" content="#C0622A">
   <script>if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));</script>
+  <script>
+    // Watchdog: if app hasn't initialised in 9s, force a hard reload (clears bad SW cache)
+    window._appWatchdog = setTimeout(function() {
+      if (!window._appReady) {
+        // Try clearing caches first, then reload
+        if ('caches' in window) {
+          caches.keys().then(function(keys) {
+            return Promise.all(keys.map(function(k) { return caches.delete(k); }));
+          }).then(function() { location.reload(true); });
+        } else {
+          location.reload(true);
+        }
+      }
+    }, 9000);
+  </script>
   <style>
     /* ═══════════ 原版基础样式 ═══════════ */
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -3057,6 +3072,8 @@ function onStart() {
 }
 
 window.onload = () => {
+  window._appReady = true;
+  clearTimeout(window._appWatchdog);
   initFirebase(); applyLang(); updateChatBackBtn(); initTheme();
   const bar = document.getElementById('tab-bar');
   if (bar) { bar.classList.remove('visible'); document.querySelector('.phone')?.classList.remove('tab-visible'); }
