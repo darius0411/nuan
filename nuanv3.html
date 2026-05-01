@@ -1518,8 +1518,8 @@
     .login-loading { opacity: 0.6; pointer-events: none; }
   </style>
   <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 </head>
 <body>
 <div class="phone">
@@ -2865,6 +2865,25 @@ let currentUser = null;
 let loginIntent = 'new'; // 'new' or 'return'
 
 function initFirebase() {
+  // Firebase scripts are loaded with defer — retry until available, give up after 5s
+  if (typeof firebase === 'undefined') {
+    let attempts = 0;
+    const retry = setInterval(() => {
+      attempts++;
+      if (typeof firebase !== 'undefined') {
+        clearInterval(retry);
+        _doInitFirebase();
+      } else if (attempts >= 10) {
+        clearInterval(retry); // Firebase unavailable after 5s — app runs in guest mode
+        console.warn('Firebase not available, running in guest mode');
+      }
+    }, 500);
+    return;
+  }
+  _doInitFirebase();
+}
+
+function _doInitFirebase() {
   try {
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     auth = firebase.auth();
