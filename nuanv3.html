@@ -405,7 +405,7 @@
 .hub-mood-label { font-size:11px; color:var(--text-light); flex-shrink:0; letter-spacing:0.3px; }
 .hub-mood-emojis { display:flex; gap:4px; flex:1; justify-content:center; align-items:center; overflow:visible; }
 .mood-btn { background:none; border:none; cursor:pointer; padding:2px; border-radius:12px; transition:all 0.2s cubic-bezier(.34,1.4,.64,1); opacity:0.65; line-height:1; overflow:hidden; }
-.mood-btn img { width:36px; height:36px; object-fit:cover; object-position:center 20%; border-radius:8px; display:block; }
+.mood-btn img { width:36px; height:36px; object-fit:contain; object-position:center center; border-radius:8px; display:block; }
 .mood-btn.selected { opacity:1; transform:scale(1.2); box-shadow:0 3px 12px rgba(0,0,0,0.15); }
 .mood-btn:active { transform:scale(1.28); }
 .hub-mood-done { font-size:11px; color:var(--brown); font-weight:700; flex-shrink:0; }
@@ -2743,14 +2743,52 @@ function applyTheme(themeId, save = true) {
   let st = document.getElementById('theme-gradient-override');
   if (!st) { st = document.createElement('style'); st.id = 'theme-gradient-override'; document.head.appendChild(st); }
   const g = theme.gradient;
+  const bl = theme.vars['--brown-light'];
+  const bd = theme.vars['--brown'];
+  const bp = theme.vars['--brown-pale'];
   st.textContent = `
-    .btn-primary, .paywall-cta, .survey-next { background: ${g} !important; }
+    /* Buttons & CTAs */
+    .btn-primary, .paywall-cta, .survey-next,
+    .login-submit, .settings-edit-save, .fp-sheet-save,
+    .ex-start-btn, .ex-result-btn-primary { background: ${g} !important; }
+
+    /* Avatars / icons */
     .blob, .header-avatar, .profile-nuan-icon,
-    .nn-deco-avatar, .settings-nn-avatar { background: ${g} !important; }
-    .send-btn { background: ${g} !important; }
+    .nn-deco-avatar, .settings-nn-avatar,
+    .msg-avatar, .lang-icon, .login-logo { background: ${g} !important; }
+
+    /* Paywall elements */
+    .paywall-badge, .paywall-feature-check { background: ${g} !important; }
+    .plan-recommend { background: ${g} !important; }
+
+    /* Settings */
+    .settings-badge { background: ${g} !important; }
     .settings-premium-tag.trial { background: ${g} !important; }
-    .hub-upgrade-banner { background: ${g} !important; }
-    .hub-banner { background: ${g} !important; }
+
+    /* Banners */
+    .hub-upgrade-banner, .hub-banner { background: ${g} !important; }
+
+    /* Send button */
+    .send-btn { background: ${g} !important; }
+
+    /* Chat bubble */
+    .bubble-warm { background: ${g} !important; }
+
+    /* Footprints */
+    .fp-fab, .fp-dot.win { background: ${g} !important; }
+    .fp-type-btn.active { border-color: ${bl} !important; background: rgba(0,0,0,0.04) !important; }
+
+    /* Explore */
+    .ex-loading-orb { background: radial-gradient(circle at 35% 30%, ${bp}, ${bl} 60%, ${bd}) !important; }
+
+    /* Toggle */
+    .toggle-wrap input:checked + .toggle-slider { background: ${g} !important; }
+
+    /* Login */
+    .login-input:focus { border-color: ${bl} !important; }
+    .login-toggle span { color: ${bd} !important; }
+
+    /* Survey */
     .survey-complete-days { color: var(--brown); background: rgba(0,0,0,0.06); }
   `;
 
@@ -3532,13 +3570,35 @@ const LUMI_ANALYSIS_PROMPT = `Based on the following conversation, identify the 
 Max 4 values, 3 fears, 3 patterns. Each tag 3–6 words.`;
 
 /* ═══════════ 记忆提取 PROMPTS ═══════════ */
-const MEMORY_PROMPT_ZH = `从这段最近的对话中，提取用户明确透露的重要个人信息（如喜好、家人、工作、重要事件、心情状态）。只输出JSON数组，不要任何其他文字：
+const MEMORY_PROMPT_ZH = `从这段对话中，提取用户透露的【有价值的具体个人信息】。只输出JSON数组，不要任何其他文字：
 [{"fact":"简洁的事实描述","cat":"like|dislike|family|work|event|mood|other"}]
-最多2条，只写确定的信息，不要猜测，不要重复之前已知信息。没有新信息则输出[]`;
 
-const MEMORY_PROMPT_EN = `From this recent exchange, extract important personal facts the user clearly revealed (preferences, family, work, important events, mood). Output ONLY a JSON array, nothing else:
+【必须满足的标准】
+- 具体且独特：不是所有人都有的信息（"妈妈生日是5月3日"✓，"用户有妈妈"✗）
+- 有助于后续聊天：能让暖暖在未来对话中更贴心（"喜欢喝奶茶不加糖"✓，"用户喜欢喝东西"✗）
+- 用户主动说出的：不是猜测或推断
+
+【不要记录的内容】
+- 任何人都具备的普遍事实（有父母、有手机、会说话等）
+- 太模糊无法使用的信息（"用户今天心情不好"这种无日期的情绪）
+- 当下的即时状态而非持久特征
+
+最多2条。没有符合标准的信息则输出[]`;
+
+const MEMORY_PROMPT_EN = `From this recent exchange, extract personal facts the user revealed that are SPECIFIC and USEFUL for future conversations. Output ONLY a JSON array, nothing else:
 [{"fact":"brief factual description","cat":"like|dislike|family|work|event|mood|other"}]
-Max 2 items. Only certain facts, no guessing. If nothing new, output []`;
+
+MUST meet these criteria:
+- Specific & unique: not universally true ("mom's birthday is May 3rd" ✓, "user has a mom" ✗)
+- Actionable for future chats: helps Lumi be more personal ("loves iced matcha, no sugar" ✓, "user likes drinks" ✗)
+- Explicitly stated by user, not inferred
+
+DO NOT record:
+- Universal human facts (having parents, owning a phone, etc.)
+- Vague, undated emotions ("user felt sad today")
+- Temporary states rather than lasting traits
+
+Max 2 items. If nothing meets the criteria, output []`;
 
 async function runPersonalityAnalysis() {
   if (chatHistory.length < 6) return;
@@ -5865,63 +5925,4 @@ function renderExploreResult(payload) {
 
     <!-- 分界 -->
     <div class="ex-result-section-label">SCIENTIFIC LAYER</div>
-    <div class="ex-result-section-divider"></div>
-
-    <!-- 科学层：Big Five 雷达 -->
-    <div class="ex-radar-card">
-      <div class="ex-radar-title">Big Five · 大五人格</div>
-      <div class="ex-radar-sub">Costa & McCrae (1992) 五因素模型 · 心理学最经验支持的人格框架之一</div>
-      <div class="ex-radar-svg-wrap">${buildRadarSVG(bigFive)}</div>
-      <div class="ex-trait-list">
-        ${['O','C','E','A','N'].map(k => `
-          <div class="ex-trait-row">
-            <div class="ex-trait-label">${TRAIT_LABELS[k].name}</div>
-            <div class="ex-trait-bar-wrap"><div class="ex-trait-bar" style="width:${bigFive[k]}%"></div></div>
-            <div class="ex-trait-score">${bigFive[k]}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-
-    <!-- 依恋 -->
-    <div class="ex-insight-card">
-      <div class="ex-insight-type">${attachInfo.name}</div>
-      <div class="ex-insight-explain">${attachInfo.text}</div>
-      <div class="ex-insight-cite">参考：${attachInfo.cite}</div>
-    </div>
-
-    <!-- 情绪调节 -->
-    <div class="ex-insight-card">
-      <div class="ex-insight-type">情绪调节：${emoInfo.name}</div>
-      <div class="ex-insight-explain">${emoInfo.text}</div>
-      <div class="ex-insight-cite">参考：${emoInfo.cite}</div>
-    </div>
-
-    <!-- 操作 -->
-    <div class="ex-result-actions">
-      <button class="ex-result-btn-ghost" onclick="retakeExploreChapter()">重新做一次</button>
-      <button class="ex-result-btn-primary" onclick="exploreBackToLanding()">回到探索</button>
-    </div>
-  `;
-  body.innerHTML = html;
-  body.scrollTop = 0;
-}
-
-function retakeExploreChapter() {
-  // clear stored result for this chapter
-  const all = getExploreSaved();
-  if (exploreState.chapter && all[exploreState.chapter.id]) {
-    delete all[exploreState.chapter.id];
-    localStorage.setItem('nuan_explore', JSON.stringify(all));
-  }
-  startExploreQuestions();
-}
-
-function exploreBackToLanding() {
-  exploreState.screen = 'landing';
-  renderExploreLanding();
-}
-
-</script>
-</body>
-</html>
+    <div class="ex-result-section-divide
