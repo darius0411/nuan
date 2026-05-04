@@ -405,7 +405,7 @@
 .hub-mood-label { font-size:11px; color:var(--text-light); flex-shrink:0; letter-spacing:0.3px; }
 .hub-mood-emojis { display:flex; gap:4px; flex:1; justify-content:center; align-items:center; overflow:visible; }
 .mood-btn { background:none; border:none; cursor:pointer; padding:2px; border-radius:12px; transition:all 0.2s cubic-bezier(.34,1.4,.64,1); opacity:0.65; line-height:1; overflow:hidden; }
-.mood-btn img { width:36px; height:36px; object-fit:contain; object-position:center center; border-radius:8px; display:block; }
+.mood-btn img { width:36px; height:36px; object-fit:cover; object-position:center 20%; border-radius:8px; display:block; }
 .mood-btn.selected { opacity:1; transform:scale(1.2); box-shadow:0 3px 12px rgba(0,0,0,0.15); }
 .mood-btn:active { transform:scale(1.28); }
 .hub-mood-done { font-size:11px; color:var(--brown); font-weight:700; flex-shrink:0; }
@@ -1516,6 +1516,197 @@
     .login-guest { text-align: center; margin-top: 20px; font-size: 13px; color: #C8A88A; cursor: pointer; text-decoration: underline; }
     .login-error { color: #d32f2f; font-size: 13px; text-align: center; min-height: 18px; margin: 4px 0; }
     .login-loading { opacity: 0.6; pointer-events: none; }
+
+    /* Voice input & conversation */
+    .mic-btn {
+      width: 40px; height: 40px; border-radius: 50%; border: none;
+      background: rgba(180,120,70,0.1); color: var(--brown-light);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0; transition: all 0.2s;
+    }
+    .mic-btn:active { transform: scale(0.92); }
+    .mic-btn.listening {
+      background: rgba(220,60,60,0.13); color: #E05555;
+      animation: micPulse 1.2s ease-in-out infinite;
+    }
+    .mic-btn.mic-disabled { opacity: 0.35; cursor: not-allowed; }
+    @keyframes micPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(220,60,60,0.35); }
+      50%      { box-shadow: 0 0 0 12px rgba(220,60,60,0); }
+    }
+    .voice-mode-btn {
+      width: 34px; height: 34px; border-radius: 50%; border: none;
+      background: transparent; color: var(--brown-light);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0; transition: all 0.2s;
+    }
+    .voice-mode-btn:active { background: rgba(220,130,60,0.1); }
+    #voice-overlay {
+      position: absolute; inset: 0; z-index: 200;
+      background: var(--cream);
+      background-image: radial-gradient(circle, rgba(220,130,60,0.05) 1px, transparent 1px);
+      background-size: 22px 22px;
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 18px; padding: 40px 24px;
+    }
+    #voice-overlay.v-active { display: flex; }
+    .v-close {
+      position: absolute; top: 18px; right: 18px;
+      background: none; border: none; font-size: 26px;
+      color: var(--text-light); cursor: pointer; padding: 6px;
+      opacity: 0.6; line-height: 1;
+    }
+    .v-orb {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: linear-gradient(145deg, var(--brown-light), var(--brown));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 36px rgba(180,80,30,0.32);
+      cursor: pointer; transition: transform 0.2s; position: relative;
+    }
+    .v-orb::after {
+      content: ''; position: absolute; inset: -8px; border-radius: 50%;
+      border: 2px solid rgba(180,80,30,0.18);
+    }
+    .v-orb.v-listening { animation: vOrbListen 1.5s ease-in-out infinite; }
+    .v-orb.v-speaking  { animation: vOrbSpeak  0.7s ease-in-out infinite; }
+    @keyframes vOrbListen {
+      0%,100% { box-shadow: 0 8px 36px rgba(180,80,30,0.32), 0 0 0 0 rgba(180,80,30,0.28); transform: scale(1); }
+      50%      { box-shadow: 0 8px 36px rgba(180,80,30,0.32), 0 0 0 22px rgba(180,80,30,0); transform: scale(1.06); }
+    }
+    @keyframes vOrbSpeak {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.09); }
+    }
+    .v-status {
+      font-size: 14px; font-weight: 600; color: var(--text-light);
+      letter-spacing: 0.8px; min-height: 22px; text-align: center;
+    }
+    .v-transcript {
+      font-size: 18px; font-weight: 600; color: var(--text);
+      text-align: center; max-width: 88%; line-height: 1.55; min-height: 58px;
+    }
+    .v-divider { width: 40px; height: 1.5px; background: rgba(180,120,70,0.2); border-radius: 2px; }
+    .v-reply {
+      font-size: 14px; color: var(--text-light);
+      text-align: center; max-width: 88%; line-height: 1.65; min-height: 48px;
+    }
+    .v-hint {
+      font-size: 12px; color: var(--text-light); opacity: 0.5;
+      text-align: center; position: absolute; bottom: 28px;
+    }
+
+    /* ── 探索 · 新测试卡片 ──────────────────────────────── */
+    .ex-section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
+      color: var(--text-light); text-transform: uppercase;
+      padding: 0 2px; margin-top: 4px;
+    }
+    .ex-tests-scroll {
+      display: flex; gap: 14px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; padding: 4px 2px 8px;
+    }
+    .ex-tests-scroll::-webkit-scrollbar { display: none; }
+    .ex-test-card {
+      flex: 0 0 158px;
+      background: rgba(255,253,249,0.9);
+      border-radius: 20px; padding: 18px 16px 16px;
+      border: 1px solid rgba(237,217,200,0.8);
+      box-shadow: 0 3px 14px rgba(0,0,0,0.06);
+      cursor: pointer; position: relative; overflow: hidden;
+      display: flex; flex-direction: column; gap: 8px;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .ex-test-card:active { transform: scale(0.96); }
+    .ex-test-card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--test-color, var(--brown)); border-radius: 20px 20px 0 0;
+    }
+    .ex-test-icon { font-size: 26px; line-height: 1; }
+    .ex-test-name {
+      font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: 0.3px;
+    }
+    .ex-test-desc {
+      font-size: 11.5px; color: var(--text-light); line-height: 1.55;
+    }
+    .ex-test-meta {
+      font-size: 10.5px; color: var(--text-light);
+      opacity: 0.7; margin-top: auto; padding-top: 4px;
+    }
+    .ex-test-badge {
+      position: absolute; top: 12px; right: 12px;
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.5px;
+      padding: 2px 8px; border-radius: 8px;
+    }
+    .ex-test-badge.done { background: rgba(100,160,80,0.13); color: #5A8040; }
+    .ex-landing-tagline {
+      font-size: 13px; color: var(--text-light); letter-spacing: 0.5px;
+      font-style: italic; text-align: center; line-height: 1.7;
+      padding: 0 8px;
+    }
+    /* ── 测试题：A/B二选一 ──────────────────────────────── */
+    .ex-ab-wrap { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+    .ex-ab-btn {
+      width: 100%; text-align: left; background: rgba(255,252,248,0.9);
+      border: 1.5px solid rgba(237,217,200,0.9); border-radius: 16px;
+      padding: 16px 18px; font-size: 14.5px; color: var(--text);
+      line-height: 1.6; cursor: pointer; font-family: inherit;
+      transition: all 0.15s;
+    }
+    .ex-ab-btn:active { background: rgba(232,146,74,0.08); border-color: var(--brown-light); }
+    /* ── 测试题：评分 1-3 ───────────────────────────────── */
+    .ex-rate-stmt {
+      font-size: 16px; font-weight: 500; color: var(--text);
+      line-height: 1.65; letter-spacing: 0.2px; text-align: center;
+      padding: 0 8px 20px;
+    }
+    .ex-rate-row {
+      display: flex; gap: 10px; justify-content: center; margin-top: 8px;
+    }
+    .ex-rate-btn {
+      flex: 1; max-width: 90px; padding: 12px 8px; border-radius: 14px;
+      border: 1.5px solid rgba(237,217,200,0.9); background: rgba(255,252,248,0.9);
+      font-size: 12px; color: var(--text-light); cursor: pointer;
+      font-family: inherit; text-align: center; line-height: 1.45;
+      transition: all 0.15s;
+    }
+    .ex-rate-btn:active { background: rgba(232,146,74,0.08); border-color: var(--brown-light); color: var(--brown); }
+    /* ── 结果页 Result (通用) ───────────────────────────── */
+    .ex-result-type-badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; padding: 4px 14px; border-radius: 12px;
+      background: rgba(232,146,74,0.12); color: var(--brown);
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .ex-result-type-name {
+      font-size: 28px; font-weight: 800; color: var(--text);
+      letter-spacing: 2px; line-height: 1.25; margin-bottom: 6px;
+      text-align: center;
+    }
+    .ex-result-type-en {
+      font-size: 14px; color: var(--text-light); letter-spacing: 1px;
+      margin-bottom: 20px; text-align: center;
+    }
+    .ex-result-desc-card {
+      background: rgba(255,252,248,0.92); border-radius: 18px;
+      padding: 20px 18px; border: 1px solid rgba(237,217,200,0.7);
+      font-size: 14px; color: var(--text); line-height: 1.8;
+      margin-bottom: 14px;
+    }
+    .ex-result-bars { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+    .ex-result-bar-row { display: flex; align-items: center; gap: 10px; }
+    .ex-result-bar-label { font-size: 11.5px; color: var(--text-light); width: 64px; flex-shrink: 0; }
+    .ex-result-bar-track {
+      flex: 1; height: 6px; background: rgba(237,217,200,0.5);
+      border-radius: 3px; overflow: hidden;
+    }
+    .ex-result-bar-fill {
+      height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, var(--brown-light), var(--brown));
+      transition: width 0.6s ease;
+    }
+    .ex-result-bar-pct { font-size: 11px; color: var(--text-light); width: 30px; text-align: right; flex-shrink: 0; }
   </style>
   <!-- Firebase SDK -->
   <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -1618,6 +1809,7 @@
         <div class="header-name" id="chat-header-name" data-zh="暖暖" data-en="Lumi">暖暖</div>
         <div class="header-status" id="chat-header-status" data-zh="永远在" data-en="always here">永远在</div>
       </div>
+      <button class="voice-mode-btn" id="voice-mode-btn" onclick="openVoiceMode()" title="语音对话"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
       <button class="gear-btn" onclick="openSettings()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
     </div>
 
@@ -1666,15 +1858,34 @@
       <div class="nn-starters-peek">
         <img src="./nuan-assets/nn-peeking.png" alt="暖暖">
       </div>
-      <div class="starter-label" data-zh="或者，从这里开始 ↓" data-en="Or start from here ↓">或者，从这里开始 ↓</div>
+      <div class="starter-label" data-zh="想说什么？" data-en="What's on your mind?">想说什么？</div>
       <div class="starter-chips" id="starter-chips"></div>
     </div>
     <div class="input-area">
+      <button class="mic-btn" id="mic-btn" onclick="toggleMic()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
       <input class="chat-input" id="chat-input" type="text" placeholder="说点什么..." onkeydown="if(event.key==='Enter') sendMsg()" autocomplete="off">
       <button class="send-btn" onclick="sendMsg()"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg></button>
     </div>
   </div>
 
+
+  <!-- Voice conversation overlay -->
+  <div id="voice-overlay">
+    <button class="v-close" onclick="closeVoiceMode()">×</button>
+    <div class="v-orb" id="v-orb" onclick="toggleVoiceListen()">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        <line x1="12" y1="19" x2="12" y2="23"/>
+        <line x1="8" y1="23" x2="16" y2="23"/>
+      </svg>
+    </div>
+    <div class="v-status" id="v-status">轻触麦克风开始</div>
+    <div class="v-transcript" id="v-transcript"></div>
+    <div class="v-divider"></div>
+    <div class="v-reply" id="v-reply"></div>
+    <div class="v-hint">再次轻触可停止聆听</div>
+  </div>
 
   <div class="screen" id="hub">
     <button class="gear-btn" onclick="openSettings()" style="position:absolute;top:16px;right:16px;z-index:20;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
@@ -2427,20 +2638,20 @@ function surveySubmit() {
 // ─── 对话起点卡片 ─────────────────────────────────────────
 const STARTER_SETS = {
   morning: {
-    zh: ['今天感觉怎么样？', '有什么让你期待今天的事吗？', '昨晚睡得好吗？', '今天有什么计划？'],
-    en: ["How are you feeling this morning?", "Anything you're looking forward to today?", "Did you sleep well?", "What's your plan for today?"]
+    zh: ['今天感觉不太对劲…', '睡得不是很好', '今天有点期待又有点怕', '早上好，陪我说说话～'],
+    en: ["Not feeling great this morning…", "Didn't sleep well last night", "Feeling a mix of excited and nervous", "Morning~ just want to chats your plan for today?"]
   },
   afternoon: {
-    zh: ['今天上午过得怎么样？', '有没有遇到什么有趣的事？', '吃午饭了吗，吃了什么？', '下午有什么打算？'],
-    en: ["How was your morning?", "Anything interesting happen so far?", "Did you have lunch? What did you eat?", "What's next for your afternoon?"]
+    zh: ['今天过得不太好…', '我有点烦恼想聊聊', '刚发生了一件事…', '来陪我说说话～'],
+    en: ["I had a rough morning…", "Something's been on my mind", "Just need to vent a little", "Can we just talk?s next for your afternoon?"]
   },
   evening: {
-    zh: ['今天一天下来感觉如何？', '有什么让你开心的事吗？', '最近有没有让你烦恼的事？', '今晚有没有什么期待的事？'],
-    en: ["How was your day overall?", "What was a highlight of today?", "Anything on your mind lately?", "Any plans for tonight?"]
+    zh: ['最近压力好大…', '今天有件事想跟你说', '我很开心，想分享一下！', '帮我想想一件事'],
+    en: ["I've been so stressed lately…", "Something happened today I want to share", "I'm actually really happy today!", "Help me think through somethingtonight?"]
   },
   night: {
-    zh: ['这么晚了，还好吗？', '睡不着是为什么？', '今天有什么想说说的吗？', '需要我陪你聊聊吗？'],
-    en: ["It's late — you okay?", "Having trouble sleeping?", "Anything on your mind?", "Want to talk about your day?"]
+    zh: ['睡不着，脑子停不下来', '心里有点空空的…', '今天有件事一直没说出口', '就想找人说说话'],
+    en: ["Can't sleep, mind won't stop", "Feeling a bit empty tonight…", "Something's been stuck in my head all day", "Just need someone to talk to"]
   }
 };
 
@@ -2747,48 +2958,25 @@ function applyTheme(themeId, save = true) {
   const bd = theme.vars['--brown'];
   const bp = theme.vars['--brown-pale'];
   st.textContent = `
-    /* Buttons & CTAs */
     .btn-primary, .paywall-cta, .survey-next,
     .login-submit, .settings-edit-save, .fp-sheet-save,
     .ex-start-btn, .ex-result-btn-primary { background: ${g} !important; }
-
-    /* Avatars / icons */
     .blob, .header-avatar, .profile-nuan-icon,
     .nn-deco-avatar, .settings-nn-avatar,
     .msg-avatar, .lang-icon, .login-logo { background: ${g} !important; }
-
-    /* Paywall elements */
     .paywall-badge, .paywall-feature-check { background: ${g} !important; }
     .plan-recommend { background: ${g} !important; }
-
-    /* Settings */
     .settings-badge { background: ${g} !important; }
     .settings-premium-tag.trial { background: ${g} !important; }
-
-    /* Banners */
     .hub-upgrade-banner, .hub-banner { background: ${g} !important; }
-
-    /* Send button */
     .send-btn { background: ${g} !important; }
-
-    /* Chat bubble */
     .bubble-warm { background: ${g} !important; }
-
-    /* Footprints */
     .fp-fab, .fp-dot.win { background: ${g} !important; }
     .fp-type-btn.active { border-color: ${bl} !important; background: rgba(0,0,0,0.04) !important; }
-
-    /* Explore */
     .ex-loading-orb { background: radial-gradient(circle at 35% 30%, ${bp}, ${bl} 60%, ${bd}) !important; }
-
-    /* Toggle */
     .toggle-wrap input:checked + .toggle-slider { background: ${g} !important; }
-
-    /* Login */
     .login-input:focus { border-color: ${bl} !important; }
     .login-toggle span { color: ${bd} !important; }
-
-    /* Survey */
     .survey-complete-days { color: var(--brown); background: rgba(0,0,0,0.06); }
   `;
 
@@ -3525,6 +3713,7 @@ async function sendMsg() {
 
     const reply = raw.replace(/\[(HAPPY|EXCITED|SAD|ANGRY|NEUTRAL)\]\s*/g, '').trim();
     appendMsg('warm', reply);
+    if (typeof voiceOnReply === 'function') voiceOnReply(reply);
     chatHistory.push({ role: 'assistant', text: raw });
     localStorage.setItem('nuan_history', JSON.stringify(chatHistory));
 
@@ -3570,35 +3759,13 @@ const LUMI_ANALYSIS_PROMPT = `Based on the following conversation, identify the 
 Max 4 values, 3 fears, 3 patterns. Each tag 3–6 words.`;
 
 /* ═══════════ 记忆提取 PROMPTS ═══════════ */
-const MEMORY_PROMPT_ZH = `从这段对话中，提取用户透露的【有价值的具体个人信息】。只输出JSON数组，不要任何其他文字：
+const MEMORY_PROMPT_ZH = `从这段最近的对话中，提取用户明确透露的重要个人信息（如喜好、家人、工作、重要事件、心情状态）。只输出JSON数组，不要任何其他文字：
 [{"fact":"简洁的事实描述","cat":"like|dislike|family|work|event|mood|other"}]
+最多2条，只写确定的信息，不要猜测，不要重复之前已知信息。没有新信息则输出[]`;
 
-【必须满足的标准】
-- 具体且独特：不是所有人都有的信息（"妈妈生日是5月3日"✓，"用户有妈妈"✗）
-- 有助于后续聊天：能让暖暖在未来对话中更贴心（"喜欢喝奶茶不加糖"✓，"用户喜欢喝东西"✗）
-- 用户主动说出的：不是猜测或推断
-
-【不要记录的内容】
-- 任何人都具备的普遍事实（有父母、有手机、会说话等）
-- 太模糊无法使用的信息（"用户今天心情不好"这种无日期的情绪）
-- 当下的即时状态而非持久特征
-
-最多2条。没有符合标准的信息则输出[]`;
-
-const MEMORY_PROMPT_EN = `From this recent exchange, extract personal facts the user revealed that are SPECIFIC and USEFUL for future conversations. Output ONLY a JSON array, nothing else:
+const MEMORY_PROMPT_EN = `From this recent exchange, extract important personal facts the user clearly revealed (preferences, family, work, important events, mood). Output ONLY a JSON array, nothing else:
 [{"fact":"brief factual description","cat":"like|dislike|family|work|event|mood|other"}]
-
-MUST meet these criteria:
-- Specific & unique: not universally true ("mom's birthday is May 3rd" ✓, "user has a mom" ✗)
-- Actionable for future chats: helps Lumi be more personal ("loves iced matcha, no sugar" ✓, "user likes drinks" ✗)
-- Explicitly stated by user, not inferred
-
-DO NOT record:
-- Universal human facts (having parents, owning a phone, etc.)
-- Vague, undated emotions ("user felt sad today")
-- Temporary states rather than lasting traits
-
-Max 2 items. If nothing meets the criteria, output []`;
+Max 2 items. Only certain facts, no guessing. If nothing new, output []`;
 
 async function runPersonalityAnalysis() {
   if (chatHistory.length < 6) return;
@@ -5424,6 +5591,29 @@ function showExplore() {
 }
 
 function exploreBack() {
+  // Handle new test screens
+  if (exploreState.testMode) {
+    if (exploreState.screen === 'test_result' || exploreState.screen === 'test_intro') {
+      exploreState.testMode = false;
+      exploreState.testId = null;
+      const headerEl = document.getElementById('ex-header-title');
+      if (headerEl) headerEl.textContent = t('内在探索','Inner Exploration');
+      renderExploreLanding();
+      return;
+    }
+    if (exploreState.screen === 'test_question') {
+      if (exploreState.qIndex > 0) {
+        exploreState.qIndex--;
+        exploreState.answers.pop();
+        renderTestQuestion();
+      } else {
+        exploreState.screen = 'test_intro';
+        const test = EXPLORE_TESTS.find(t => t.id === exploreState.testId);
+        if (test) renderTestIntro(test);
+      }
+      return;
+    }
+  }
   switch (exploreState.screen) {
     case 'landing': showHub(); return;
     case 'intro':   exploreState.screen = 'landing'; renderExploreLanding(); return;
@@ -5455,11 +5645,6 @@ function renderExploreLanding() {
   const body = document.getElementById('ex-body');
   const saved = getExploreSaved();
 
-  const landingSub = t(
-    '这里不是一次 MBTI，<br>而是几段关于"你是谁"的慢慢对话。<br>一次做一章，做完，暖暖会给你写一封信。',
-    'This isn\'t a personality quiz.<br>It\'s a slow conversation about who you are.<br>One chapter at a time — and when you\'re done, Lumi writes you a letter.'
-  );
-
   const decoMsg = t('准备好了吗？我们慢慢来 ♡', "Ready? Let's take it slowly ♡");
   let html = `
     <div class="ex-landing-intro">
@@ -5468,9 +5653,31 @@ function renderExploreLanding() {
         <div class="nn-deco-bubble" style="display:inline-block;">${decoMsg}</div>
       </div>
       <div class="ex-landing-title">${t('内在探索','Inner Exploration')}</div>
-      <div class="ex-landing-sub">${landingSub}</div>
+      <div class="ex-landing-tagline">${t('认识自己，是一辈子的功课','Knowing yourself is a lifelong practice')}</div>
       <div class="ex-landing-divider"></div>
     </div>
+    <div class="ex-section-label">${t('性格测试','Personality Tests')}</div>
+    <div class="ex-tests-scroll">
+  `;
+
+  EXPLORE_TESTS.forEach(test => {
+    const isDone = !!saved['test_' + test.id];
+    const badge = isDone
+      ? `<div class="ex-test-badge done">${t('已完成','Done')}</div>`
+      : '';
+    html += `
+      <div class="ex-test-card" style="--test-color:${test.color}" onclick="openExploreTest('${test.id}')">
+        ${badge}
+        <div class="ex-test-icon">${test.icon}</div>
+        <div class="ex-test-name">${t(test.title.zh, test.title.en)}</div>
+        <div class="ex-test-desc">${t(test.desc.zh, test.desc.en)}</div>
+        <div class="ex-test-meta">${t(test.meta.zh, test.meta.en)}</div>
+      </div>
+    `;
+  });
+
+  html += `</div>
+    <div class="ex-section-label" style="margin-top:8px;">${t('内在章节','Deep Chapters')}</div>
   `;
 
   EXPLORE_CHAPTERS.forEach(ch => {
@@ -5480,10 +5687,8 @@ function renderExploreLanding() {
     if (isLocked) statusTag = `<div class="ex-chapter-status soon">${t('守候版 ✦','Premium ✦')}</div>`;
     else if (isDone) statusTag = `<div class="ex-chapter-status done">${t('已完成 ✦','Done ✦')}</div>`;
     else statusTag = `<div class="ex-chapter-status">${t('开始','Start')}</div>`;
-
     const cardClass = isLocked ? 'ex-chapter-card locked' : 'ex-chapter-card';
     const onclick = isLocked ? `onclick="showPaywall()"` : `onclick="openExploreChapter('${ch.id}')"`;
-
     html += `
       <div class="${cardClass}" ${onclick}>
         <div class="ex-chapter-head">
@@ -5925,4 +6130,733 @@ function renderExploreResult(payload) {
 
     <!-- 分界 -->
     <div class="ex-result-section-label">SCIENTIFIC LAYER</div>
-    <div class="ex-result-section-divide
+    <div class="ex-result-section-divider"></div>
+
+    <!-- 科学层：Big Five 雷达 -->
+    <div class="ex-radar-card">
+      <div class="ex-radar-title">Big Five · 大五人格</div>
+      <div class="ex-radar-sub">Costa & McCrae (1992) 五因素模型 · 心理学最经验支持的人格框架之一</div>
+      <div class="ex-radar-svg-wrap">${buildRadarSVG(bigFive)}</div>
+      <div class="ex-trait-list">
+        ${['O','C','E','A','N'].map(k => `
+          <div class="ex-trait-row">
+            <div class="ex-trait-label">${TRAIT_LABELS[k].name}</div>
+            <div class="ex-trait-bar-wrap"><div class="ex-trait-bar" style="width:${bigFive[k]}%"></div></div>
+            <div class="ex-trait-score">${bigFive[k]}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- 依恋 -->
+    <div class="ex-insight-card">
+      <div class="ex-insight-type">${attachInfo.name}</div>
+      <div class="ex-insight-explain">${attachInfo.text}</div>
+      <div class="ex-insight-cite">参考：${attachInfo.cite}</div>
+    </div>
+
+    <!-- 情绪调节 -->
+    <div class="ex-insight-card">
+      <div class="ex-insight-type">情绪调节：${emoInfo.name}</div>
+      <div class="ex-insight-explain">${emoInfo.text}</div>
+      <div class="ex-insight-cite">参考：${emoInfo.cite}</div>
+    </div>
+
+    <!-- 操作 -->
+    <div class="ex-result-actions">
+      <button class="ex-result-btn-ghost" onclick="retakeExploreChapter()">重新做一次</button>
+      <button class="ex-result-btn-primary" onclick="exploreBackToLanding()">回到探索</button>
+    </div>
+  `;
+  body.innerHTML = html;
+  body.scrollTop = 0;
+}
+
+function retakeExploreChapter() {
+  // clear stored result for this chapter
+  const all = getExploreSaved();
+  if (exploreState.chapter && all[exploreState.chapter.id]) {
+    delete all[exploreState.chapter.id];
+    localStorage.setItem('nuan_explore', JSON.stringify(all));
+  }
+  startExploreQuestions();
+}
+
+function exploreBackToLanding() {
+  exploreState.screen = 'landing';
+  renderExploreLanding();
+}
+
+
+// Voice input & conversation
+(function() {
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var _rec = null, _listen = false, _speak = false, _vMode = false;
+
+  function lang() { return (typeof currentLang!=='undefined'&&currentLang==='en')?'en-US':'zh-CN'; }
+
+  function vStatus(zh, en) {
+    var el = document.getElementById('v-status');
+    if (el) el.textContent = (typeof currentLang!=='undefined'&&currentLang==='en') ? en : zh;
+  }
+
+  function orbState(s) {
+    var o = document.getElementById('v-orb'); if (!o) return;
+    o.classList.remove('v-listening','v-speaking');
+    if (s==='listening') o.classList.add('v-listening');
+    if (s==='speaking')  o.classList.add('v-speaking');
+  }
+
+  function cleanText(t) {
+    return t.replace(/[\u{1F300}-\u{1FFFF}]/gu,'').replace(/[♡✦★☀🌙]/g,'').replace(/\s+/g,' ').trim();
+  }
+
+  function bestVoice(l) {
+    var vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+    var p = l.split('-')[0];
+    return vs.find(function(v){return v.lang===l&&/female|woman/i.test(v.name);})
+        || vs.find(function(v){return v.lang===l;})
+        || vs.find(function(v){return v.lang.startsWith(p);})
+        || null;
+  }
+
+  function speak(text, cb) {
+    if (!window.speechSynthesis) { if(cb) cb(); return; }
+    window.speechSynthesis.cancel();
+    var clean = cleanText(text);
+    if (!clean) { if(cb) cb(); return; }
+    var u = new SpeechSynthesisUtterance(clean);
+    u.lang = lang(); u.rate = 1.0; u.pitch = 1.1;
+    var v = bestVoice(u.lang); if (v) u.voice = v;
+    u.onstart = function(){ _speak=true; orbState('speaking'); };
+    u.onend   = function(){ _speak=false; orbState('idle'); if(cb) cb(); };
+    u.onerror = function(){ _speak=false; orbState('idle'); if(cb) cb(); };
+    window.speechSynthesis.speak(u);
+  }
+
+  window.voiceOnReply = function(text) {
+    var rp = document.getElementById('v-reply');
+    if (rp) rp.textContent = text.length>120 ? text.slice(0,120)+'...' : text;
+    if (_vMode) {
+      vStatus('暖暖说…','Lumi says…');
+      speak(text, function() {
+        if (_vMode) { vStatus('轻触麦克风说话','Tap mic to speak'); orbState('idle'); }
+      });
+    }
+  };
+
+  window.toggleMic = function() {
+    var btn = document.getElementById('mic-btn');
+    if (!SR) {
+      if (btn) btn.classList.add('mic-disabled');
+      alert(typeof currentLang!=='undefined'&&currentLang==='en'
+        ? 'Voice input needs Chrome or Edge.' : '语音输入需要 Chrome 或 Edge');
+      return;
+    }
+    if (_listen && _rec && !_vMode) { _rec.stop(); return; }
+    if (_vMode) return;
+    _rec = new SR();
+    _rec.lang = lang(); _rec.continuous = false; _rec.interimResults = true;
+    _rec.onstart  = function(){ _listen=true; if(btn) btn.classList.add('listening'); };
+    _rec.onresult = function(e){ var inp=document.getElementById('chat-input'); if(!inp) return; var t=''; for(var i=e.resultIndex;i<e.results.length;i++) t+=e.results[i][0].transcript; inp.value=t; };
+    _rec.onend    = function(){ _listen=false; if(btn) btn.classList.remove('listening'); _rec=null; };
+    _rec.onerror  = function(){ _listen=false; if(btn) btn.classList.remove('listening'); _rec=null; };
+    _rec.start();
+  };
+
+  window.openVoiceMode = function() {
+    if (!SR) {
+      alert(typeof currentLang!=='undefined'&&currentLang==='en'
+        ? 'Voice input needs Chrome or Edge.' : '语音输入需要 Chrome 或 Edge');
+      return;
+    }
+    _vMode = true;
+    var ov = document.getElementById('voice-overlay');
+    if (ov) ov.classList.add('v-active');
+    var tr = document.getElementById('v-transcript'), rp = document.getElementById('v-reply');
+    if (tr) tr.textContent = ''; if (rp) rp.textContent = '';
+    vStatus('轻触麦克风开始','Tap mic to begin');
+    orbState('idle');
+  };
+
+  window.closeVoiceMode = function() {
+    _vMode=false; _listen=false; _speak=false;
+    if (_rec) { try{_rec.stop();}catch(e){} _rec=null; }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    var ov = document.getElementById('voice-overlay');
+    if (ov) ov.classList.remove('v-active');
+    orbState('idle');
+  };
+
+  window.toggleVoiceListen = function() {
+    if (_speak) return;
+    if (_listen) { if(_rec) _rec.stop(); return; }
+    startListen();
+  };
+
+  function startListen() {
+    if (_listen||_speak||!_vMode) return;
+    _rec = new SR();
+    _rec.lang = lang(); _rec.continuous = false; _rec.interimResults = true;
+    _rec.onstart = function(){
+      _listen=true; orbState('listening');
+      vStatus('聆听中…','Listening…');
+      var tr=document.getElementById('v-transcript'); if(tr) tr.textContent='';
+    };
+    _rec.onresult = function(e){
+      var tr=document.getElementById('v-transcript'), t='';
+      for(var i=e.resultIndex;i<e.results.length;i++) t+=e.results[i][0].transcript;
+      if(tr) tr.textContent=t;
+    };
+    _rec.onend = function(){
+      _listen=false; _rec=null; if(!_vMode) return;
+      var tr=document.getElementById('v-transcript');
+      var text=tr?tr.textContent.trim():'';
+      if (text) {
+        vStatus('暖暖思考中…','Thinking…'); orbState('idle');
+        var inp=document.getElementById('chat-input'); if(inp) inp.value=text;
+        if (typeof sendMsg==='function') sendMsg();
+      } else {
+        vStatus('没听清，再说一遇？',"Didn't catch that…"); orbState('idle');
+      }
+    };
+    _rec.onerror = function(e){
+      _listen=false; _rec=null; orbState('idle');
+      if (_vMode&&e.error!=='aborted') vStatus('出了点问题，轻触重试','Error — tap to retry');
+    };
+    _rec.start();
+  }
+
+  if (window.speechSynthesis) {
+    window.speechSynthesis.getVoices();
+    if (window.speechSynthesis.addEventListener) {
+      window.speechSynthesis.addEventListener('voiceschanged', function(){ window.speechSynthesis.getVoices(); });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!SR) {
+      var b=document.getElementById('mic-btn'); if(b) b.classList.add('mic-disabled');
+      var vb=document.getElementById('voice-mode-btn'); if(vb) vb.style.display='none';
+    }
+  });
+})();
+
+// ══════════════════════════════════════════════════════════════
+// 性格测试  EXPLORE TESTS  (MBTI · 九型人格 · 爱语)
+// ══════════════════════════════════════════════════════════════
+
+// ─── Test registry ───────────────────────────────────────────
+const EXPLORE_TESTS = [
+  {
+    id: 'mbti', icon: '🧭',
+    title: { zh: 'MBTI 性格', en: 'MBTI Type' },
+    desc:  { zh: '16型人格，你是哪一型？', en: 'Which of the 16 types are you?' },
+    meta:  { zh: '20题 · 约5分钟', en: '20 questions · ~5 min' },
+    color: '#7BA3D4',
+  },
+  {
+    id: 'enneagram', icon: '🌿',
+    title: { zh: '九型人格', en: 'Enneagram' },
+    desc:  { zh: '深入你的核心动力与恐惧', en: 'Discover your core motivation' },
+    meta:  { zh: '27题 · 约5分钟', en: '27 questions · ~5 min' },
+    color: '#8DBF8A',
+  },
+  {
+    id: 'love', icon: '💌',
+    title: { zh: '爱语测试', en: 'Love Languages' },
+    desc:  { zh: '你怎样感受爱、表达爱？', en: 'How do you give and receive love?' },
+    meta:  { zh: '15题 · 约3分钟', en: '15 questions · ~3 min' },
+    color: '#E88AA8',
+  },
+];
+
+// ─── MBTI questions (20 A/B) ──────────────────────────────────
+// Each question: { zh, en, a:{zh,en,dim,dir}, b:{zh,en,dim,dir} }
+// dim: 'EI'|'SN'|'TF'|'JP'   dir: first letter of pole
+const MBTI_QUESTIONS = [
+  // E/I
+  { zh:'放假时，你更倾向…', en:'On a day off, you prefer to…',
+    a:{zh:'约上朋友出去玩，热闹才开心', en:'Go out with friends — the more the merrier', dim:'EI',dir:'E'},
+    b:{zh:'一个人宅在家，安静就好', en:'Stay home alone — quiet recharges you', dim:'EI',dir:'I'}},
+  { zh:'认识新朋友时…', en:'When meeting new people…',
+    a:{zh:'挺自然的，很快就能聊开', en:'It feels natural — you warm up quickly', dim:'EI',dir:'E'},
+    b:{zh:'需要先暖场，开场有点费力', en:'It takes effort — you need time to open up', dim:'EI',dir:'I'}},
+  { zh:'有心事时，你倾向…', en:'When something is bothering you, you tend to…',
+    a:{zh:'找人说说，说出来会舒服很多', en:'Talk it out — sharing makes it lighter', dim:'EI',dir:'E'},
+    b:{zh:'自己消化，不想麻烦别人', en:'Process it alone — you don\'t want to burden others', dim:'EI',dir:'I'}},
+  { zh:'工作或学习时…', en:'When working or studying…',
+    a:{zh:'和别人一起，效率反而更高', en:'Being around others boosts your energy', dim:'EI',dir:'E'},
+    b:{zh:'一个人安静地做，专注感更好', en:'Alone and quiet is when you focus best', dim:'EI',dir:'I'}},
+  { zh:'热闹聚会结束后，你…', en:'After a lively social gathering, you…',
+    a:{zh:'意犹未尽，还想再玩', en:'Feel energised — wish it lasted longer', dim:'EI',dir:'E'},
+    b:{zh:'松了口气，终于可以充电了', en:'Feel relieved — you need time to recharge', dim:'EI',dir:'I'}},
+  // S/N
+  { zh:'规划一件事时…', en:'When planning something…',
+    a:{zh:'先把步骤想清楚，有条有理', en:'You map out the steps carefully first', dim:'SN',dir:'S'},
+    b:{zh:'先抓大方向，细节边走边看', en:'You get the big picture first, details come later', dim:'SN',dir:'N'}},
+  { zh:'面对新事物…', en:'When encountering something new…',
+    a:{zh:'看实际用处，试过才知道好不好', en:'You focus on practical value — try it first', dim:'SN',dir:'S'},
+    b:{zh:'先想象它的可能性，很容易着迷', en:'You imagine the possibilities — you get excited easily', dim:'SN',dir:'N'}},
+  { zh:'你描述事情时…', en:'When you describe something…',
+    a:{zh:'喜欢具体说清楚，不漏细节', en:'You give specific details — accuracy matters', dim:'SN',dir:'S'},
+    b:{zh:'更爱抓住核心感觉，点到为止', en:'You capture the essence — details feel secondary', dim:'SN',dir:'N'}},
+  { zh:'比起结果，你更享受…', en:'More than the outcome, you enjoy…',
+    a:{zh:'看到事情一步步完成的踏实感', en:'The solid satisfaction of finishing step by step', dim:'SN',dir:'S'},
+    b:{zh:'脑子里构思和想象的过程', en:'The creative process of imagining and exploring ideas', dim:'SN',dir:'N'}},
+  { zh:'你更信任的是…', en:'You tend to trust more…',
+    a:{zh:'经过验证的做法和经验', en:'Proven methods and past experience', dim:'SN',dir:'S'},
+    b:{zh:'直觉和一闪而过的灵感', en:'Your intuition and sudden flashes of insight', dim:'SN',dir:'N'}},
+  // T/F
+  { zh:'做重要决定时，你更依赖…', en:'When making an important decision, you rely more on…',
+    a:{zh:'逻辑分析，看清利弊再决定', en:'Logical analysis — you weigh pros and cons', dim:'TF',dir:'T'},
+    b:{zh:'感受，和内心的声音', en:'How you feel — and what your heart says', dim:'TF',dir:'F'}},
+  { zh:'朋友来倾诉时，你第一反应…', en:'When a friend vents to you, your first impulse is…',
+    a:{zh:'帮他理清问题出在哪，想办法解决', en:'To analyse the situation and find solutions', dim:'TF',dir:'T'},
+    b:{zh:'先陪他待在那个感受里，再说别的', en:'To sit with them in that feeling first', dim:'TF',dir:'F'}},
+  { zh:'被人批评时…', en:'When you receive criticism…',
+    a:{zh:'客观想想，有道理的就接受', en:'You evaluate it objectively — fair points get accepted', dim:'TF',dir:'T'},
+    b:{zh:'心里多少会难受一下，再慢慢消化', en:'It stings a little first — you need time to process', dim:'TF',dir:'F'}},
+  { zh:'遇到公平和善意冲突时…', en:'When fairness and kindness conflict…',
+    a:{zh:'公平更重要，规则面前人人平等', en:'Fairness matters more — rules apply to everyone', dim:'TF',dir:'T'},
+    b:{zh:'不能伤到人的感情更重要', en:'Not hurting feelings matters more', dim:'TF',dir:'F'}},
+  { zh:'你更担心的是…', en:'You tend to worry more about…',
+    a:{zh:'做出了错误的判断', en:'Making the wrong decision', dim:'TF',dir:'T'},
+    b:{zh:'让身边的人失望了', en:'Disappointing the people you care about', dim:'TF',dir:'F'}},
+  // J/P
+  { zh:'出门旅行时…', en:'Before a trip…',
+    a:{zh:'行程提前安排好，心里才踏实', en:'You plan the itinerary in advance — it feels grounding', dim:'JP',dir:'J'},
+    b:{zh:'到了再看，随遇而安最好', en:'You prefer to figure it out as you go', dim:'JP',dir:'P'}},
+  { zh:'面对截止日期…', en:'When there\'s a deadline…',
+    a:{zh:'尽量提前完成，不喜欢最后冲刺', en:'You try to finish early — last-minute stress isn\'t for you', dim:'JP',dir:'J'},
+    b:{zh:'临近时反而进入状态，压力激发潜力', en:'You hit your stride near the deadline — pressure helps', dim:'JP',dir:'P'}},
+  { zh:'桌面或房间…', en:'Your desk or room tends to be…',
+    a:{zh:'整洁有序，东西都有固定位置', en:'Neat and organised — everything has its place', dim:'JP',dir:'J'},
+    b:{zh:'有点乱，但我知道东西在哪', en:'A bit messy, but you know where everything is', dim:'JP',dir:'P'}},
+  { zh:'临时改变计划…', en:'When plans change unexpectedly…',
+    a:{zh:'有点难接受，需要重新调整状态', en:'You find it hard — you need time to readjust', dim:'JP',dir:'J'},
+    b:{zh:'没问题，反而觉得挺有趣', en:'No problem — you actually enjoy the spontaneity', dim:'JP',dir:'P'}},
+  { zh:'一天下来，最让你满足的是…', en:'At the end of the day, you feel most satisfied when…',
+    a:{zh:'完成了待办清单上的事', en:'You checked things off your to-do list', dim:'JP',dir:'J'},
+    b:{zh:'做了很多有趣的事，哪怕没计划', en:'You had interesting experiences, even unplanned ones', dim:'JP',dir:'P'}},
+];
+
+// 16 MBTI types
+const MBTI_TYPES = {
+  INTJ:{ zh:'建筑师', en:'Architect',   desc:{zh:'独立、有远见、对自己要求高。你更愿意安静地构建宏大的目标，不需要他人认可。你的内心世界比外表复杂得多。', en:'Independent, visionary, high-standards. You build grand goals quietly, without needing others\' approval. Your inner world is far richer than it appears.'}},
+  INTP:{ zh:'逻辑学家', en:'Logician',  desc:{zh:'爱思考、好奇心强，享受把复杂问题想清楚的过程。理论和可能性比规则更让你着迷，你的大脑永远在运转。', en:'Analytical, curious, perpetually thinking. You love untangling complex problems. Theories and possibilities fascinate you more than rules.'}},
+  ENTJ:{ zh:'指挥官', en:'Commander',  desc:{zh:'目标明确、行动力强，天然有一种让人跟随的力量。你享受挑战，不怕做艰难的决定，生来就是领导者。', en:'Bold, decisive, natural leader. You thrive on challenge and aren\'t afraid of hard decisions. You were born to take charge.'}},
+  ENTP:{ zh:'辩论家', en:'Debater',    desc:{zh:'点子多、思维灵活，喜欢打破既有框架。讨论和辩论让你兴奋，你的脑子停不下来，永远在想新的可能性。', en:'Innovative, clever, loves a good debate. You thrive on breaking conventions. Your mind never stops generating new ideas.'}},
+  INFJ:{ zh:'倡导者', en:'Advocate',   desc:{zh:'洞察力强、有深度，对人性有独特感知。你安静，却对信仰的事情异常坚定，是罕见的理想主义实干者。', en:'Insightful, principled, quietly determined. You see through people with rare clarity, and you pursue your ideals with quiet intensity.'}},
+  INFP:{ zh:'调停者', en:'Mediator',   desc:{zh:'内心世界丰富，有强烈的价值观和理想。你渴望真实、深度的连接，不喜欢表面的东西，是天生的梦想家。', en:'Idealistic, empathetic, deeply feeling. You crave authentic connection and live by your values. You are a natural dreamer.'}},
+  ENFJ:{ zh:'主人公', en:'Protagonist',desc:{zh:'关心他人，有感召力，善于理解他人的感受。你天然地想帮助身边的人成长，是让周围人变得更好的存在。', en:'Charismatic, empathetic, inspiring. You naturally bring out the best in others and feel called to help people grow.'}},
+  ENFP:{ zh:'竞选者', en:'Campaigner', desc:{zh:'热情、充满创意，看到的世界充满可能性。你的能量会感染身边的人，点子永远不嫌多，活着就是要探索。', en:'Enthusiastic, creative, sees possibilities everywhere. Your energy is infectious — you live to explore and inspire.'}},
+  ISTJ:{ zh:'检查官', en:'Logistician',desc:{zh:'踏实、可靠、一诺千金。你喜欢事情有条有理，责任感是你最重要的核心，做到承诺的事让你最有满足感。', en:'Reliable, detail-oriented, true to your word. You value order and responsibility. Following through on commitments is your deepest satisfaction.'}},
+  ISFJ:{ zh:'守护者', en:'Defender',   desc:{zh:'温暖、细心、默默付出。你记得别人的需求，总在背后支撑着身边的人，是不容忽视的无声力量。', en:'Warm, attentive, quietly devoted. You remember what others need and support them steadily from behind the scenes.'}},
+  ESTJ:{ zh:'执行官', en:'Executive',  desc:{zh:'果断、有执行力，重视秩序和规则。你擅长把事情安排好，让团队高效运转，是可以依靠的稳定力量。', en:'Decisive, organised, values order. You\'re excellent at getting things done efficiently and being the reliable anchor others lean on.'}},
+  ESFJ:{ zh:'执政官', en:'Consul',     desc:{zh:'热心、善于照顾他人，重视和谐与归属感。你的存在让身边的人感觉温暖和被照顾，是大家的心灵港湾。', en:'Caring, sociable, values harmony. Your presence makes people feel seen and cared for — you are home to many.'}},
+  ISTP:{ zh:'鉴赏家', en:'Virtuoso',   desc:{zh:'冷静、独立、行动力强。遇到问题，你不说废话，直接动手解决，是沉默的问题解决高手。', en:'Calm, independent, hands-on. You don\'t overthink — you act. A silent master of solving practical problems.'}},
+  ISFP:{ zh:'探险家', en:'Adventurer', desc:{zh:'温和、感性、重视当下的体验。你有自己的审美和品味，不爱被规则约束，活在当下的你最有魅力。', en:'Gentle, sensitive, lives in the present. You have your own aesthetic and resist being boxed in. You shine when free to be yourself.'}},
+  ESTP:{ zh:'企业家', en:'Entrepreneur',desc:{zh:'大胆、直接、爱冒险。你活在当下，反应快，遇到机会会直接抓住，生活对你来说就是一场精彩的游戏。', en:'Bold, direct, loves risk. You live in the now, react fast, and seize opportunities — life is an exciting game to you.'}},
+  ESFP:{ zh:'表演者', en:'Entertainer',desc:{zh:'热情、爱分享、自带欢乐气场。你让生活充满趣味，和你在一起的人很难不开心，你是人群中的阳光。', en:'Enthusiastic, fun-loving, magnetic. You make life joyful. People can\'t help but feel lighter around you — you are sunshine.'}},
+};
+
+function computeMBTI(answers) {
+  let E=0,I=0,S=0,N=0,T=0,F=0,J=0,P=0;
+  answers.forEach(a => {
+    if (a.dim==='EI') { if (a.dir==='E') E++; else I++; }
+    else if (a.dim==='SN') { if (a.dir==='S') S++; else N++; }
+    else if (a.dim==='TF') { if (a.dir==='T') T++; else F++; }
+    else if (a.dim==='JP') { if (a.dir==='J') J++; else P++; }
+  });
+  const type = (E>=I?'E':'I')+(S>=N?'S':'N')+(T>=F?'T':'F')+(J>=P?'J':'P');
+  const pcts = {
+    E: Math.round(E/(E+I||1)*100), I: Math.round(I/(E+I||1)*100),
+    S: Math.round(S/(S+N||1)*100), N: Math.round(N/(S+N||1)*100),
+    T: Math.round(T/(T+F||1)*100), F: Math.round(F/(T+F||1)*100),
+    J: Math.round(J/(J+P||1)*100), P: Math.round(P/(J+P||1)*100),
+  };
+  return { type, pcts, E,I,S,N,T,F,J,P };
+}
+
+function renderMBTIResult(result) {
+  const info = MBTI_TYPES[result.type] || {};
+  const p = result.pcts;
+  const bars = [
+    ['E','I', p.E>=p.I?'E':'I', Math.max(p.E,p.I)],
+    ['S','N', p.S>=p.N?'S':'N', Math.max(p.S,p.N)],
+    ['T','F', p.T>=p.F?'T':'F', Math.max(p.T,p.F)],
+    ['J','P', p.J>=p.P?'J':'P', Math.max(p.J,p.P)],
+  ];
+  let barsHtml = bars.map(([a,b,win,pct]) =>
+    `<div class="ex-result-bar-row">
+      <div class="ex-result-bar-label">${win} <span style="color:rgba(0,0,0,0.3);font-size:10px;">vs ${a===win?b:a}</span></div>
+      <div class="ex-result-bar-track"><div class="ex-result-bar-fill" style="width:${pct}%"></div></div>
+      <div class="ex-result-bar-pct">${pct}%</div>
+    </div>`
+  ).join('');
+  return `
+    <div style="text-align:center; padding: 10px 0 16px;">
+      <div class="ex-result-type-badge">MBTI</div>
+      <div class="ex-result-type-name">${result.type}</div>
+      <div class="ex-result-type-en">${t(info.zh||'', info.en||'')} &nbsp;·&nbsp; ${t(info.en||'',info.zh||'')}</div>
+    </div>
+    <div class="ex-result-desc-card">${t(info.desc?info.desc.zh:'', info.desc?info.desc.en:'')}</div>
+    <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;letter-spacing:1px;">${t('各维度偏向','Dimension scores')}</div>
+    <div class="ex-result-bars">${barsHtml}</div>
+  `;
+}
+
+// ─── Enneagram ───────────────────────────────────────────────
+// 27 statements (3 per type), rated 1-3
+// 1=不太像我  2=有点像我  3=很像我
+const ENNEA_QUESTIONS = [
+  // Type 1
+  {zh:'我很在意事情是否做对了，内心有一套清晰的标准。', en:'I have a strong inner sense of right and wrong and hold myself to high standards.', type:1},
+  {zh:'看到不合理的事，我忍不住想去指出或改正。', en:'When I see something wrong, I feel compelled to fix or point it out.', type:1},
+  {zh:'我对自己很严格，不太允许自己犯低级错误。', en:'I am strict with myself and have little tolerance for my own careless mistakes.', type:1},
+  // Type 2
+  {zh:'我很容易察觉到别人需要什么，并主动伸出援手。', en:'I naturally sense what others need and feel drawn to help without being asked.', type:2},
+  {zh:'被人需要让我感觉很好，也很有意义。', en:'Being needed by others makes me feel valued and gives me a sense of purpose.', type:2},
+  {zh:'有时候我把别人的需求放在自己的需求之前。', en:'I often put others\' needs before my own, sometimes at my own expense.', type:2},
+  // Type 3
+  {zh:'我很在意自己给别人留下的印象和形象。', en:'I care a lot about how I am perceived and the image I project to others.', type:3},
+  {zh:'设定目标然后达成它，是让我最有满足感的事。', en:'Setting goals and achieving them gives me my deepest sense of satisfaction.', type:3},
+  {zh:'我不太喜欢失败，哪怕是小事也会努力避免。', en:'I strongly dislike failure and work hard to avoid it, even in small things.', type:3},
+  // Type 4
+  {zh:'我常常觉得自己和别人有点不一样，有独特的感受方式。', en:'I often feel different from others — I experience things in a uniquely personal way.', type:4},
+  {zh:'情感对我来说很重要，我喜欢深入地感受和表达。', en:'Emotions are very important to me — I like to feel and express them deeply.', type:4},
+  {zh:'我渴望找到真正懂我的人，表面的关系不能满足我。', en:'I long to be truly understood — surface-level connections leave me feeling empty.', type:4},
+  // Type 5
+  {zh:'我喜欢独自思考，不太需要太多社交来充电。', en:'I prefer thinking alone and don\'t need much social interaction to feel energised.', type:5},
+  {zh:'行动之前，我想先把事情研究清楚。', en:'Before acting, I want to fully understand and research the situation first.', type:5},
+  {zh:'我重视个人空间，被人打扰或占用时间会让我不舒服。', en:'I value my personal space and feel uncomfortable when it\'s invaded or my time is taken.', type:5},
+  // Type 6
+  {zh:'我会提前想到各种可能出错的情况，做好心理准备。', en:'I tend to anticipate what could go wrong and mentally prepare for it.', type:6},
+  {zh:'我很重视信任感，一旦信任破裂很难修复。', en:'Trust is very important to me — once broken, it is very hard to rebuild.', type:6},
+  {zh:'找到靠得住的人或稳定的规则让我有安全感。', en:'Having reliable people or stable rules around me makes me feel secure.', type:6},
+  // Type 7
+  {zh:'我很容易对新事物兴奋，想法和计划总是很多。', en:'I get excited easily by new things and always have plenty of plans and ideas.', type:7},
+  {zh:'我不太喜欢无聊或一成不变的日子。', en:'I dislike boredom and routine — I need variety and stimulation to feel alive.', type:7},
+  {zh:'我倾向于把注意力放在好的可能性和未来上。', en:'I tend to focus on positive possibilities and what\'s ahead, not what\'s behind.', type:7},
+  // Type 8
+  {zh:'我不喜欢被人控制或支配，重视自己做主。', en:'I strongly dislike being controlled or dominated — I need to feel in charge of my life.', type:8},
+  {zh:'面对冲突，我会直接说出来，不喜欢拐弯抹角。', en:'When there\'s conflict, I say what I think directly — I don\'t like beating around the bush.', type:8},
+  {zh:'我有一种保护身边重要的人的本能。', en:'I have a strong instinct to protect the people I care about.', type:8},
+  // Type 9
+  {zh:'我不喜欢冲突，有时会为了和平而选择让步。', en:'I dislike conflict and will sometimes give in to keep the peace.', type:9},
+  {zh:'我很容易理解和包容各种不同的人和立场。', en:'I easily understand and accept different people and perspectives.', type:9},
+  {zh:'我的情绪比较稳定，很少有大起大落的时候。', en:'My emotions are generally stable — I rarely experience extreme highs or lows.', type:9},
+];
+
+const ENNEA_TYPES = [
+  null, // placeholder so index matches type number
+  {name:{zh:'完美型',en:'The Reformer'},   desc:{zh:'你有一套清晰的内在标准，追求把事情做对。你的责任感和对原则的坚持是你最大的力量，也让你对自己要求格外严格。学着接受"足够好"，给自己多一点温柔。', en:'You have clear inner standards and strive to do what\'s right. Your integrity and sense of responsibility are your greatest strengths — and your greatest demands on yourself. Learning to accept "good enough" is your lifelong practice.'}},
+  {name:{zh:'给予型',en:'The Helper'},     desc:{zh:'你天生敏锐地感知他人的需求，并且愿意伸出援手。被人需要让你有意义感，但记得：你的需求同样重要。学着在给予之前，先照顾好自己。', en:'You naturally sense what others need and love to help. Being needed gives you meaning — but remember: your own needs matter just as much. Learning to care for yourself before others is your journey.'}},
+  {name:{zh:'成就型',en:'The Achiever'},   desc:{zh:'你有强烈的目标感，在意自己的形象和他人的眼光。你的行动力和适应力令人钦佩，但真正的价值不依赖于成就。试着放下面具，也看看那个"没在成功"的自己。', en:'Goal-driven and image-conscious, your drive and adaptability are admirable. But your worth is not defined by what you achieve. Try removing the mask and meeting the you who isn\'t succeeding.'}},
+  {name:{zh:'个人型',en:'The Individualist'},desc:{zh:'你情感丰富，渴望被真正理解，对美和深度有独特的感知。你的内心世界是你最大的资产。学着在独特中也找到与他人的连接，你不是孤岛。', en:'Emotionally deep and craving authentic understanding, you have a rare sensitivity to beauty and meaning. Your inner world is your greatest gift. The practice: finding connection within your uniqueness — you are not alone.'}},
+  {name:{zh:'观察型',en:'The Investigator'},desc:{zh:'你重视知识和独立，需要充足的个人空间来思考和恢复能量。你的洞察力和专注力是你的超能力。学着在保持观察的同时，也参与进来，世界需要你的智慧。', en:'Knowledge-seeking and fiercely independent, you need space to think and recharge. Your insight and focus are superpowers. The practice: observe AND participate — the world needs your wisdom, not just your analysis.'}},
+  {name:{zh:'忠诚型',en:'The Loyalist'},   desc:{zh:'你重视信任和安全感，会提前想到各种风险。你的忠诚和可靠是别人的依靠，但焦虑有时候会遮住你内心的力量。试着相信自己有能力应对未知。', en:'You value trust and security, always anticipating what could go wrong. Your loyalty and reliability are gifts to those around you. But anxiety can hide your inner strength — practice trusting yourself to handle the unknown.'}},
+  {name:{zh:'活力型',en:'The Enthusiast'}, desc:{zh:'你充满热情，好奇心旺盛，生活对你来说充满可能性。你的活力感染所有人，但偶尔慢下来，留在当下的体验里，也是一种礼物。', en:'Enthusiastic, curious, and alive with possibility — your energy uplifts everyone around you. But slowing down and staying present in one experience, rather than chasing the next, is a gift to yourself.'}},
+  {name:{zh:'挑战型',en:'The Challenger'}, desc:{zh:'你强烈、直接、重视自主权，有一种天然的保护本能。你的力量和决断力令人印象深刻。学着在强大之中，也展示脆弱的一面，那才是真正的力量。', en:'Powerful, direct, and fiercely independent with a natural instinct to protect others. Your strength and decisiveness impress everyone. The practice: letting people see your vulnerability too — that\'s where real power lives.'}},
+  {name:{zh:'和平型',en:'The Peacemaker'}, desc:{zh:'你平和、包容，善于理解不同立场，会为了维持和谐而让步。你的存在本身就让周围安静下来。记得：你的声音、你的需求，同样值得被听见。', en:'Peaceful, accepting, and skilled at seeing all sides, you create calm around you. But remember: your voice and your needs matter just as much. Your practice is learning to show up for yourself, not just for peace.'}},
+];
+
+function computeEnneagram(answers) {
+  const scores = {};
+  for (let t=1; t<=9; t++) scores[t] = 0;
+  answers.forEach(a => { scores[a.type] = (scores[a.type]||0) + a.rating; });
+  let best = 1, bestScore = 0;
+  for (let t=1; t<=9; t++) { if (scores[t] > bestScore) { bestScore = scores[t]; best = t; } }
+  return { type: best, scores };
+}
+
+function renderEnneagramResult(result) {
+  const info = ENNEA_TYPES[result.type];
+  const total = 9; // max score per type is 9 (3 questions × 3)
+  let barsHtml = '';
+  for (let t=1; t<=9; t++) {
+    const pct = Math.round((result.scores[t]||0) / 9 * 100);
+    const name = ENNEA_TYPES[t] ? t('zh'===currentLang||typeof currentLang==='undefined' ? ENNEA_TYPES[t].name.zh : ENNEA_TYPES[t].name.en, ENNEA_TYPES[t].name.en) : '';
+    barsHtml += `<div class="ex-result-bar-row">
+      <div class="ex-result-bar-label" style="width:80px">${t}. ${(typeof currentLang!=='undefined'&&currentLang==='en') ? ENNEA_TYPES[t].name.en.replace('The ','') : ENNEA_TYPES[t].name.zh}</div>
+      <div class="ex-result-bar-track"><div class="ex-result-bar-fill" style="width:${pct}%"></div></div>
+      <div class="ex-result-bar-pct">${pct}%</div>
+    </div>`;
+  }
+  return `
+    <div style="text-align:center; padding: 10px 0 16px;">
+      <div class="ex-result-type-badge">${t('九型人格','Enneagram')} · ${t('第','Type ')}${result.type}${t('型','')}</div>
+      <div class="ex-result-type-name">${t(info.name.zh, info.name.en)}</div>
+    </div>
+    <div class="ex-result-desc-card">${t(info.desc.zh, info.desc.en)}</div>
+    <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;letter-spacing:1px;">${t('各型得分','Type scores')}</div>
+    <div class="ex-result-bars">${barsHtml}</div>
+  `;
+}
+
+// ─── Love Languages ───────────────────────────────────────────
+// 15 paired comparisons. Each pick adds 1 to a language.
+// W=肯定言辞  Q=精心时刻  G=接受礼物  S=服务行动  T=身体接触
+const LOVE_QUESTIONS = [
+  {zh_a:'对方认真陪我度过一段不看手机的专属时光', zh_b:'对方说"你做到了，我真的很骄傲你"', la:'Q', lb:'W'},
+  {zh_a:'对方送我一件用心挑选的小礼物', zh_b:'对方在我低落时说"有你真的很好"', la:'G', lb:'W'},
+  {zh_a:'对方主动帮我搞定了一件我一直拖着的事', zh_b:'对方经常鼓励我，认可我的努力', la:'S', lb:'W'},
+  {zh_a:'对方给了我一个长长的拥抱', zh_b:'对方认真地告诉我他/她很爱我', la:'T', lb:'W'},
+  {zh_a:'两个人专心做一件事，不分心', zh_b:'对方记住我说过喜欢某样东西，买来送我', la:'Q', lb:'G'},
+  {zh_a:'对方帮我分担了一件繁琐的事', zh_b:'对方专心陪我，把注意力全给我', la:'S', lb:'Q'},
+  {zh_a:'对方挽着我的手，安静地一起走', zh_b:'对方愿意坐在我旁边，什么都不说地陪着', la:'T', lb:'Q'},
+  {zh_a:'对方主动帮我解决了一个麻烦', zh_b:'对方送我一份意外的小惊喜', la:'S', lb:'G'},
+  {zh_a:'对方在我需要时紧紧抱住我', zh_b:'对方精心准备了一份礼物送给我', la:'T', lb:'G'},
+  {zh_a:'对方帮我做了我最不想做的那件事', zh_b:'对方经常轻轻碰触我的手或肩膀', la:'S', lb:'T'},
+  {zh_a:'对方花时间认真听我说话，不打断', zh_b:'对方的赞美让我感觉被真正看见', la:'Q', lb:'W'},
+  {zh_a:'对方送的礼物让我感觉到了他/她的心意', zh_b:'对方说的话让我久久难忘', la:'G', lb:'W'},
+  {zh_a:'对方专程陪我去做一件我想做的事', zh_b:'对方在我忙的时候悄悄把事情搞定', la:'Q', lb:'S'},
+  {zh_a:'对方累了还是轻轻摸了摸我的头', zh_b:'对方累了还是帮我做了那件事', la:'T', lb:'S'},
+  {zh_a:'对方给我写了一封信，说了很多心里话', zh_b:'对方放下所有，只是认真陪着我', la:'W', lb:'Q'},
+  // English versions
+  en:[
+    {en_a:'They spend uninterrupted time with me, no phones', en_b:'They say "I\'m so proud of you"', la:'Q', lb:'W'},
+    {en_a:'They give me a thoughtfully chosen gift', en_b:'They tell me "I\'m so glad you\'re here"', la:'G', lb:'W'},
+    {en_a:'They handle something stressful for me', en_b:'They regularly affirm and encourage me', la:'S', lb:'W'},
+    {en_a:'They hold me in a long hug', en_b:'They look me in the eyes and say they love me', la:'T', lb:'W'},
+    {en_a:'We do something together, fully present', en_b:'They remember what I mentioned and buy it', la:'Q', lb:'G'},
+    {en_a:'They take care of a tedious task for me', en_b:'They give me their complete, undivided attention', la:'S', lb:'Q'},
+    {en_a:'They hold my hand while we walk in silence', en_b:'They sit beside me and just be there', la:'T', lb:'Q'},
+    {en_a:'They step in and solve a problem for me', en_b:'They surprise me with a little gift', la:'S', lb:'G'},
+    {en_a:'They hold me tight when I need it', en_b:'They put thought into a gift for me', la:'T', lb:'G'},
+    {en_a:'They do the thing I\'ve been dreading', en_b:'They often touch my hand or shoulder', la:'S', lb:'T'},
+    {en_a:'They listen to me without interrupting', en_b:'Their compliment makes me feel truly seen', la:'Q', lb:'W'},
+    {en_a:'Their gift shows how well they know me', en_b:'Their words stay with me for a long time', la:'G', lb:'W'},
+    {en_a:'They make time to do something I want', en_b:'They quietly handle things when I\'m busy', la:'Q', lb:'S'},
+    {en_a:'Even tired, they gently stroke my hair', en_b:'Even tired, they still do that thing for me', la:'T', lb:'S'},
+    {en_a:'They write me a heartfelt letter', en_b:'They put everything down just to be with me', la:'W', lb:'Q'},
+  ]
+];
+
+const LOVE_LANGS = {
+  W:{ zh:'肯定言辞', en:'Words of Affirmation', emoji:'💬',
+      desc:{zh:'你感受爱的方式，是通过语言。被认可、被鼓励、被告知"你很重要"——这些话对你有巨大的力量。你需要的不只是感受到爱，而是听到它。', en:'Your love language is words. Being affirmed, encouraged, and told "you matter" carries enormous weight for you. You don\'t just need to feel loved — you need to hear it.'}},
+  Q:{ zh:'精心时刻', en:'Quality Time', emoji:'⏱',
+      desc:{zh:'你感受爱的方式，是全心全意的陪伴。对方放下手机、放下分心，把全部注意力给你——这对你来说比任何礼物都珍贵。你需要的是真正的在场。', en:'Your love language is undivided presence. When someone puts down their phone and gives you their full attention, that means more than any gift. You need real, complete presence.'}},
+  G:{ zh:'接受礼物', en:'Receiving Gifts', emoji:'🎁',
+      desc:{zh:'你感受爱的方式，是有心意的礼物。不是礼物的价格，而是背后"我记得你"的心意——那代表着对方真的在乎你。礼物是爱的有形证明。', en:'Your love language is thoughtful gifts. It\'s not the price — it\'s the message: "I remembered you." A gift is tangible proof that someone was thinking of you. That matters deeply to you.'}},
+  S:{ zh:'服务行动', en:'Acts of Service', emoji:'🤝',
+      desc:{zh:'你感受爱的方式，是对方愿意为你做事。帮你分担、替你解决、主动出手——行动比言语更有说服力。有人愿意为你付出时间和精力，这就是爱。', en:'Your love language is action. When someone helps you, solves things for you, and steps up without being asked — actions speak louder than words. Effort is your proof of love.'}},
+  T:{ zh:'身体接触', en:'Physical Touch', emoji:'🤗',
+      desc:{zh:'你感受爱的方式，是身体上的接触。拥抱、牵手、轻拍肩膀——这些细小的触碰传递着巨大的安慰和连接感。身体接触让你感觉真实、安全、被爱。', en:'Your love language is physical connection. A hug, a held hand, a gentle touch on the shoulder — these small moments carry enormous warmth. Physical touch makes you feel real, safe, and loved.'}},
+};
+
+function computeLove(answers) {
+  const scores = {W:0,Q:0,G:0,S:0,T:0};
+  answers.forEach(a => { if (a.pick) scores[a.pick] = (scores[a.pick]||0) + 1; });
+  const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  return { primary: sorted[0][0], sorted, scores };
+}
+
+function renderLoveResult(result) {
+  const lang = LOVE_LANGS[result.primary];
+  const total = 15;
+  let barsHtml = result.sorted.map(([key, score]) => {
+    const info = LOVE_LANGS[key];
+    const pct = Math.round(score / total * 100);
+    return `<div class="ex-result-bar-row">
+      <div class="ex-result-bar-label" style="width:90px">${info.emoji} ${t(info.zh, info.en)}</div>
+      <div class="ex-result-bar-track"><div class="ex-result-bar-fill" style="width:${pct}%"></div></div>
+      <div class="ex-result-bar-pct">${score}${t('票','')}</div>
+    </div>`;
+  }).join('');
+  return `
+    <div style="text-align:center; padding: 10px 0 16px;">
+      <div class="ex-result-type-badge">${t('主要爱语','Primary Love Language')}</div>
+      <div style="font-size:36px; margin:8px 0;">${lang.emoji}</div>
+      <div class="ex-result-type-name">${t(lang.zh, lang.en)}</div>
+    </div>
+    <div class="ex-result-desc-card">${t(lang.desc.zh, lang.desc.en)}</div>
+    <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;letter-spacing:1px;">${t('你的爱语排名','Your love language ranking')}</div>
+    <div class="ex-result-bars">${barsHtml}</div>
+  `;
+}
+
+// ─── Test flow logic ──────────────────────────────────────────
+function openExploreTest(testId) {
+  const test = EXPLORE_TESTS.find(t => t.id === testId);
+  if (!test) return;
+  exploreState.testId   = testId;
+  exploreState.testMode = true;
+  exploreState.qIndex   = 0;
+  exploreState.answers  = [];
+  exploreState.screen   = 'test_intro';
+  renderTestIntro(test);
+}
+
+function renderTestIntro(test) {
+  const saved = getExploreSaved()['test_' + test.id];
+  const body = document.getElementById('ex-body');
+  const headerEl = document.getElementById('ex-header-title');
+  if (headerEl) headerEl.textContent = t(test.title.zh, test.title.en);
+
+  const hasSaved = !!saved;
+  body.innerHTML = `
+    <div class="ex-intro-wrap">
+      <div class="ex-intro-chapter-num">${test.icon}&nbsp;&nbsp;${t(test.title.zh, test.title.en).toUpperCase()}</div>
+      <div class="ex-intro-title" style="font-size:24px; letter-spacing:3px;">${t(test.desc.zh, test.desc.en)}</div>
+      <div class="ex-intro-hint">${t(test.meta.zh, test.meta.en)} · ${t('没有对错','no right or wrong')}</div>
+      ${hasSaved ? `<div style="font-size:13px;color:var(--text-light);margin-bottom:20px;">${t('你上次已经做过了，可以重新做一次。','You\'ve taken this before — you can redo it.')}</div>` : ''}
+      <button class="ex-start-btn" onclick="startTestQuestions()">${t('开始测试','Start')}</button>
+      ${hasSaved ? `<button class="ex-result-btn-ghost" style="margin-top:12px;" onclick="viewTestResult()">${t('查看上次结果','View previous result')}</button>` : ''}
+    </div>
+  `;
+}
+
+function viewTestResult() {
+  const saved = getExploreSaved()['test_' + exploreState.testId];
+  if (saved) {
+    exploreState.screen = 'test_result';
+    renderTestResultScreen(saved);
+  }
+}
+
+function startTestQuestions() {
+  exploreState.qIndex  = 0;
+  exploreState.answers = [];
+  exploreState.screen  = 'test_question';
+  renderTestQuestion();
+}
+
+function getTestQuestions() {
+  const id = exploreState.testId;
+  if (id === 'mbti') return MBTI_QUESTIONS;
+  if (id === 'enneagram') return ENNEA_QUESTIONS;
+  if (id === 'love') {
+    // Return the first 15 items (zh questions)
+    return LOVE_QUESTIONS.filter(q => q.zh_a);
+  }
+  return [];
+}
+
+function renderTestQuestion() {
+  const qs = getTestQuestions();
+  const qIdx = exploreState.qIndex;
+  if (qIdx >= qs.length) { finishTest(); return; }
+  const q = qs[qIdx];
+  const pct = Math.round(qIdx / qs.length * 100);
+  const body = document.getElementById('ex-body');
+  const id = exploreState.testId;
+  let questionHtml = '';
+
+  if (id === 'mbti') {
+    questionHtml = `
+      <div class="ex-q-wrap">
+        <div class="ex-q-scene">${t('第','Q ')}${qIdx+1}${t(' 题','')} / ${qs.length}</div>
+        <div class="ex-q-text">${t(q.zh, q.en)}</div>
+        <div class="ex-ab-wrap">
+          <button class="ex-ab-btn" onclick="pickTestAB(0)">${t(q.a.zh, q.a.en)}</button>
+          <button class="ex-ab-btn" onclick="pickTestAB(1)">${t(q.b.zh, q.b.en)}</button>
+        </div>
+      </div>`;
+  } else if (id === 'enneagram') {
+    questionHtml = `
+      <div class="ex-q-wrap">
+        <div class="ex-q-scene">${t('第','Q ')}${qIdx+1}${t(' 题','')} / ${qs.length}</div>
+        <div class="ex-rate-stmt">${t(q.zh, q.en)}</div>
+        <div class="ex-rate-row">
+          <button class="ex-rate-btn" onclick="pickTestRate(1,${q.type})">${t('不太像我','Not me')}</button>
+          <button class="ex-rate-btn" onclick="pickTestRate(2,${q.type})">${t('有点像我','Somewhat')}</button>
+          <button class="ex-rate-btn" onclick="pickTestRate(3,${q.type})">${t('很像我','Very me')}</button>
+        </div>
+      </div>`;
+  } else if (id === 'love') {
+    questionHtml = `
+      <div class="ex-q-wrap">
+        <div class="ex-q-scene">${t('第','Q ')}${qIdx+1}${t(' 题','')} / ${qs.length}</div>
+        <div class="ex-q-text" style="font-size:15px;">${t('哪个对你来说更重要？','Which matters more to you?')}</div>
+        <div class="ex-ab-wrap">
+          <button class="ex-ab-btn" onclick="pickTestLove('${q.la}')">${t(q.zh_a, (LOVE_QUESTIONS.en&&LOVE_QUESTIONS.en[qIdx])?LOVE_QUESTIONS.en[qIdx].en_a:q.zh_a)}</button>
+          <button class="ex-ab-btn" onclick="pickTestLove('${q.lb}')">${t(q.zh_b, (LOVE_QUESTIONS.en&&LOVE_QUESTIONS.en[qIdx])?LOVE_QUESTIONS.en[qIdx].en_b:q.zh_b)}</button>
+        </div>
+      </div>`;
+  }
+
+  body.innerHTML = `
+    <div class="ex-progress-bar"><div class="ex-progress-fill" style="width:${pct}%"></div></div>
+    ${questionHtml}
+  `;
+}
+
+function pickTestAB(idx) {
+  const qs = getTestQuestions();
+  const q  = qs[exploreState.qIndex];
+  const opt = idx === 0 ? q.a : q.b;
+  exploreState.answers.push({ dim: opt.dim, dir: opt.dir });
+  exploreState.qIndex++;
+  renderTestQuestion();
+}
+
+function pickTestRate(rating, type) {
+  exploreState.answers.push({ rating, type });
+  exploreState.qIndex++;
+  renderTestQuestion();
+}
+
+function pickTestLove(lang) {
+  exploreState.answers.push({ pick: lang });
+  exploreState.qIndex++;
+  renderTestQuestion();
+}
+
+function finishTest() {
+  exploreState.screen = 'test_loading';
+  const body = document.getElementById('ex-body');
+  body.innerHTML = `
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px;">
+      <div class="ex-loading-orb"></div>
+      <div style="font-size:14px;color:var(--text-light);letter-spacing:1px;">${t('暖暖在整理结果…','Thinking…')}</div>
+    </div>`;
+  setTimeout(() => {
+    const id = exploreState.testId;
+    let result;
+    if (id === 'mbti')       result = computeMBTI(exploreState.answers);
+    else if (id === 'enneagram') result = computeEnneagram(exploreState.answers);
+    else if (id === 'love')  result = computeLove(exploreState.answers);
+    result.testId = id;
+    result.completedAt = Date.now();
+    const all = getExploreSaved();
+    all['test_' + id] = result;
+    localStorage.setItem('nuan_explore', JSON.stringify(all));
+    exploreState.screen = 'test_result';
+    renderTestResultScreen(result);
+  }, 1200);
+}
+
+function renderTestResultScreen(result) {
+  const id = result.testId || exploreState.testId;
+  const test = EXPLORE_TESTS.find(t => t.id === id);
+  const body = document.getElementById('ex-body');
+  const headerEl = document.getElementById('ex-header-title');
+  if (headerEl) headerEl.textContent = t(test ? test.title.zh : '结果', test ? test.title.en : 'Result');
+
+  let contentHtml = '';
+  if (id === 'mbti')        contentHtml = renderMBTIResult(result);
+  else if (id === 'enneagram') contentHtml = renderEnneagramResult(result);
+  else if (id === 'love')   contentHtml = renderLoveResult(result);
+
+  const date = result.completedAt ? new Date(result.completedAt).toLocaleDateString('zh-CN') : '';
+
+  body.innerHTML = `
+    ${contentHtml}
+    <div style="text-align:center; font-size:11px; color:var(--text-light); opacity:0.6; margin:6px 0;">${date}</div>
+    <div style="display:flex; gap:10px; margin-top:8px;">
+      <button class="ex-result-btn-ghost" style="flex:1;" onclick="retakeTest()">${t('重新做一次','Retake')}</button>
+      <button class="ex-result-btn-primary" style="flex:1;" onclick="exploreBackToLanding()">${t('返回','Back')}</button>
+    </div>
+  `;
+}
+
+function retakeTest() {
+  exploreState.qIndex  = 0;
+  exploreState.answers = [];
+  exploreState.screen  = 'test_question';
+  renderTestQuestion();
+}
+</script>
