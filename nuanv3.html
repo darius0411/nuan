@@ -1534,50 +1534,6 @@
       0%,100% { box-shadow: 0 0 0 0 rgba(220,60,60,0.35); }
       50%      { box-shadow: 0 0 0 12px rgba(220,60,60,0); }
     }
-    .voice-mode-btn {
-      width: 34px; height: 34px; border-radius: 50%; border: none;
-      background: transparent; color: var(--brown-light);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; flex-shrink: 0; transition: all 0.2s;
-    }
-    .voice-mode-btn:active { background: rgba(220,130,60,0.1); }
-    #voice-overlay {
-      position: absolute; inset: 0; z-index: 200;
-      background: var(--cream);
-      background-image: radial-gradient(circle, rgba(220,130,60,0.05) 1px, transparent 1px);
-      background-size: 22px 22px;
-      display: none; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 18px; padding: 40px 24px;
-    }
-    #voice-overlay.v-active { display: flex; }
-    .v-close {
-      position: absolute; top: 18px; right: 18px;
-      background: none; border: none; font-size: 26px;
-      color: var(--text-light); cursor: pointer; padding: 6px;
-      opacity: 0.6; line-height: 1;
-    }
-    .v-orb {
-      width: 120px; height: 120px; border-radius: 50%;
-      background: linear-gradient(145deg, var(--brown-light), var(--brown));
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 8px 36px rgba(180,80,30,0.32);
-      cursor: pointer; transition: transform 0.2s; position: relative;
-    }
-    .v-orb::after {
-      content: ''; position: absolute; inset: -8px; border-radius: 50%;
-      border: 2px solid rgba(180,80,30,0.18);
-    }
-    .v-orb.v-listening { animation: vOrbListen 1.5s ease-in-out infinite; }
-    .v-orb.v-speaking  { animation: vOrbSpeak  0.7s ease-in-out infinite; }
-    @keyframes vOrbListen {
-      0%,100% { box-shadow: 0 8px 36px rgba(180,80,30,0.32), 0 0 0 0 rgba(180,80,30,0.28); transform: scale(1); }
-      50%      { box-shadow: 0 8px 36px rgba(180,80,30,0.32), 0 0 0 22px rgba(180,80,30,0); transform: scale(1.06); }
-    }
-    @keyframes vOrbSpeak {
-      0%,100% { transform: scale(1); }
-      50%      { transform: scale(1.09); }
-    }
     .v-status {
       font-size: 14px; font-weight: 600; color: var(--text-light);
       letter-spacing: 0.8px; min-height: 22px; text-align: center;
@@ -1809,7 +1765,6 @@
         <div class="header-name" id="chat-header-name" data-zh="暖暖" data-en="Lumi">暖暖</div>
         <div class="header-status" id="chat-header-status" data-zh="永远在" data-en="always here">永远在</div>
       </div>
-      <button class="voice-mode-btn" id="voice-mode-btn" onclick="openVoiceMode()" title="语音对话"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
       <button class="gear-btn" onclick="openSettings()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
     </div>
 
@@ -1870,22 +1825,7 @@
 
 
   <!-- Voice conversation overlay -->
-  <div id="voice-overlay">
-    <button class="v-close" onclick="closeVoiceMode()">×</button>
-    <div class="v-orb" id="v-orb" onclick="toggleVoiceListen()">
-      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <line x1="12" y1="19" x2="12" y2="23"/>
-        <line x1="8" y1="23" x2="16" y2="23"/>
-      </svg>
-    </div>
-    <div class="v-status" id="v-status">轻触麦克风开始</div>
-    <div class="v-transcript" id="v-transcript"></div>
-    <div class="v-divider"></div>
-    <div class="v-reply" id="v-reply"></div>
-    <div class="v-hint">再次轻触可停止聆听</div>
-  </div>
+
 
   <div class="screen" id="hub">
     <button class="gear-btn" onclick="openSettings()" style="position:absolute;top:16px;right:16px;z-index:20;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
@@ -2284,6 +2224,23 @@
         </div>
       </div>
 
+      <!-- 音效设置 -->
+      <div class="settings-section" id="settings-audio-section">
+        <div class="settings-item">
+          <div class="settings-item-label" data-zh="背景音乐" data-en="Background Music">背景音乐</div>
+          <label class="toggle-wrap">
+            <input type="checkbox" id="toggle-bgm" onchange="onBgmToggle(this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-label" data-zh="界面音效" data-en="Sound Effects">界面音效</div>
+          <label class="toggle-wrap">
+            <input type="checkbox" id="toggle-sfx" onchange="onSfxToggle(this.checked)" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
       <!-- 通知设置 -->
       <div class="settings-section">
         <div class="settings-item">
@@ -2730,6 +2687,7 @@ function recordMood(level) {
 
   // Check achievements
   checkAchievements();
+    if (window.sfx) window.sfx.nuan();
 }
 
 function initMoodRow() {
@@ -3320,6 +3278,11 @@ window.onload = () => {
   window._appReady = true;
   clearTimeout(window._appWatchdog);
   initFirebase(); applyLang(); updateChatBackBtn(); initTheme();
+  // Play welcome sound on first gesture
+  document.addEventListener('click', function _welcome() {
+    document.removeEventListener('click', _welcome);
+    setTimeout(() => { if (window.sfx) window.sfx.open(); }, 200);
+  }, { once: true });
   const bar = document.getElementById('tab-bar');
   if (bar) { bar.classList.remove('visible'); document.querySelector('.phone')?.classList.remove('tab-visible'); }
   checkLockOnOpen(() => { goTo('splash'); });
@@ -3647,6 +3610,7 @@ async function sendMsg() {
   if (!isPremium()) incrementDailyCount();
 
   appendMsg('user', text);
+  if (window.sfx) window.sfx.send();
   chatHistory.push({ role: 'user', text });
   localStorage.setItem('nuan_history', JSON.stringify(chatHistory));
 
@@ -3713,7 +3677,7 @@ async function sendMsg() {
 
     const reply = raw.replace(/\[(HAPPY|EXCITED|SAD|ANGRY|NEUTRAL)\]\s*/g, '').trim();
     appendMsg('warm', reply);
-    if (typeof voiceOnReply === 'function') voiceOnReply(reply);
+    if (window.sfx) window.sfx.nuan();
     chatHistory.push({ role: 'assistant', text: raw });
     localStorage.setItem('nuan_history', JSON.stringify(chatHistory));
 
@@ -3998,6 +3962,7 @@ function showLockedToast() {
 }
 
 function tabNavigate(tab) {
+  if (window.sfx) window.sfx.tab();
   // Gate non-chat tabs behind the 10-message unlock.
   if (!profileUnlocked && tab !== 'chat') {
     showLockedToast();
@@ -4525,6 +4490,7 @@ document.addEventListener('DOMContentLoaded', () => {
 let settingsFrom = 'chat'; // which screen to go back to
 
 function openSettings() {
+  if (window.syncAudioToggles) window.syncAudioToggles();
   updateTabBar(null);
   settingsFrom = document.querySelector('.screen.active')?.id || 'chat';
   // Apply language translations first
@@ -5119,6 +5085,7 @@ function submitEntry() {
   closeFpSheet();
   renderFootprints();
   showToast(fpEntryType === 'win' ? t('小赢记下来了 ✦','Win recorded ✦') : t('记录保存了 ♡','Saved ♡'));
+  if (window.sfx) window.sfx.complete();
 }
 
 function closeFpSheet() {
@@ -6191,59 +6158,9 @@ function exploreBackToLanding() {
 // Voice input & conversation
 (function() {
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  var _rec = null, _listen = false, _speak = false, _vMode = false;
+  var _rec = null, _listen = false;
 
   function lang() { return (typeof currentLang!=='undefined'&&currentLang==='en')?'en-US':'zh-CN'; }
-
-  function vStatus(zh, en) {
-    var el = document.getElementById('v-status');
-    if (el) el.textContent = (typeof currentLang!=='undefined'&&currentLang==='en') ? en : zh;
-  }
-
-  function orbState(s) {
-    var o = document.getElementById('v-orb'); if (!o) return;
-    o.classList.remove('v-listening','v-speaking');
-    if (s==='listening') o.classList.add('v-listening');
-    if (s==='speaking')  o.classList.add('v-speaking');
-  }
-
-  function cleanText(t) {
-    return t.replace(/[\u{1F300}-\u{1FFFF}]/gu,'').replace(/[♡✦★☀🌙]/g,'').replace(/\s+/g,' ').trim();
-  }
-
-  function bestVoice(l) {
-    var vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
-    var p = l.split('-')[0];
-    return vs.find(function(v){return v.lang===l&&/female|woman/i.test(v.name);})
-        || vs.find(function(v){return v.lang===l;})
-        || vs.find(function(v){return v.lang.startsWith(p);})
-        || null;
-  }
-
-  function speak(text, cb) {
-    if (!window.speechSynthesis) { if(cb) cb(); return; }
-    window.speechSynthesis.cancel();
-    var clean = cleanText(text);
-    if (!clean) { if(cb) cb(); return; }
-    var u = new SpeechSynthesisUtterance(clean);
-    u.lang = lang(); u.rate = 1.0; u.pitch = 1.1;
-    var v = bestVoice(u.lang); if (v) u.voice = v;
-    u.onstart = function(){ _speak=true; orbState('speaking'); };
-    u.onend   = function(){ _speak=false; orbState('idle'); if(cb) cb(); };
-    u.onerror = function(){ _speak=false; orbState('idle'); if(cb) cb(); };
-    window.speechSynthesis.speak(u);
-  }
-
-  window.voiceOnReply = function(text) {
-    var rp = document.getElementById('v-reply');
-    if (rp) rp.textContent = text.length>120 ? text.slice(0,120)+'...' : text;
-    if (_vMode) {
-      vStatus('暖暖说…','Lumi says…');
-      speak(text, function() {
-        if (_vMode) { vStatus('轻触麦克风说话','Tap mic to speak'); orbState('idle'); }
-      });
-    }
-  };
 
   window.toggleMic = function() {
     var btn = document.getElementById('mic-btn');
@@ -6253,8 +6170,7 @@ function exploreBackToLanding() {
         ? 'Voice input needs Chrome or Edge.' : '语音输入需要 Chrome 或 Edge');
       return;
     }
-    if (_listen && _rec && !_vMode) { _rec.stop(); return; }
-    if (_vMode) return;
+    if (_listen && _rec) { _rec.stop(); return; }
     _rec = new SR();
     _rec.lang = lang(); _rec.continuous = false; _rec.interimResults = true;
     _rec.onstart  = function(){ _listen=true; if(btn) btn.classList.add('listening'); };
@@ -6264,81 +6180,8 @@ function exploreBackToLanding() {
     _rec.start();
   };
 
-  window.openVoiceMode = function() {
-    if (!SR) {
-      alert(typeof currentLang!=='undefined'&&currentLang==='en'
-        ? 'Voice input needs Chrome or Edge.' : '语音输入需要 Chrome 或 Edge');
-      return;
-    }
-    _vMode = true;
-    var ov = document.getElementById('voice-overlay');
-    if (ov) ov.classList.add('v-active');
-    var tr = document.getElementById('v-transcript'), rp = document.getElementById('v-reply');
-    if (tr) tr.textContent = ''; if (rp) rp.textContent = '';
-    vStatus('轻触麦克风开始','Tap mic to begin');
-    orbState('idle');
-  };
-
-  window.closeVoiceMode = function() {
-    _vMode=false; _listen=false; _speak=false;
-    if (_rec) { try{_rec.stop();}catch(e){} _rec=null; }
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-    var ov = document.getElementById('voice-overlay');
-    if (ov) ov.classList.remove('v-active');
-    orbState('idle');
-  };
-
-  window.toggleVoiceListen = function() {
-    if (_speak) return;
-    if (_listen) { if(_rec) _rec.stop(); return; }
-    startListen();
-  };
-
-  function startListen() {
-    if (_listen||_speak||!_vMode) return;
-    _rec = new SR();
-    _rec.lang = lang(); _rec.continuous = false; _rec.interimResults = true;
-    _rec.onstart = function(){
-      _listen=true; orbState('listening');
-      vStatus('聆听中…','Listening…');
-      var tr=document.getElementById('v-transcript'); if(tr) tr.textContent='';
-    };
-    _rec.onresult = function(e){
-      var tr=document.getElementById('v-transcript'), t='';
-      for(var i=e.resultIndex;i<e.results.length;i++) t+=e.results[i][0].transcript;
-      if(tr) tr.textContent=t;
-    };
-    _rec.onend = function(){
-      _listen=false; _rec=null; if(!_vMode) return;
-      var tr=document.getElementById('v-transcript');
-      var text=tr?tr.textContent.trim():'';
-      if (text) {
-        vStatus('暖暖思考中…','Thinking…'); orbState('idle');
-        var inp=document.getElementById('chat-input'); if(inp) inp.value=text;
-        if (typeof sendMsg==='function') sendMsg();
-      } else {
-        vStatus('没听清，再说一遇？',"Didn't catch that…"); orbState('idle');
-      }
-    };
-    _rec.onerror = function(e){
-      _listen=false; _rec=null; orbState('idle');
-      if (_vMode&&e.error!=='aborted') vStatus('出了点问题，轻触重试','Error — tap to retry');
-    };
-    _rec.start();
-  }
-
-  if (window.speechSynthesis) {
-    window.speechSynthesis.getVoices();
-    if (window.speechSynthesis.addEventListener) {
-      window.speechSynthesis.addEventListener('voiceschanged', function(){ window.speechSynthesis.getVoices(); });
-    }
-  }
-
   document.addEventListener('DOMContentLoaded', function() {
-    if (!SR) {
-      var b=document.getElementById('mic-btn'); if(b) b.classList.add('mic-disabled');
-      var vb=document.getElementById('voice-mode-btn'); if(vb) vb.style.display='none';
-    }
+    if (!SR) { var b=document.getElementById('mic-btn'); if(b) b.classList.add('mic-disabled'); }
   });
 })();
 
@@ -6575,11 +6418,12 @@ function renderEnneagramResult(result) {
   const info = ENNEA_TYPES[result.type];
   const total = 9; // max score per type is 9 (3 questions × 3)
   let barsHtml = '';
-  for (let t=1; t<=9; t++) {
-    const pct = Math.round((result.scores[t]||0) / 9 * 100);
-    const name = ENNEA_TYPES[t] ? t('zh'===currentLang||typeof currentLang==='undefined' ? ENNEA_TYPES[t].name.zh : ENNEA_TYPES[t].name.en, ENNEA_TYPES[t].name.en) : '';
+  for (let ti=1; ti<=9; ti++) {
+    const pct = Math.round((result.scores[ti]||0) / 9 * 100);
+    const isEn = typeof currentLang!=='undefined' && currentLang==='en';
+    const label = ENNEA_TYPES[ti] ? (isEn ? ENNEA_TYPES[ti].name.en.replace('The ','') : ENNEA_TYPES[ti].name.zh) : '';
     barsHtml += `<div class="ex-result-bar-row">
-      <div class="ex-result-bar-label" style="width:80px">${t}. ${(typeof currentLang!=='undefined'&&currentLang==='en') ? ENNEA_TYPES[t].name.en.replace('The ','') : ENNEA_TYPES[t].name.zh}</div>
+      <div class="ex-result-bar-label" style="width:80px">${ti}. ${label}</div>
       <div class="ex-result-bar-track"><div class="ex-result-bar-fill" style="width:${pct}%"></div></div>
       <div class="ex-result-bar-pct">${pct}%</div>
     </div>`;
@@ -6599,39 +6443,36 @@ function renderEnneagramResult(result) {
 // 15 paired comparisons. Each pick adds 1 to a language.
 // W=肯定言辞  Q=精心时刻  G=接受礼物  S=服务行动  T=身体接触
 const LOVE_QUESTIONS = [
-  {zh_a:'对方认真陪我度过一段不看手机的专属时光', zh_b:'对方说"你做到了，我真的很骄傲你"', la:'Q', lb:'W'},
-  {zh_a:'对方送我一件用心挑选的小礼物', zh_b:'对方在我低落时说"有你真的很好"', la:'G', lb:'W'},
-  {zh_a:'对方主动帮我搞定了一件我一直拖着的事', zh_b:'对方经常鼓励我，认可我的努力', la:'S', lb:'W'},
-  {zh_a:'对方给了我一个长长的拥抱', zh_b:'对方认真地告诉我他/她很爱我', la:'T', lb:'W'},
-  {zh_a:'两个人专心做一件事，不分心', zh_b:'对方记住我说过喜欢某样东西，买来送我', la:'Q', lb:'G'},
-  {zh_a:'对方帮我分担了一件繁琐的事', zh_b:'对方专心陪我，把注意力全给我', la:'S', lb:'Q'},
-  {zh_a:'对方挽着我的手，安静地一起走', zh_b:'对方愿意坐在我旁边，什么都不说地陪着', la:'T', lb:'Q'},
-  {zh_a:'对方主动帮我解决了一个麻烦', zh_b:'对方送我一份意外的小惊喜', la:'S', lb:'G'},
-  {zh_a:'对方在我需要时紧紧抱住我', zh_b:'对方精心准备了一份礼物送给我', la:'T', lb:'G'},
-  {zh_a:'对方帮我做了我最不想做的那件事', zh_b:'对方经常轻轻碰触我的手或肩膀', la:'S', lb:'T'},
-  {zh_a:'对方花时间认真听我说话，不打断', zh_b:'对方的赞美让我感觉被真正看见', la:'Q', lb:'W'},
-  {zh_a:'对方送的礼物让我感觉到了他/她的心意', zh_b:'对方说的话让我久久难忘', la:'G', lb:'W'},
-  {zh_a:'对方专程陪我去做一件我想做的事', zh_b:'对方在我忙的时候悄悄把事情搞定', la:'Q', lb:'S'},
-  {zh_a:'对方累了还是轻轻摸了摸我的头', zh_b:'对方累了还是帮我做了那件事', la:'T', lb:'S'},
-  {zh_a:'对方给我写了一封信，说了很多心里话', zh_b:'对方放下所有，只是认真陪着我', la:'W', lb:'Q'},
-  // English versions
-  en:[
-    {en_a:'They spend uninterrupted time with me, no phones', en_b:'They say "I\'m so proud of you"', la:'Q', lb:'W'},
-    {en_a:'They give me a thoughtfully chosen gift', en_b:'They tell me "I\'m so glad you\'re here"', la:'G', lb:'W'},
-    {en_a:'They handle something stressful for me', en_b:'They regularly affirm and encourage me', la:'S', lb:'W'},
-    {en_a:'They hold me in a long hug', en_b:'They look me in the eyes and say they love me', la:'T', lb:'W'},
-    {en_a:'We do something together, fully present', en_b:'They remember what I mentioned and buy it', la:'Q', lb:'G'},
-    {en_a:'They take care of a tedious task for me', en_b:'They give me their complete, undivided attention', la:'S', lb:'Q'},
-    {en_a:'They hold my hand while we walk in silence', en_b:'They sit beside me and just be there', la:'T', lb:'Q'},
-    {en_a:'They step in and solve a problem for me', en_b:'They surprise me with a little gift', la:'S', lb:'G'},
-    {en_a:'They hold me tight when I need it', en_b:'They put thought into a gift for me', la:'T', lb:'G'},
-    {en_a:'They do the thing I\'ve been dreading', en_b:'They often touch my hand or shoulder', la:'S', lb:'T'},
-    {en_a:'They listen to me without interrupting', en_b:'Their compliment makes me feel truly seen', la:'Q', lb:'W'},
-    {en_a:'Their gift shows how well they know me', en_b:'Their words stay with me for a long time', la:'G', lb:'W'},
-    {en_a:'They make time to do something I want', en_b:'They quietly handle things when I\'m busy', la:'Q', lb:'S'},
-    {en_a:'Even tired, they gently stroke my hair', en_b:'Even tired, they still do that thing for me', la:'T', lb:'S'},
-    {en_a:'They write me a heartfelt letter', en_b:'They put everything down just to be with me', la:'W', lb:'Q'},
-  ]
+  {zh_a:'对方认真陪我度过一段不看手机的专属时光', en_a:"They spend uninterrupted time with me, no phones",
+   zh_b:'对方说"你做到了，我真的很骄傲你"',         en_b:"They say 'I'm so proud of you'", la:'Q', lb:'W'},
+  {zh_a:'对方送我一件用心挑选的小礼物',             en_a:"They give me a thoughtfully chosen gift",
+   zh_b:'对方在我低落时说"有你真的很好"',            en_b:"They say 'I'm so glad you're here'", la:'G', lb:'W'},
+  {zh_a:'对方主动帮我搞定了一件我一直拖着的事',      en_a:"They handle something stressful for me",
+   zh_b:'对方经常鼓励我，认可我的努力',              en_b:"They regularly affirm and encourage me", la:'S', lb:'W'},
+  {zh_a:'对方给了我一个长长的拥抱',                 en_a:"They hold me in a long hug",
+   zh_b:'对方认真地告诉我他/她很爱我',              en_b:"They look me in the eyes and say they love me", la:'T', lb:'W'},
+  {zh_a:'两个人专心做一件事，不分心',               en_a:"We do something together, fully present",
+   zh_b:'对方记住我说过喜欢某样东西，买来送我',      en_b:"They remember what I mentioned and buy it", la:'Q', lb:'G'},
+  {zh_a:'对方帮我分担了一件繁琐的事',               en_a:"They take care of a tedious task for me",
+   zh_b:'对方专心陪我，把注意力全给我',             en_b:"They give me their complete, undivided attention", la:'S', lb:'Q'},
+  {zh_a:'对方挽着我的手，安静地一起走',             en_a:"They hold my hand while we walk in silence",
+   zh_b:'对方愿意坐在我旁边，什么都不说地陪着',      en_b:"They sit beside me and just be there", la:'T', lb:'Q'},
+  {zh_a:'对方主动帮我解决了一个麻烦',               en_a:"They step in and solve a problem for me",
+   zh_b:'对方送我一份意外的小惊喜',                 en_b:"They surprise me with a little gift", la:'S', lb:'G'},
+  {zh_a:'对方在我需要时紧紧抱住我',                 en_a:"They hold me tight when I need it",
+   zh_b:'对方精心准备了一份礼物送给我',             en_b:"They put thought into a gift for me", la:'T', lb:'G'},
+  {zh_a:'对方帮我做了我最不想做的那件事',            en_a:"They do the thing I've been dreading",
+   zh_b:'对方经常轻轻碰触我的手或肩膀',             en_b:"They often touch my hand or shoulder", la:'S', lb:'T'},
+  {zh_a:'对方花时间认真听我说话，不打断',            en_a:"They listen to me without interrupting",
+   zh_b:'对方的赞美让我感觉被真正看见',             en_b:"Their compliment makes me feel truly seen", la:'Q', lb:'W'},
+  {zh_a:'对方送的礼物让我感觉到了他/她的心意',       en_a:"Their gift shows how well they know me",
+   zh_b:'对方说的话让我久久难忘',                   en_b:"Their words stay with me for a long time", la:'G', lb:'W'},
+  {zh_a:'对方专程陪我去做一件我想做的事',            en_a:"They make time to do something I want",
+   zh_b:'对方在我忙的时候悄悄把事情搞定',           en_b:"They quietly handle things when I'm busy", la:'Q', lb:'S'},
+  {zh_a:'对方累了还是轻轻摸了摸我的头',             en_a:"Even tired, they gently stroke my hair",
+   zh_b:'对方累了还是帮我做了那件事',               en_b:"Even tired, they still do that thing for me", la:'T', lb:'S'},
+  {zh_a:'对方给我写了一封信，说了很多心里话',        en_a:"They write me a heartfelt letter",
+   zh_b:'对方放下所有，只是认真陪着我',             en_b:"They put everything down just to be with me", la:'W', lb:'Q'},
 ];
 
 const LOVE_LANGS = {
@@ -6680,6 +6521,7 @@ function renderLoveResult(result) {
 
 // ─── Test flow logic ──────────────────────────────────────────
 function openExploreTest(testId) {
+  if (window.sfx) window.sfx.explore();
   const test = EXPLORE_TESTS.find(t => t.id === testId);
   if (!test) return;
   exploreState.testId   = testId;
@@ -6772,8 +6614,8 @@ function renderTestQuestion() {
         <div class="ex-q-scene">${t('第','Q ')}${qIdx+1}${t(' 题','')} / ${qs.length}</div>
         <div class="ex-q-text" style="font-size:15px;">${t('哪个对你来说更重要？','Which matters more to you?')}</div>
         <div class="ex-ab-wrap">
-          <button class="ex-ab-btn" onclick="pickTestLove('${q.la}')">${t(q.zh_a, (LOVE_QUESTIONS.en&&LOVE_QUESTIONS.en[qIdx])?LOVE_QUESTIONS.en[qIdx].en_a:q.zh_a)}</button>
-          <button class="ex-ab-btn" onclick="pickTestLove('${q.lb}')">${t(q.zh_b, (LOVE_QUESTIONS.en&&LOVE_QUESTIONS.en[qIdx])?LOVE_QUESTIONS.en[qIdx].en_b:q.zh_b)}</button>
+          <button class="ex-ab-btn" onclick="pickTestLove('${q.la}')">${t(q.zh_a, q.en_a||q.zh_a)}</button>
+          <button class="ex-ab-btn" onclick="pickTestLove('${q.lb}')">${t(q.zh_b, q.en_b||q.zh_b)}</button>
         </div>
       </div>`;
   }
@@ -6859,4 +6701,201 @@ function retakeTest() {
   exploreState.screen  = 'test_question';
   renderTestQuestion();
 }
+
+// ══════════════════════════════════════════════════════════════
+// 音效 & 背景音乐   Web Audio API
+// ══════════════════════════════════════════════════════════════
+(function() {
+  'use strict';
+
+  let _ctx = null;       // AudioContext
+  let _bgmNode = null;   // background music oscillator group
+  let _bgmGain = null;
+  let _bgmOn = false;
+  let _sfxOn = true;
+  let _unlocked = false; // browser requires user gesture
+
+  // Read prefs
+  _bgmOn  = localStorage.getItem('nuan_bgm') === 'true';
+  _sfxOn  = localStorage.getItem('nuan_sfx') !== 'false';
+
+  function getCtx() {
+    if (!_ctx) {
+      try { _ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+    }
+    return _ctx;
+  }
+
+  function unlock() {
+    if (_unlocked) return;
+    const ctx = getCtx();
+    if (!ctx) return;
+    if (ctx.state === 'suspended') ctx.resume();
+    _unlocked = true;
+    // Apply prefs now that audio is unlocked
+    const bgmBox = document.getElementById('toggle-bgm');
+    const sfxBox = document.getElementById('toggle-sfx');
+    if (bgmBox) bgmBox.checked = _bgmOn;
+    if (sfxBox) sfxBox.checked = _sfxOn;
+    if (_bgmOn) startBGM();
+  }
+
+  // ── BGM: gentle ambient lo-fi piano loop ─────────────────────
+  // Uses a simple pentatonic melody with soft tones
+  const NOTES = [261.63,293.66,329.63,392,440,523.25,587.33,659.25]; // C maj pentatonic + octave
+  const MELODY = [0,2,4,5,7,5,4,2, 1,3,5,7,5,3,1,0]; // indices into NOTES
+  let _melStep = 0;
+  let _melTimer = null;
+
+  function startBGM() {
+    if (!_unlocked) return;
+    const ctx = getCtx(); if (!ctx) return;
+    stopBGM();
+    _bgmGain = ctx.createGain();
+    _bgmGain.gain.setValueAtTime(0, ctx.currentTime);
+    _bgmGain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 2);
+    // Reverb via convolver approximation with delay+feedback
+    const delay = ctx.createDelay(2);
+    delay.delayTime.value = 0.4;
+    const feedback = ctx.createGain(); feedback.gain.value = 0.28;
+    const delayGain = ctx.createGain(); delayGain.gain.value = 0.3;
+    delay.connect(feedback); feedback.connect(delay);
+    delay.connect(delayGain); delayGain.connect(ctx.destination);
+    _bgmGain.connect(ctx.destination);
+    _bgmGain.connect(delay);
+    _bgmNode = { gain: _bgmGain, delay, feedback };
+
+    function playNote() {
+      if (!_bgmOn || !_bgmNode) return;
+      const freq = NOTES[MELODY[_melStep % MELODY.length]];
+      _melStep++;
+      const osc = ctx.createOscillator();
+      const g   = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      g.gain.setValueAtTime(0, ctx.currentTime);
+      g.gain.linearRampToValueAtTime(0.9, ctx.currentTime + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.8);
+      osc.connect(g); g.connect(_bgmGain);
+      osc.start(); osc.stop(ctx.currentTime + 2);
+      // Bass drone every 4 notes
+      if (_melStep % 4 === 0) {
+        const bass = ctx.createOscillator();
+        const bg   = ctx.createGain();
+        bass.type = 'sine';
+        bass.frequency.value = freq / 2;
+        bg.gain.setValueAtTime(0, ctx.currentTime);
+        bg.gain.linearRampToValueAtTime(0.4, ctx.currentTime + 0.1);
+        bg.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.2);
+        bass.connect(bg); bg.connect(_bgmGain);
+        bass.start(); bass.stop(ctx.currentTime + 2.5);
+      }
+      _melTimer = setTimeout(playNote, 900 + Math.random() * 400);
+    }
+    playNote();
+  }
+
+  function stopBGM() {
+    if (_melTimer) { clearTimeout(_melTimer); _melTimer = null; }
+    if (_bgmNode && _bgmNode.gain) {
+      try {
+        _bgmNode.gain.gain.linearRampToValueAtTime(0, getCtx().currentTime + 1.5);
+        setTimeout(() => { try { _bgmNode = null; } catch(e){} }, 2000);
+      } catch(e) { _bgmNode = null; }
+    }
+  }
+
+  // ── SFX helpers ───────────────────────────────────────────────
+  function playTone(freq, type, duration, volume, attack, decay) {
+    if (!_sfxOn || !_unlocked) return;
+    const ctx = getCtx(); if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const g   = ctx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(0, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(volume||0.18, ctx.currentTime + (attack||0.01));
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (decay||duration||0.25));
+    osc.connect(g); g.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + (duration||0.3));
+  }
+
+  function playChord(freqs, type, duration, volume) {
+    freqs.forEach(f => playTone(f, type, duration, (volume||0.12)/freqs.length));
+  }
+
+  // ── Named sounds ──────────────────────────────────────────────
+  const SFX = {
+    click()      { playTone(880, 'sine', 0.08, 0.10, 0.005, 0.07); },
+    send()       { playChord([880,1108], 'sine', 0.18, 0.18); },
+    receive()    {
+      setTimeout(()=>playTone(523, 'sine', 0.12, 0.12, 0.01, 0.1), 0);
+      setTimeout(()=>playTone(659, 'sine', 0.12, 0.12, 0.01, 0.1), 80);
+    },
+    tab()        { playTone(660, 'sine', 0.07, 0.08, 0.005, 0.06); },
+    complete()   {
+      [0,100,200].forEach((d,i) =>
+        setTimeout(()=>playTone([523,659,784][i],'sine',0.2,0.14,0.01,0.18), d));
+    },
+    mood()       {
+      [0,120,240].forEach((d,i) =>
+        setTimeout(()=>playTone([440,554,659][i],'sine',0.22,0.13,0.01,0.2), d));
+    },
+    open()       {
+      [0,150,300,450].forEach((d,i) =>
+        setTimeout(()=>playTone([392,440,523,659][i],'sine',0.3,0.10,0.02,0.25), d));
+    },
+    achievement(){
+      [0,80,160,240,320].forEach((d,i)=>
+        setTimeout(()=>playTone([523,659,784,1047,1319][i],'sine',0.35,0.14,0.01,0.3),d));
+    },
+    explore()    {
+      playTone(220,'sine',0.6,0.08,0.05,0.55);
+      setTimeout(()=>playTone(330,'sine',0.4,0.08,0.05,0.35),200);
+      setTimeout(()=>playTone(440,'sine',0.3,0.08,0.05,0.25),400);
+    },
+    nuan()       {
+      // Cute ascending chirp
+      const ctx = getCtx(); if (!ctx||!_sfxOn||!_unlocked) return;
+      const osc = ctx.createOscillator();
+      const g   = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, ctx.currentTime);
+      osc.frequency.linearRampToValueAtTime(900, ctx.currentTime + 0.12);
+      osc.frequency.linearRampToValueAtTime(750, ctx.currentTime + 0.22);
+      g.gain.setValueAtTime(0, ctx.currentTime);
+      g.gain.linearRampToValueAtTime(0.13, ctx.currentTime + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+      osc.connect(g); g.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime + 0.35);
+    },
+  };
+
+  // ── Public API ────────────────────────────────────────────────
+  window.sfx = SFX;
+  window.unlockAudio = unlock;
+
+  window.onBgmToggle = function(on) {
+    _bgmOn = on;
+    localStorage.setItem('nuan_bgm', on ? 'true' : 'false');
+    if (on) { unlock(); startBGM(); } else { stopBGM(); }
+  };
+  window.onSfxToggle = function(on) {
+    _sfxOn = on;
+    localStorage.setItem('nuan_sfx', on ? 'true' : 'false');
+  };
+
+  // Restore settings toggles when settings opens
+  window.syncAudioToggles = function() {
+    const b = document.getElementById('toggle-bgm');
+    const s = document.getElementById('toggle-sfx');
+    if (b) b.checked = _bgmOn;
+    if (s) s.checked = _sfxOn;
+  };
+
+  // Auto-unlock on first user gesture
+  ['click','touchstart','keydown'].forEach(ev =>
+    document.addEventListener(ev, unlock, { once: true, passive: true })
+  );
+})();
 </script>
