@@ -401,14 +401,14 @@
 .hub-banner-tag:active { background:rgba(255,255,255,0.3); }
 .hub-banner-tag-dot { width:5px; height:5px; border-radius:50%; background:#A8FFD8; animation:pulse 2s infinite; flex-shrink:0; }
 .hub-content { flex:1; display:flex; flex-direction:column; align-items:center; padding:clamp(12px,2dvh,18px) 15px clamp(10px,1.8dvh,18px); gap:clamp(9px,1.3dvh,13px); overflow:hidden; position:relative; z-index:2; min-height:0; background:var(--cream); }
-.hub-mood-row { display:flex; align-items:center; gap:6px; padding:9px 14px; background:rgba(255,255,255,0.82); backdrop-filter:blur(10px); border-radius:18px; width:100%; max-width:340px; box-sizing:border-box; box-shadow:0 2px 14px rgba(200,120,50,0.09),inset 0 1px 0 rgba(255,255,255,0.9); border:1px solid rgba(237,217,200,0.45); }
-.hub-mood-label { font-size:11px; color:var(--text-light); flex-shrink:0; letter-spacing:0.3px; }
-.hub-mood-emojis { display:flex; gap:4px; flex:1; justify-content:center; align-items:center; overflow:visible; }
-.mood-btn { background:none; border:none; cursor:pointer; padding:2px; border-radius:12px; transition:all 0.2s cubic-bezier(.34,1.4,.64,1); opacity:0.65; line-height:1; overflow:hidden; }
-.mood-btn img { width:36px; height:36px; object-fit:cover; object-position:center 20%; border-radius:8px; display:block; }
-.mood-btn.selected { opacity:1; transform:scale(1.2); box-shadow:0 3px 12px rgba(0,0,0,0.15); }
-.mood-btn:active { transform:scale(1.28); }
-.hub-mood-done { font-size:11px; color:var(--brown); font-weight:700; flex-shrink:0; }
+.hub-mood-row { display:flex; align-items:center; gap:8px; padding:10px 16px; background:rgba(255,255,255,0.82); backdrop-filter:blur(10px); border-radius:18px; width:100%; box-sizing:border-box; box-shadow:0 2px 14px rgba(200,120,50,0.09),inset 0 1px 0 rgba(255,255,255,0.9); border:1px solid rgba(237,217,200,0.45); }
+.hub-mood-label { font-size:11px; color:var(--text-light); flex-shrink:0; letter-spacing:0.3px; white-space:nowrap; }
+.hub-mood-emojis { display:flex; gap:0; flex:1; justify-content:space-evenly; align-items:center; overflow:visible; }
+.mood-btn { border:none; cursor:pointer; padding:0; border-radius:12px; transition:all 0.2s cubic-bezier(.34,1.4,.64,1); opacity:0.65; width:42px; height:42px; flex-shrink:0; background:none !important; position:relative; }
+.mood-btn img { display:block; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:33px; height:33px; object-fit:contain; pointer-events:none; }
+.mood-btn.selected { opacity:1; transform:scale(1.18); box-shadow:0 3px 12px rgba(0,0,0,0.15); }
+.mood-btn:active { transform:scale(1.25); }
+.hub-mood-done { font-size:11px; color:var(--brown); font-weight:700; flex-shrink:0; white-space:nowrap; }
 .hub-feat-grid { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:clamp(9px,1.3dvh,13px); width:100%; max-width:340px; flex:1; min-height:0; }
 .hub-feat-card { background:white; border-radius:22px; padding:clamp(14px,2dvh,18px) 12px clamp(12px,1.7dvh,16px); display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; cursor:pointer; position:relative; overflow:hidden; border:none; box-shadow:0 3px 16px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.04); transition:transform 0.2s cubic-bezier(.34,1.4,.64,1),box-shadow 0.2s; min-height:0; }
 .hub-feat-card::before { content:""; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(160deg,color-mix(in srgb,var(--card-accent,var(--brown)) 10%,transparent) 0%,transparent 55%); pointer-events:none; }
@@ -634,12 +634,7 @@
 .starter-chip:active { transform: scale(0.96); background: rgba(220,130,60,0.07); }
 
 /* ════ Hub 心情打卡 ════ */
-.hub-mood-row { display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: white; border-radius: 16px; margin-bottom: 14px; width: 100%; max-width: 320px; box-shadow: 0 2px 10px rgba(200,120,50,0.08); }
-.hub-mood-label { font-size: 11px; color: var(--text-light); flex-shrink: 0; letter-spacing: 0.3px; }
-.hub-mood-emojis { display: flex; gap: 2px; flex: 1; justify-content: center; }
-.mood-btn { background: none; border: none; font-size: 22px; cursor: pointer; padding: 4px 6px; border-radius: 10px; transition: all 0.15s; opacity: 0.6; line-height: 1; }
-.mood-btn.selected { background: rgba(220,130,60,0.1); opacity: 1; transform: scale(1.18); }
-.mood-btn:active { transform: scale(1.25); }
+
 .hub-mood-done { font-size: 11px; color: var(--brown); font-weight: 600; flex-shrink: 0; }
 
 /* ════ 记忆本 (Profile内) ════ */
@@ -918,12 +913,14 @@
     .toggle-wrap input:checked + .toggle-slider:before { transform: translateX(18px); }
     /* Gear icon button (replaces three-dots everywhere) */
     .gear-btn {
-      background: none; border: none;
+      background: rgba(255,255,255,0.55); border: none;
       color: var(--brown); cursor: pointer;
-      padding: 4px; display: flex; align-items: center;
-      opacity: 0.75; transition: opacity 0.2s;
+      padding: 7px; display: flex; align-items: center;
+      border-radius: 50%; opacity: 1;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+      transition: background 0.2s;
     }
-    .gear-btn:active { opacity: 1; }
+    .gear-btn:active { background: rgba(255,255,255,0.85); }
     /* Settings sub-screens (intro, nickname edit) */
     .settings-edit-sheet {
       position: fixed; inset: 0; z-index: 200;
@@ -1550,10 +1547,11 @@
       display: flex; gap: 14px;
       overflow-x: auto; -webkit-overflow-scrolling: touch;
       scrollbar-width: none; padding: 4px 2px 8px;
+      min-height: 168px; align-items: flex-start;
     }
     .ex-tests-scroll::-webkit-scrollbar { display: none; }
     .ex-test-card {
-      flex: 0 0 158px;
+      flex: 0 0 158px; min-height: 148px;
       background: rgba(255,253,249,0.9);
       border-radius: 20px; padding: 18px 16px 16px;
       border: 1px solid rgba(237,217,200,0.8);
@@ -1738,7 +1736,7 @@
   <div class="screen" id="setup">
     <div style="width:100%; text-align:center;">
       <div class="bubble bubble-warm" style="margin:auto; margin-bottom:20px;" id="setup-question" data-zh="我可以叫你什么？" data-en="What can I call you?">我可以叫你什么？</div>
-      <input class="name-input" id="name-input" type="text" placeholder="你的名字或昵称...">
+      <input class="name-input" id="name-input" type="text" placeholder="你的名字或昵称..." oninput="this.style.borderColor=''">
       <div class="setup-intro-label" id="setup-intro-label" data-zh="顺便告诉我一点关于你自己的事（可选）" data-en="Tell me a little about yourself (optional)">顺便告诉我一点关于你自己的事（可选）</div>
       <textarea class="intro-input" id="intro-input" placeholder="比如：我是大学生，最近压力很大……"></textarea>
       <button class="btn-primary" style="margin-top:16px;" onclick="saveName()" id="setup-btn" data-zh="就叫这个 ✓" data-en="That's me ✓">就叫这个 ✓</button>
@@ -1753,7 +1751,7 @@
         <div class="header-name" id="chat-header-name" data-zh="暖暖" data-en="Lumi">暖暖</div>
         <div class="header-status" id="chat-header-status" data-zh="永远在" data-en="always here">永远在</div>
       </div>
-      <button class="gear-btn" onclick="openSettings()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
+      <button class="gear-btn" onclick="openSettings(); if(window.sfx) window.sfx.click();"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
     </div>
 
     <!-- 暖暖房间：PNG透明图，从 header 下延伸到聊天区，树根自然垂入 -->
@@ -1816,7 +1814,7 @@
 
 
   <div class="screen" id="hub">
-    <button class="gear-btn" onclick="openSettings()" style="position:absolute;top:16px;right:16px;z-index:20;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
+    <button class="gear-btn" onclick="openSettings(); if(window.sfx) window.sfx.click();" style="position:absolute;top:16px;right:16px;z-index:20;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
 
     <div class="hub-screen">
       <!-- ── Banner ── -->
@@ -1824,7 +1822,7 @@
         <div class="hub-banner-text">
           <div class="hub-banner-time" id="hub-time-label"></div>
           <div class="hub-banner-name" id="hub-user-name">你好 ✦</div>
-          <div class="hub-banner-tag" onclick="showChat()">
+          <div class="hub-banner-tag" onclick="showChat(); if(window.sfx) window.sfx.click();">
             <span class="hub-banner-tag-dot"></span>
             <span data-zh="和我聊聊吧 →" data-en="Chat with me →">和我聊聊吧 →</span>
           </div>
@@ -1852,7 +1850,7 @@
         <!-- 功能卡片 -->
         <div class="hub-feat-grid">
           <!-- 聊天 -->
-          <div class="hub-feat-card hub-feat-card-chat" onclick="showChat()">
+          <div class="hub-feat-card hub-feat-card-chat" onclick="showChat(); if(window.sfx) window.sfx.click();">
             <div class="hub-feat-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
             </div>
@@ -1863,7 +1861,7 @@
             <div class="hub-feat-nn"><img src="./nuan-assets/nn-card-chat.png" alt=""></div>
           </div>
           <!-- 眼中的我 -->
-          <div class="hub-feat-card hub-feat-card-profile" onclick="showProfile()">
+          <div class="hub-feat-card hub-feat-card-profile" onclick="showProfile(); if(window.sfx) window.sfx.click();">
             <div class="hub-feat-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="7" r="4"/><path d="M5 21a9.77 9.77 0 0114 0"/></svg>
             </div>
@@ -1874,7 +1872,7 @@
             <div class="hub-feat-nn"><img src="./nuan-assets/nn-card-profile.png" alt=""></div>
           </div>
           <!-- 足迹 -->
-          <div class="hub-feat-card hub-feat-card-journal" onclick="showFootprints()">
+          <div class="hub-feat-card hub-feat-card-journal" onclick="showFootprints(); if(window.sfx) window.sfx.click();">
             <div class="hub-feat-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0"/><polyline points="12 8 12 12 14 14"/></svg>
             </div>
@@ -1885,7 +1883,7 @@
             <div class="hub-feat-nn"><img src="./nuan-assets/nn-card-journal.png" alt=""></div>
           </div>
           <!-- 探索 -->
-          <div class="hub-feat-card hub-feat-card-explore" onclick="showExplore()">
+          <div class="hub-feat-card hub-feat-card-explore" onclick="showExplore(); if(window.sfx) window.sfx.click();">
             <div class="hub-feat-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg>
             </div>
@@ -1909,7 +1907,7 @@
           </div>
           <div class="hub-upgrade-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         </div>
-        <div class="hub-trial-badge" id="hub-trial-badge" style="display:none;" onclick="openSettings()">
+        <div class="hub-trial-badge" id="hub-trial-badge" style="display:none;" onclick="openSettings(); if(window.sfx) window.sfx.click();">
           <span class="trial-dot"></span>
           <span id="hub-trial-label"></span>
         </div>
@@ -2113,7 +2111,7 @@
 
   <!-- ══ 我的足迹 ══════════════════════════════════════════ -->
   <div class="screen" id="footprints">
-    <button class="gear-btn" onclick="openSettings()" style="position:absolute;top:20px;right:20px;z-index:20;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
+    <button class="gear-btn" onclick="openSettings(); if(window.sfx) window.sfx.click();" style="position:absolute;top:20px;right:20px;z-index:20;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
     <div class="fp-header">
       <button class="settings-back" onclick="showHub()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -2228,6 +2226,13 @@
             <span class="toggle-slider"></span>
           </label>
         </div>
+        <div class="settings-item">
+          <div class="settings-item-label" data-zh="环境音效" data-en="Ambient Sound">环境音效</div>
+          <label class="toggle-wrap">
+            <input type="checkbox" id="toggle-amb" onchange="onAmbToggle(this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
       </div>
       <!-- 通知设置 -->
       <div class="settings-section">
@@ -2324,7 +2329,7 @@
 
 
   <div class="screen" id="profile">
-    <button class="gear-btn" onclick="openSettings()" style="position:absolute; top:20px; right:20px; z-index:20;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
+    <button class="gear-btn" onclick="openSettings(); if(window.sfx) window.sfx.click();" style="position:absolute; top:20px; right:20px; z-index:20;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
     <div class="profile-header">
       <button class="profile-back" onclick="profileGoBack()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
       <div class="profile-header-title" data-zh="暖暖眼中的我" data-en="How Lumi sees me">暖暖眼中的我</div>
@@ -2434,8 +2439,7 @@ function updateSettingsPremiumDisplay() {
 }
 
 function onSettingsPremiumClick() {
-  if (isPremium()) return; // already premium, do nothing
-  showPaywall('settings');
+  showPaywall('settings'); // showPaywall now handles premium check internally
 }
 
 // ─── Hub 守候版状态 ───────────────────────────────────────
@@ -3315,7 +3319,13 @@ function saveApiKey() {
 }
 
 function saveName() {
-  userName = document.getElementById('name-input').value.trim() || t('你', 'you');
+  const rawName = document.getElementById('name-input').value.trim();
+  if (!rawName) {
+    const inp = document.getElementById('name-input');
+    if (inp) { inp.style.borderColor = 'var(--brown-light)'; inp.focus(); inp.placeholder = t('请先告诉我你的名字 ♡','Please enter your name first ♡'); }
+    return;
+  }
+  userName = rawName;
   localStorage.setItem('nuan_name', userName);
   localStorage.setItem('nuan_setup_done', 'true'); // 标记设置已完成
   // Save self-intro if provided
@@ -3397,6 +3407,10 @@ function closeMoreMenu() {
 let selectedPlan = 'yearly';
 function showPaywall(source) {
   if (document.getElementById('more-menu-overlay')) closeMoreMenu();
+  if (isPremium()) {
+    showPremiumActive();
+    return;
+  }
   // 根据来源切换暖暖图片：从设置进来用有盔甲，其他触发用无盔甲
   const img = document.getElementById('paywall-nn-img');
   if (img) {
@@ -3408,6 +3422,35 @@ function showPaywall(source) {
   updatePaywallSurveyEntry();
   goTo('paywall');
   updateTabBar(null);
+}
+
+function showPremiumActive() {
+  // Show premium active confirmation overlay
+  const existing = document.getElementById('premium-active-overlay');
+  if (existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'premium-active-overlay';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.45);
+    display:flex;align-items:flex-end;justify-content:center;`;
+  overlay.innerHTML = `
+    <div style="background:var(--cream);border-radius:28px 28px 0 0;padding:32px 28px 48px;
+      width:100%;max-width:440px;text-align:center;box-shadow:0 -8px 40px rgba(0,0,0,0.12);">
+      <img src="./nuan-assets/nn-guard-armor.png" style="width:88px;margin-bottom:12px;" alt="">
+      <div style="font-size:20px;font-weight:800;color:var(--brown);margin-bottom:6px;">
+        ${t('守候版 · 已激活 ✦','Premium · Active ✦')}
+      </div>
+      <div style="font-size:13px;color:var(--text-light);line-height:1.7;margin-bottom:24px;">
+        ${t('你已是守候版用户，所有内容已为你解锁。<br>感谢你的陪伴 ♡','You\'re a Premium member — all content is unlocked.<br>Thank you for being here ♡')}
+      </div>
+      <button onclick="document.getElementById('premium-active-overlay').remove()"
+        style="width:100%;padding:14px;border-radius:16px;border:none;cursor:pointer;
+          font-size:15px;font-weight:700;color:white;
+          background:linear-gradient(135deg,var(--brown-light),var(--brown));">
+        ${t('知道了 ♡','Got it ♡')}
+      </button>
+    </div>`;
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
 }
 function selectPlan(plan) {
   selectedPlan = plan;
@@ -4121,14 +4164,15 @@ const ROOM_IMAGES = {
   // 白天60%，黄昏20%，夜晚10%，早上雨天6%，夜晚雨天4%
   const roll = Math.random();
   let chosen;
-  if      (roll < 0.60) { chosen = 'day'; }
-  else if (roll < 0.80) { chosen = 'evening'; }
-  else if (roll < 0.90) { chosen = 'night'; }
-  else if (roll < 0.96) { chosen = 'rain_day'; }
+  if      (roll < 0.35) { chosen = 'day'; }
+  else if (roll < 0.60) { chosen = 'evening'; }
+  else if (roll < 0.78) { chosen = 'night'; }
+  else if (roll < 0.90) { chosen = 'rain_day'; }
   else                  { chosen = 'rain_night'; }
   if (chosen !== 'day') {
     document.getElementById('nn-room-img').src = ROOM_IMAGES[chosen];
   }
+  window._currentRoom = chosen;
 })();
 
 // ─── 拖拽物理 ─────────────────────────────────────────────
@@ -5637,13 +5681,15 @@ function renderExploreLanding() {
 
   EXPLORE_CHAPTERS.forEach(ch => {
     const isDone = !!saved[ch.id];
-    const isLocked = !ch.unlocked;
+    const isLocked = !ch.unlocked && !isPremium();
+    const isPremiumOnly = !ch.unlocked && isPremium();
     let statusTag = '';
     if (isLocked) statusTag = `<div class="ex-chapter-status soon">${t('守候版 ✦','Premium ✦')}</div>`;
+    else if (isPremiumOnly) statusTag = `<div class="ex-chapter-status premium-own">${t('守候专属 ✦','Premium ✦')}</div>`;
     else if (isDone) statusTag = `<div class="ex-chapter-status done">${t('已完成 ✦','Done ✦')}</div>`;
     else statusTag = `<div class="ex-chapter-status">${t('开始','Start')}</div>`;
     const cardClass = isLocked ? 'ex-chapter-card locked' : 'ex-chapter-card';
-    const onclick = isLocked ? `onclick="showPaywall()"` : `onclick="openExploreChapter('${ch.id}')"`;
+    const onclick = isLocked ? `onclick="showPaywall('explore')"` : `onclick="openExploreChapter('${ch.id}')"`;
     html += `
       <div class="${cardClass}" ${onclick}>
         <div class="ex-chapter-head">
@@ -5662,7 +5708,7 @@ function renderExploreLanding() {
 
 function openExploreChapter(chId) {
   const ch = EXPLORE_CHAPTERS.find(c => c.id === chId);
-  if (!ch || !ch.unlocked) return;
+  if (!ch || (!ch.unlocked && !isPremium())) return;
   exploreState.chapter = ch;
 
   const saved = getExploreSaved();
@@ -6697,8 +6743,6 @@ function retakeTest() {
   'use strict';
 
   let _ctx = null;       // AudioContext
-  let _bgmNode = null;   // background music oscillator group
-  let _bgmGain = null;
   let _bgmOn = false;
   let _sfxOn = true;
   let _unlocked = false; // browser requires user gesture
@@ -6726,76 +6770,62 @@ function retakeTest() {
     if (bgmBox) bgmBox.checked = _bgmOn;
     if (sfxBox) sfxBox.checked = _sfxOn;
     if (_bgmOn) startBGM();
+    // Start ambience for current room
+    if (window.ambience && localStorage.getItem('nuan_amb') === 'true') {
+      window.ambience.setRoom(window._currentRoom || 'day');
+    }
   }
 
-  // ── BGM: gentle ambient lo-fi piano loop ─────────────────────
-  // Uses a simple pentatonic melody with soft tones
-  const NOTES = [261.63,293.66,329.63,392,440,523.25,587.33,659.25]; // C maj pentatonic + octave
-  const MELODY = [0,2,4,5,7,5,4,2, 1,3,5,7,5,3,1,0]; // indices into NOTES
-  let _melStep = 0;
-  let _melTimer = null;
+  // ── BGM: HTML5 Audio player (real mp3 files) ─────────────────
+  const BGM_TRACKS = ['./bgm1.mp3', './bgm2.mp3', './bgm3.mp3'];
+  let _audio = null;
+  let _fadeTimer = null;
+
+  function createAudio(src) {
+    const a = new Audio(src);
+    a.loop = true;
+    a.volume = 0;
+    a.preload = 'auto';
+    return a;
+  }
 
   function startBGM() {
-    if (!_unlocked) return;
-    const ctx = getCtx(); if (!ctx) return;
+    if (!_bgmOn) return;
     stopBGM();
-    _bgmGain = ctx.createGain();
-    _bgmGain.gain.setValueAtTime(0, ctx.currentTime);
-    _bgmGain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 2);
-    // Reverb via convolver approximation with delay+feedback
-    const delay = ctx.createDelay(2);
-    delay.delayTime.value = 0.4;
-    const feedback = ctx.createGain(); feedback.gain.value = 0.28;
-    const delayGain = ctx.createGain(); delayGain.gain.value = 0.3;
-    delay.connect(feedback); feedback.connect(delay);
-    delay.connect(delayGain); delayGain.connect(ctx.destination);
-    _bgmGain.connect(ctx.destination);
-    _bgmGain.connect(delay);
-    _bgmNode = { gain: _bgmGain, delay, feedback };
-
-    function playNote() {
-      if (!_bgmOn || !_bgmNode) return;
-      const freq = NOTES[MELODY[_melStep % MELODY.length]];
-      _melStep++;
-      const osc = ctx.createOscillator();
-      const g   = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      g.gain.setValueAtTime(0, ctx.currentTime);
-      g.gain.linearRampToValueAtTime(0.9, ctx.currentTime + 0.05);
-      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.8);
-      osc.connect(g); g.connect(_bgmGain);
-      osc.start(); osc.stop(ctx.currentTime + 2);
-      // Bass drone every 4 notes
-      if (_melStep % 4 === 0) {
-        const bass = ctx.createOscillator();
-        const bg   = ctx.createGain();
-        bass.type = 'sine';
-        bass.frequency.value = freq / 2;
-        bg.gain.setValueAtTime(0, ctx.currentTime);
-        bg.gain.linearRampToValueAtTime(0.4, ctx.currentTime + 0.1);
-        bg.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.2);
-        bass.connect(bg); bg.connect(_bgmGain);
-        bass.start(); bass.stop(ctx.currentTime + 2.5);
-      }
-      _melTimer = setTimeout(playNote, 900 + Math.random() * 400);
-    }
-    playNote();
+    // Pick a random track
+    const track = BGM_TRACKS[Math.floor(Math.random() * BGM_TRACKS.length)];
+    _audio = createAudio(track);
+    _audio.play().catch(() => {});
+    // Fade in over 2s
+    let vol = 0;
+    if (_fadeTimer) clearInterval(_fadeTimer);
+    _fadeTimer = setInterval(() => {
+      vol = Math.min(vol + 0.02, 0.22);
+      if (_audio) _audio.volume = vol;
+      if (vol >= 0.22) { clearInterval(_fadeTimer); _fadeTimer = null; }
+    }, 80);
   }
 
   function stopBGM() {
-    if (_melTimer) { clearTimeout(_melTimer); _melTimer = null; }
-    if (_bgmNode && _bgmNode.gain) {
-      try {
-        _bgmNode.gain.gain.linearRampToValueAtTime(0, getCtx().currentTime + 1.5);
-        setTimeout(() => { try { _bgmNode = null; } catch(e){} }, 2000);
-      } catch(e) { _bgmNode = null; }
+    if (_fadeTimer) { clearInterval(_fadeTimer); _fadeTimer = null; }
+    if (_audio) {
+      const a = _audio;
+      _audio = null;
+      // Fade out over 1.5s then pause
+      let vol = a.volume;
+      const fade = setInterval(() => {
+        vol = Math.max(vol - 0.03, 0);
+        a.volume = vol;
+        if (vol <= 0) { clearInterval(fade); a.pause(); }
+      }, 60);
     }
   }
 
   // ── SFX helpers ───────────────────────────────────────────────
   function playTone(freq, type, duration, volume, attack, decay) {
-    if (!_sfxOn || !_unlocked) return;
+    if (!_sfxOn) return;
+    if (!_unlocked) unlock();
+    if (!_unlocked) return;
     const ctx = getCtx(); if (!ctx) return;
     const osc = ctx.createOscillator();
     const g   = ctx.createGain();
@@ -6844,7 +6874,9 @@ function retakeTest() {
     },
     nuan()       {
       // Cute ascending chirp
-      const ctx = getCtx(); if (!ctx||!_sfxOn||!_unlocked) return;
+      if (!_sfxOn) return;
+      if (!_unlocked) unlock();
+      const ctx = getCtx(); if (!ctx||!_unlocked) return;
       const osc = ctx.createOscillator();
       const g   = ctx.createGain();
       osc.type = 'sine';
@@ -6883,7 +6915,322 @@ function retakeTest() {
 
   // Auto-unlock on first user gesture
   ['click','touchstart','keydown'].forEach(ev =>
-    document.addEventListener(ev, unlock, { once: true, passive: true })
+    document.addEventListener(ev, unlock, { once: true, capture: true, passive: true })
   );
 })();
+
+// ══════════════════════════════════════════════════════════════
+// Ambience System — theme-matched synthesized ambient sounds
+// ══════════════════════════════════════════════════════════════
+(function() {
+  'use strict';
+
+  let _ctx = null;
+  let _on = false;
+  let _currentTheme = null;
+  let _nodes = [];   // active audio nodes for cleanup
+  let _timers = [];  // active timers for cleanup
+
+  _on = localStorage.getItem('nuan_amb') === 'true';
+
+  function getCtx() {
+    if (!_ctx) try { _ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+    return _ctx;
+  }
+
+  function stopAll() {
+    _timers.forEach(t => clearTimeout(t));
+    _timers = [];
+    _nodes.forEach(n => { try { n.disconnect(); if (n.stop) n.stop(); } catch(e){} });
+    _nodes = [];
+  }
+
+  // ── Noise generator ──────────────────────────────────────────
+  function createNoise(ctx, type) {
+    // type: 'white' | 'pink' | 'brown'
+    const bufSize = ctx.sampleRate * 2;
+    const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for (let i=0; i<bufSize; i++) {
+      const w = Math.random()*2-1;
+      if (type==='pink') {
+        b0=0.99886*b0+w*0.0555179; b1=0.99332*b1+w*0.0750759;
+        b2=0.96900*b2+w*0.1538520; b3=0.86650*b3+w*0.3104856;
+        b4=0.55000*b4+w*0.5329522; b5=-0.7616*b5-w*0.0168980;
+        data[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.11; b6=w*0.115926;
+      } else if (type==='brown') {
+        b0=(b0+w*0.02)/1.02; data[i]=b0*3.5;
+      } else { data[i]=w; }
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = buf; src.loop = true;
+    return src;
+  }
+
+  // ── Rain ─────────────────────────────────────────────────────
+  function startRain() {
+    const ctx = getCtx(); if (!ctx) return;
+    // Base rain: pink noise through bandpass
+    const noise = createNoise(ctx, 'pink');
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = 1200; bp.Q.value = 0.8;
+    const gain = ctx.createGain(); gain.gain.value = 0;
+    noise.connect(bp); bp.connect(gain); gain.connect(ctx.destination);
+    noise.start();
+    // Fade in
+    gain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + 3);
+    _nodes.push(noise, bp, gain);
+
+    // Occasional drips
+    function drip() {
+      if (!_on) return;
+      const ctx2 = getCtx(); if (!ctx2) return;
+      const osc = ctx2.createOscillator();
+      const g = ctx2.createGain();
+      osc.type = 'sine';
+      const freq = 800 + Math.random()*600;
+      osc.frequency.setValueAtTime(freq, ctx2.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(freq*0.5, ctx2.currentTime+0.12);
+      g.gain.setValueAtTime(0.06+Math.random()*0.06, ctx2.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx2.currentTime+0.15);
+      osc.connect(g); g.connect(ctx2.destination);
+      osc.start(); osc.stop(ctx2.currentTime+0.2);
+      const t = setTimeout(drip, 200+Math.random()*800);
+      _timers.push(t);
+    }
+    const t = setTimeout(drip, 500); _timers.push(t);
+  }
+
+  // ── Wind ─────────────────────────────────────────────────────
+  function startWind() {
+    const ctx = getCtx(); if (!ctx) return;
+    const noise = createNoise(ctx, 'pink');
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 600;
+    const gain = ctx.createGain(); gain.gain.value = 0;
+    // LFO for wind gusts
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    lfo.frequency.value = 0.08; lfoGain.gain.value = 0.07;
+    lfo.connect(lfoGain); lfoGain.connect(gain.gain);
+    lfo.start();
+    noise.connect(lp); lp.connect(gain); gain.connect(ctx.destination);
+    noise.start();
+    gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 4);
+    _nodes.push(noise, lp, gain, lfo, lfoGain);
+    // Sparse rain drips on wind
+    function drop() {
+      if (!_on) return;
+      const c = getCtx(); if (!c) return;
+      const o = c.createOscillator(), g = c.createGain();
+      o.type = 'sine'; o.frequency.value = 1200+Math.random()*400;
+      g.gain.setValueAtTime(0.04, c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+0.1);
+      o.connect(g); g.connect(c.destination);
+      o.start(); o.stop(c.currentTime+0.12);
+      const t = setTimeout(drop, 600+Math.random()*1800); _timers.push(t);
+    }
+    const t = setTimeout(drop, 1000); _timers.push(t);
+  }
+
+  // ── Fireplace ────────────────────────────────────────────────
+  function startFireplace() {
+    const ctx = getCtx(); if (!ctx) return;
+    // Brown noise base = fire roar
+    const noise = createNoise(ctx, 'brown');
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 400;
+    const gain = ctx.createGain(); gain.gain.value = 0;
+    noise.connect(lp); lp.connect(gain); gain.connect(ctx.destination);
+    noise.start();
+    gain.gain.linearRampToValueAtTime(0.14, ctx.currentTime + 2.5);
+    _nodes.push(noise, lp, gain);
+    // Crackle pops
+    function crackle() {
+      if (!_on) return;
+      const c = getCtx(); if (!c) return;
+      const o = c.createOscillator(), g = c.createGain();
+      o.type = 'sawtooth';
+      o.frequency.value = 80+Math.random()*200;
+      const vol = 0.04+Math.random()*0.08;
+      g.gain.setValueAtTime(vol, c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+0.04+Math.random()*0.06);
+      o.connect(g); g.connect(c.destination);
+      o.start(); o.stop(c.currentTime+0.12);
+      const t = setTimeout(crackle, 150+Math.random()*600); _timers.push(t);
+    }
+    const t = setTimeout(crackle, 300); _timers.push(t);
+  }
+
+  // ── Spring ───────────────────────────────────────────────────
+  function startSpring() {
+    const ctx = getCtx(); if (!ctx) return;
+    // Gentle breeze
+    const noise = createNoise(ctx, 'pink');
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = 800; bp.Q.value = 1.5;
+    const gain = ctx.createGain(); gain.gain.value = 0;
+    const lfo = ctx.createOscillator();
+    const lfoG = ctx.createGain();
+    lfo.frequency.value = 0.15; lfoG.gain.value = 0.04;
+    lfo.connect(lfoG); lfoG.connect(gain.gain);
+    lfo.start();
+    noise.connect(bp); bp.connect(gain); gain.connect(ctx.destination);
+    noise.start();
+    gain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 3);
+    _nodes.push(noise, bp, gain, lfo, lfoG);
+    // Bird chirps
+    function chirp() {
+      if (!_on) return;
+      const c = getCtx(); if (!c) return;
+      const notes = [1200,1400,1600,1800,2000];
+      const len = 2+Math.floor(Math.random()*3);
+      for (let i=0; i<len; i++) {
+        const t2 = i*120;
+        const tt = setTimeout(() => {
+          const o = c.createOscillator(), g = c.createGain();
+          o.type = 'sine';
+          const f = notes[Math.floor(Math.random()*notes.length)];
+          o.frequency.setValueAtTime(f, c.currentTime);
+          o.frequency.linearRampToValueAtTime(f*1.2, c.currentTime+0.06);
+          g.gain.setValueAtTime(0.07, c.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+0.1);
+          o.connect(g); g.connect(c.destination);
+          o.start(); o.stop(c.currentTime+0.12);
+        }, t2);
+        _timers.push(tt);
+      }
+      const t = setTimeout(chirp, 3000+Math.random()*5000); _timers.push(t);
+    }
+    const t = setTimeout(chirp, 1500); _timers.push(t);
+  }
+
+  function startEvening() {
+    const ctx = getCtx(); if (!ctx) return;
+    // Soft wind + crickets
+    const noise = createNoise(ctx, 'pink');
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 500;
+    const gain = ctx.createGain(); gain.gain.value = 0;
+    noise.connect(lp); lp.connect(gain); gain.connect(ctx.destination);
+    noise.start();
+    gain.gain.linearRampToValueAtTime(0.07, ctx.currentTime + 3);
+    _nodes.push(noise, lp, gain);
+    // Cricket chirps
+    function cricket() {
+      if (!_on) return;
+      const c = getCtx(); if (!c) return;
+      for (let i=0; i<3; i++) {
+        const tt = setTimeout(() => {
+          const o = c.createOscillator(), g = c.createGain();
+          o.type = 'sine'; o.frequency.value = 3200+Math.random()*400;
+          g.gain.setValueAtTime(0.06, c.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+0.06);
+          o.connect(g); g.connect(c.destination);
+          o.start(); o.stop(c.currentTime+0.08);
+        }, i*80);
+        _timers.push(tt);
+      }
+      const t = setTimeout(cricket, 800+Math.random()*1200); _timers.push(t);
+    }
+    const t = setTimeout(cricket, 1000); _timers.push(t);
+  }
+
+  function startNight() {
+    const ctx = getCtx(); if (!ctx) return;
+    // Very quiet wind
+    const noise = createNoise(ctx, 'brown');
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 300;
+    const gain = ctx.createGain(); gain.gain.value = 0;
+    noise.connect(lp); lp.connect(gain); gain.connect(ctx.destination);
+    noise.start();
+    gain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 4);
+    _nodes.push(noise, lp, gain);
+    // Sparse slow crickets
+    function cricket() {
+      if (!_on) return;
+      const c = getCtx(); if (!c) return;
+      for (let i=0; i<2; i++) {
+        const tt = setTimeout(() => {
+          const o = c.createOscillator(), g = c.createGain();
+          o.type = 'sine'; o.frequency.value = 2800+Math.random()*300;
+          g.gain.setValueAtTime(0.05, c.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+0.07);
+          o.connect(g); g.connect(c.destination);
+          o.start(); o.stop(c.currentTime+0.09);
+        }, i*100);
+        _timers.push(tt);
+      }
+      const t = setTimeout(cricket, 1200+Math.random()*2000); _timers.push(t);
+    }
+    const t = setTimeout(cricket, 2000); _timers.push(t);
+  }
+
+  function startRainNight() {
+    startRain();
+    // Extra quiet, slower drips already handled in startRain
+    // Just reduce overall volume slightly via gain
+  }
+
+  const STARTERS = { rain: startRain, wind: startWind, fireplace: startFireplace, spring: startSpring, evening: startEvening, night: startNight, rain_night: startRainNight };
+
+  function startAmbience(type) {
+    stopAll();
+    if (!type || !_on) return;
+    const fn = STARTERS[type];
+    if (fn) fn();
+  }
+
+  // ── Public API ───────────────────────────────────────────────
+  const ROOM_AMB = {
+    day:        'spring',
+    evening:    'evening',
+    night:      'night',
+    rain_day:   'rain',
+    rain_night: 'rain_night',
+  };
+
+  window.ambience = {
+    setRoom(room) {
+      const type = ROOM_AMB[room] || null;
+      _currentTheme = type;
+      if (_on) startAmbience(type);
+    },
+    setTheme(themeId) { /* no-op, kept for compatibility */ },
+    start() {
+      _on = true;
+      localStorage.setItem('nuan_amb', 'true');
+      startAmbience(_currentTheme);
+    },
+    stop() {
+      _on = false;
+      localStorage.setItem('nuan_amb', 'false');
+      stopAll();
+    }
+  };
+
+  window.onAmbToggle = function(on) {
+    on ? window.ambience.start() : window.ambience.stop();
+    // sync toggle UI
+    const el = document.getElementById('toggle-amb');
+    if (el) el.checked = on;
+  };
+
+  // Sync toggle state + init on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const el = document.getElementById('toggle-amb');
+    if (el) el.checked = _on;
+  });
+
+  // Patch syncAudioToggles to include ambience toggle
+  const _origSync = window.syncAudioToggles;
+  window.syncAudioToggles = function() {
+    if (_origSync) _origSync();
+    const el = document.getElementById('toggle-amb');
+    if (el) el.checked = _on;
+  };
+})();
+
 </script>
