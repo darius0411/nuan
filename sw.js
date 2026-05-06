@@ -1,4 +1,4 @@
-const CACHE = 'nuan-v25';
+const CACHE = 'nuan-v27';
 
 // Core files — MUST cache for app to work offline
 const CORE = [
@@ -38,7 +38,10 @@ const OPTIONAL = [
   './nuan-assets/mood-down.png',
   './nuan-assets/mood-neutral.png',
   './nuan-assets/mood-happy.png',
-  './nuan-assets/mood-excited.png'
+  './nuan-assets/mood-excited.png',
+  './bgm1.mp3',
+  './bgm2.mp3',
+  './bgm3.mp3'
 ];
 
 self.addEventListener('install', e => {
