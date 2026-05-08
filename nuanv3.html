@@ -625,6 +625,13 @@
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
   pointer-events: none;
 }
+.vol-row { display:flex; align-items:center; gap:10px; padding:4px 0 14px; }
+.vol-slider { -webkit-appearance:none; appearance:none; flex:1; height:3px; border-radius:99px; outline:none; cursor:pointer; border:none; background:rgba(220,130,60,0.18); }
+.vol-slider::-webkit-slider-thumb { -webkit-appearance:none; width:17px; height:17px; border-radius:50%; background:white; cursor:pointer; border:2.5px solid var(--brown); box-shadow:0 1px 8px rgba(180,80,30,0.22); transition:transform 0.15s; }
+.vol-slider::-webkit-slider-thumb:active { transform:scale(1.2); }
+.vol-slider::-moz-range-thumb { width:17px; height:17px; border-radius:50%; background:white; cursor:pointer; border:2.5px solid var(--brown); box-shadow:0 1px 8px rgba(180,80,30,0.22); }
+.vol-icon { font-size:14px; flex-shrink:0; opacity:0.7; }
+.vol-pct { font-size:11px; color:var(--text-light); width:30px; text-align:right; flex-shrink:0; }
 .hub-upgrade-banner:active { transform: scale(0.97); box-shadow: 0 2px 10px rgba(180,80,30,0.25); }
 .hub-upgrade-banner:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(180,80,30,0.38); }
 .hub-upgrade-icon { flex-shrink: 0; color: rgba(255,255,255,0.95); }
@@ -2246,6 +2253,11 @@
             <span class="toggle-slider"></span>
           </label>
         </div>
+                <div class="vol-row">
+          <span class="vol-icon">🎵</span>
+          <input type="range" class="vol-slider" id="vol-bgm" min="0" max="100" value="50" oninput="onVolBgm(this.value)">
+          <span class="vol-pct" id="vol-bgm-label">50%</span>
+        </div>
         <div class="settings-item">
           <div class="settings-item-label" data-zh="界面音效" data-en="Sound Effects">界面音效</div>
           <label class="toggle-wrap">
@@ -2253,12 +2265,22 @@
             <span class="toggle-slider"></span>
           </label>
         </div>
+                <div class="vol-row">
+          <span class="vol-icon">🔔</span>
+          <input type="range" class="vol-slider" id="vol-sfx" min="0" max="100" value="60" oninput="onVolSfx(this.value)">
+          <span class="vol-pct" id="vol-sfx-label">60%</span>
+        </div>
         <div class="settings-item">
           <div class="settings-item-label" data-zh="环境音效" data-en="Ambient Sound">环境音效</div>
           <label class="toggle-wrap">
             <input type="checkbox" id="toggle-amb" onchange="onAmbToggle(this.checked)">
             <span class="toggle-slider"></span>
           </label>
+        </div>
+                <div class="vol-row">
+          <span class="vol-icon">🌿</span>
+          <input type="range" class="vol-slider" id="vol-amb" min="0" max="100" value="40" oninput="onVolAmb(this.value)">
+          <span class="vol-pct" id="vol-amb-label">40%</span>
         </div>
       </div>
       <!-- 通知设置 -->
@@ -3880,7 +3902,8 @@ function appendUnlockMsg() {
 }
 
 function showProfile() {
-  if (window.ambience) window.ambience.stop();
+  window._inChat = false;
+  if (window.ambience) window.ambience.leaveChat();
   closeMenu();
   updateTabBar('profile');
   const raw = localStorage.getItem('nuan_profile');
@@ -4043,14 +4066,13 @@ function showToast(msg) {
 
 // ─── 主界面 Hub ────────────────────────────────────────────────────────────
 function showChat() {
+  window._inChat = true;
   applyLang();
   updateTabBar('chat');
   goTo('chat');
   markInteraction(); // 进入聊天时唤醒暖暖，重置闲置计时器
-  // Start ambient sound only while in chat
-  if (window.ambience) {
-    window.ambience.setRoom(window._currentRoom || 'day');
-  }
+  // Resume ambient sound when entering chat (based on saved preference)
+  if (window.ambience) window.ambience.enterChat(window._currentRoom);
   // 如果聊天记录为空，或最后一条是用户说的，暖暖主动打招呼
   const lastMsg = chatHistory[chatHistory.length - 1];
   if (!lastMsg || lastMsg.role === 'user') {
@@ -4065,7 +4087,8 @@ function showChat() {
 }
 
 function showHub() {
-  if (window.ambience) window.ambience.stop();
+  window._inChat = false;
+  if (window.ambience) window.ambience.leaveChat();
   // Update greeting
   const timeLabel = document.getElementById('hub-time-label');
   const nameLabel = document.getElementById('hub-user-name');
@@ -5081,7 +5104,8 @@ function closeEditSheet() {
 
 // ─── 我的足迹 ──────────────────────────────────────────────
 function showFootprints() {
-  if (window.ambience) window.ambience.stop();
+  window._inChat = false;
+  if (window.ambience) window.ambience.leaveChat();
   renderFootprints();
   goTo('footprints');
   updateTabBar(null);
@@ -5660,7 +5684,8 @@ function saveExploreResult(chapterId, payload) {
 }
 
 function showExplore() {
-  if (window.ambience) window.ambience.stop();
+  window._inChat = false;
+  if (window.ambience) window.ambience.leaveChat();
   exploreState = { screen: 'landing', chapter: null, qIndex: 0, answers: [], scores: {} };
   renderExploreLanding();
   goTo('explore');
@@ -6867,17 +6892,17 @@ function retakeTest() {
   function startBGM() {
     if (!_bgmOn) return;
     stopBGM();
-    // Pick a random track
     const track = BGM_TRACKS[Math.floor(Math.random() * BGM_TRACKS.length)];
     _audio = createAudio(track);
+    window._bgmAudio = _audio;
     _audio.play().catch(() => {});
-    // Fade in over 2s
+    const targetVol = parseFloat(localStorage.getItem('nuan_vol_bgm') ?? '0.5') * 0.44;
     let vol = 0;
     if (_fadeTimer) clearInterval(_fadeTimer);
     _fadeTimer = setInterval(() => {
-      vol = Math.min(vol + 0.02, 0.22);
+      vol = Math.min(vol + targetVol / 15, targetVol);
       if (_audio) _audio.volume = vol;
-      if (vol >= 0.22) { clearInterval(_fadeTimer); _fadeTimer = null; }
+      if (vol >= targetVol) { clearInterval(_fadeTimer); _fadeTimer = null; }
     }, 80);
   }
 
@@ -6907,7 +6932,8 @@ function retakeTest() {
     osc.type = type || 'sine';
     osc.frequency.value = freq;
     g.gain.setValueAtTime(0, ctx.currentTime);
-    g.gain.linearRampToValueAtTime(volume||0.18, ctx.currentTime + (attack||0.01));
+    const sfxScale = window._sfxVolScale !== undefined ? window._sfxVolScale / 0.6 : 1;
+    g.gain.linearRampToValueAtTime((volume||0.18) * sfxScale, ctx.currentTime + (attack||0.01));
     g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (decay||duration||0.25));
     osc.connect(g); g.connect(ctx.destination);
     osc.start(); osc.stop(ctx.currentTime + (duration||0.3));
@@ -6984,6 +7010,33 @@ function retakeTest() {
     if (window.ambience) window.ambience.toggle(on);
   };
 
+  // ── Volume controls ──────────────────────────────────────────
+  let _volBgm = parseFloat(localStorage.getItem('nuan_vol_bgm') ?? '0.5');
+  let _volSfx = parseFloat(localStorage.getItem('nuan_vol_sfx') ?? '0.6');
+  let _volAmb = parseFloat(localStorage.getItem('nuan_vol_amb') ?? '0.4');
+
+  window.onVolBgm = function(v) {
+    _volBgm = v / 100;
+    localStorage.setItem('nuan_vol_bgm', _volBgm);
+    document.getElementById('vol-bgm-label').textContent = v + '%';
+    if (window._bgmAudio) window._bgmAudio.volume = _volBgm;
+  };
+  window.onVolSfx = function(v) {
+    _volSfx = v / 100;
+    localStorage.setItem('nuan_vol_sfx', _volSfx);
+    document.getElementById('vol-sfx-label').textContent = v + '%';
+    window._sfxVolScale = _volSfx;
+  };
+  window.onVolAmb = function(v) {
+    _volAmb = v / 100;
+    localStorage.setItem('nuan_vol_amb', _volAmb);
+    document.getElementById('vol-amb-label').textContent = v + '%';
+    if (window.ambience) window.ambience.setVolume(_volAmb);
+  };
+  window._sfxVolScale = _volSfx;
+  window._bgmVolTarget = _volBgm;
+  window._ambVolTarget = _volAmb;
+
   // Restore settings toggles when settings opens
   window.syncAudioToggles = function() {
     const b = document.getElementById('toggle-bgm');
@@ -7000,6 +7053,8 @@ function retakeTest() {
 
 // ══════════════════════════════════════════════════════════════
 // Ambience System — real audio files
+// Preference (_on) is persisted. Audio only plays in chat screen.
+// Entering chat = resume. Leaving chat = pause. No manual re-toggle needed.
 // ══════════════════════════════════════════════════════════════
 (function() {
   const AMB_FILES = {
@@ -7007,7 +7062,7 @@ function retakeTest() {
     evening:    './amb_evening.mp3',
     night:      './amb_night.mp3',
     rain_day:   './amb_rain_day.mp3',
-    rain_night: './amb_rain.mp3',
+    rain_night: './amb_rain_day.mp3',
   };
   const ROOM_AMB = {
     day:        'day',
@@ -7017,18 +7072,19 @@ function retakeTest() {
     rain_night: 'rain_night',
   };
 
+  // _on = user preference (persisted). Audio pauses outside chat but _on stays true.
   let _on = localStorage.getItem('nuan_amb') === 'true';
   let _audio = null;
   let _fadeTimer = null;
   let _currentRoom = null;
 
-  function stopAmb() {
+  function pauseAmb() {
+    // Stop audio without changing _on preference
     if (_fadeTimer) { clearInterval(_fadeTimer); _fadeTimer = null; }
     if (_audio) {
       const a = _audio; _audio = null;
-      // fade out
       let vol = a.volume;
-      const step = vol / 20;
+      const step = Math.max(vol / 20, 0.01);
       _fadeTimer = setInterval(() => {
         vol -= step;
         if (vol <= 0) { clearInterval(_fadeTimer); _fadeTimer = null; try { a.pause(); } catch(e){} }
@@ -7037,63 +7093,70 @@ function retakeTest() {
     }
   }
 
-  function startAmb(room) {
-    stopAmb();
-    if (!_on || !room) return;
-    const src = AMB_FILES[room];
+  function playAmb() {
+    // Play ambient for current room (called when entering chat)
+    if (!_on) return;
+    if (!_currentRoom && window._currentRoom) {
+      _currentRoom = ROOM_AMB[window._currentRoom] || 'day';
+    }
+    if (!_currentRoom) return;
+    const src = AMB_FILES[_currentRoom];
     if (!src) return;
+    pauseAmb();
     const a = new Audio(src);
-    a.loop = true;
-    a.volume = 0;
+    a.loop = true; a.volume = 0;
     a.play().catch(() => {});
     _audio = a;
-    // fade in to 0.25
+    const targetVol = parseFloat(localStorage.getItem('nuan_vol_amb') ?? '0.4');
     let vol = 0;
     _fadeTimer = setInterval(() => {
-      vol = Math.min(vol + 0.012, 0.25);
+      vol = Math.min(vol + targetVol / 20, targetVol);
       try { a.volume = vol; } catch(e){}
-      if (vol >= 0.25) { clearInterval(_fadeTimer); _fadeTimer = null; }
+      if (vol >= targetVol) { clearInterval(_fadeTimer); _fadeTimer = null; }
     }, 80);
   }
 
   window.ambience = {
-    setRoom(room) {
-      _currentRoom = ROOM_AMB[room] || null;
-      if (_on) startAmb(_currentRoom);
+    setVolume(v) {
+      if (_audio) try { _audio.volume = v; } catch(e){}
     },
-    start() {
-      _on = true;
-      localStorage.setItem('nuan_amb', 'true');
-      if (!_currentRoom && window._currentRoom) {
-        _currentRoom = ROOM_AMB[window._currentRoom] || 'day';
-      }
-      startAmb(_currentRoom);
+    // Called when entering chat — resume if preference is on
+    enterChat(room) {
+      if (room) _currentRoom = ROOM_AMB[room] || _currentRoom;
+      playAmb();
     },
-    stop() {
-      _on = false;
-      localStorage.setItem('nuan_amb', 'false');
-      stopAmb();
+    // Called when leaving chat — pause without changing preference
+    leaveChat() {
+      pauseAmb();
     },
+    // Called when user toggles the switch in settings
     toggle(on) {
-      on ? window.ambience.start() : window.ambience.stop();
-      // sync toggle UI
+      _on = on;
+      localStorage.setItem('nuan_amb', on ? 'true' : 'false');
+      if (on && window._inChat) playAmb();
+      else if (!on) pauseAmb();
       const el = document.getElementById('toggle-amb');
       if (el) el.checked = on;
     },
   };
 
-  // Sync toggle state + init on page load
+  // Sync checkbox to saved preference on settings open
   document.addEventListener('DOMContentLoaded', function() {
     const el = document.getElementById('toggle-amb');
     if (el) el.checked = _on;
   });
 
-  // Patch syncAudioToggles to include ambience toggle
   const _origSync = window.syncAudioToggles;
   window.syncAudioToggles = function() {
     if (_origSync) _origSync();
     const el = document.getElementById('toggle-amb');
     if (el) el.checked = _on;
+    // Sync volume sliders
+    const va = document.getElementById('vol-amb');
+    const vl = document.getElementById('vol-amb-label');
+    const ambVol = parseFloat(localStorage.getItem('nuan_vol_amb') ?? '0.4');
+    if (va) { va.value = Math.round(ambVol * 100); }
+    if (vl) { vl.textContent = Math.round(ambVol * 100) + '%'; }
   };
 })();
 
