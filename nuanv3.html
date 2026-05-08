@@ -3840,13 +3840,13 @@ async function sendMsg() {
   }
 }
 // ─── 了解自己系统 ──────────────────────────────────────────
-const ANALYSIS_PROMPT = `根据以下对话，分析用户的性格信号。只输出JSON，不要其他文字：
-{"values":["标签"],"fears":["标签"],"patterns":["标签"],"summary":"以暖暖视角写一段唯美诗意的短文，描述这个人给人的感受与气质。语言要有文学性，像散文诗，充满意象与温柔的细节，3-4句，称呼用户为「你」，不要直白说性格特点，而是用自然意象、光影、气味、声音等来表达","detail":"更深的解读，3-4句，谈内心世界，语言真诚细腻"}
-values最多4个，fears最多3个，patterns最多3个，每标签4-8字。`;
+const ANALYSIS_PROMPT = `根据以下对话，准确分析用户真实展现的性格。只输出JSON，不要其他文字：
+{"values":["标签"],"fears":["标签"],"patterns":["标签"],"summary":"以暖暖视角写3-4句话，称用户为「你」。【重要】必须如实反映对话里用户的真实表现：说话直白强势就写强势，情绪外放爱骂人就写火爆直接，内敛温柔就写温柔——不能把任何人都写成「静水」「低调」之类的好听意象。可以用比喻，但比喻要符合这个人实际的样子。语言温暖但诚实，不粉饰。","detail":"更深的解读，3-4句，诚实写出这个人内心真实的样子，包括矛盾和棱角，不回避"}
+【规则】基于对话真实内容，不凭空美化。values最多4个，fears最多3个，patterns最多3个，每标签4-8字。`;
 
-const LUMI_ANALYSIS_PROMPT = `Based on the following conversation, identify the user's personality signals. Output ONLY JSON, nothing else:
-{"values":["tag"],"fears":["tag"],"patterns":["tag"],"summary":"Write a short lyric prose note from Lumi's perspective — 3–4 sentences describing this person's feel and quality. Literary, imagery-rich (light, water, seasons, sound). Refer to user as 'you'. Don't state traits directly — evoke them.","detail":"A deeper read — 3–4 honest, tender sentences about their inner world."}
-Max 4 values, 3 fears, 3 patterns. Each tag 3–6 words.`;
+const LUMI_ANALYSIS_PROMPT = `Based on the following conversation, accurately identify the user's actual personality as shown. Output ONLY JSON, nothing else:
+{"values":["tag"],"fears":["tag"],"patterns":["tag"],"summary":"Write 3–4 sentences from Lumi's perspective, referring to the user as 'you'. IMPORTANT: reflect who they actually are in this conversation — if they're blunt and fiery, write that; if they swear and vent, capture that energy; if they're gentle, write that. Don't flatten everyone into the same 'still lake' archetype. You can use imagery, but it must match this specific person's real vibe. Warm but honest — no sugarcoating.","detail":"A deeper read — 3–4 honest sentences about their inner world, including contradictions and edges."}
+RULE: Base this on actual conversation content. Max 4 values, 3 fears, 3 patterns. Each tag 3–6 words.`;
 
 /* ═══════════ 记忆提取 PROMPTS ═══════════ */
 const MEMORY_PROMPT_ZH = `从这段最近的对话中，提取用户明确透露的重要个人信息（如喜好、家人、工作、重要事件、心情状态）。只输出JSON数组，不要任何其他文字：

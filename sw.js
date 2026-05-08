@@ -1,4 +1,4 @@
-const CACHE = 'nuan-v46';
+const CACHE = 'nuan-v47';
 
 // Core files — MUST cache for app to work offline
 const CORE = [
