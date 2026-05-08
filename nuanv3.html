@@ -6980,6 +6980,10 @@ function retakeTest() {
     localStorage.setItem('nuan_sfx', on ? 'true' : 'false');
   };
 
+  window.onAmbToggle = function(on) {
+    if (window.ambience) window.ambience.toggle(on);
+  };
+
   // Restore settings toggles when settings opens
   window.syncAudioToggles = function() {
     const b = document.getElementById('toggle-bgm');
