@@ -4048,7 +4048,7 @@ function showChat() {
   goTo('chat');
   markInteraction(); // 进入聊天时唤醒暖暖，重置闲置计时器
   // Start ambient sound only while in chat
-  if (window.ambience && localStorage.getItem('nuan_amb') === 'true') {
+  if (window.ambience) {
     window.ambience.setRoom(window._currentRoom || 'day');
   }
   // 如果聊天记录为空，或最后一条是用户说的，暖暖主动打招呼
@@ -7060,6 +7060,9 @@ function retakeTest() {
     start() {
       _on = true;
       localStorage.setItem('nuan_amb', 'true');
+      if (!_currentRoom && window._currentRoom) {
+        _currentRoom = ROOM_AMB[window._currentRoom] || 'day';
+      }
       startAmb(_currentRoom);
     },
     stop() {
