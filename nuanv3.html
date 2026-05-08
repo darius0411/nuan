@@ -401,29 +401,29 @@
 .hub-banner-tag:active { background:rgba(255,255,255,0.3); }
 .hub-banner-tag-dot { width:5px; height:5px; border-radius:50%; background:#A8FFD8; animation:pulse 2s infinite; flex-shrink:0; }
 .hub-content { flex:1; display:flex; flex-direction:column; align-items:center; padding:clamp(12px,2dvh,18px) 15px clamp(10px,1.8dvh,18px); gap:clamp(9px,1.3dvh,13px); overflow:hidden; position:relative; z-index:2; min-height:0; background:var(--cream); }
-.hub-mood-row { display:flex; align-items:center; gap:8px; padding:10px 16px; background:rgba(255,255,255,0.82); backdrop-filter:blur(10px); border-radius:18px; width:100%; box-sizing:border-box; box-shadow:0 2px 14px rgba(200,120,50,0.09),inset 0 1px 0 rgba(255,255,255,0.9); border:1px solid rgba(237,217,200,0.45); }
+.hub-mood-row { display:flex; align-items:center; gap:8px; padding:10px 16px; background:rgba(255,255,255,0.88); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-radius:20px; width:100%; box-sizing:border-box; box-shadow:0 4px 20px rgba(180,100,40,0.07),inset 0 1px 0 rgba(255,255,255,1); border:1px solid rgba(255,255,255,0.9); }
 .hub-mood-label { font-size:11px; color:var(--text-light); flex-shrink:0; letter-spacing:0.3px; white-space:nowrap; }
 .hub-mood-emojis { display:flex; gap:0; flex:1; justify-content:space-evenly; align-items:center; overflow:visible; }
-.mood-btn { border:none; cursor:pointer; padding:0; border-radius:12px; transition:all 0.2s cubic-bezier(.34,1.4,.64,1); opacity:0.65; width:42px; height:42px; flex-shrink:0; background:none !important; position:relative; }
-.mood-btn img { display:block; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:33px; height:33px; object-fit:contain; pointer-events:none; }
+.mood-btn { border:none; cursor:pointer; padding:0; border-radius:14px; transition:all 0.2s cubic-bezier(.34,1.4,.64,1); opacity:0.65; width:52px; height:52px; flex-shrink:0; background:none !important; position:relative; }
+.mood-btn img { display:block; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:48px; height:48px; object-fit:contain; pointer-events:none; }
 .mood-btn.selected { opacity:1; transform:scale(1.18); box-shadow:0 3px 12px rgba(0,0,0,0.15); }
 .mood-btn:active { transform:scale(1.25); }
 .hub-mood-done { font-size:11px; color:var(--brown); font-weight:700; flex-shrink:0; white-space:nowrap; }
-.hub-feat-grid { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:clamp(9px,1.3dvh,13px); width:100%; max-width:340px; flex:1; min-height:0; }
-.hub-feat-card { background:white; border-radius:22px; padding:clamp(14px,2dvh,18px) 12px clamp(12px,1.7dvh,16px); display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; cursor:pointer; position:relative; overflow:hidden; border:none; box-shadow:0 3px 16px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.04); transition:transform 0.2s cubic-bezier(.34,1.4,.64,1),box-shadow 0.2s; min-height:0; }
-.hub-feat-card::before { content:""; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(160deg,color-mix(in srgb,var(--card-accent,var(--brown)) 10%,transparent) 0%,transparent 55%); pointer-events:none; }
-.hub-feat-card::after { content:""; position:absolute; top:0; left:0; right:0; height:3px; background:var(--card-accent,var(--brown)); border-radius:22px 22px 0 0; }
-.hub-feat-card:active { transform:scale(0.963); }
-.hub-feat-card:hover  { transform:translateY(-3px); box-shadow:0 10px 28px rgba(0,0,0,0.11); }
+.hub-feat-grid { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:clamp(10px,1.4dvh,14px); width:100%; max-width:360px; flex:1; min-height:0; }
+.hub-feat-card { background:rgba(255,255,255,0.88); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-radius:24px; padding:clamp(14px,2dvh,18px) 14px clamp(12px,1.7dvh,16px); display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; cursor:pointer; position:relative; overflow:hidden; border:1px solid rgba(255,255,255,0.9); box-shadow:0 4px 24px rgba(180,100,40,0.08),0 1px 4px rgba(0,0,0,0.04),inset 0 1px 0 rgba(255,255,255,1); transition:transform 0.22s cubic-bezier(.34,1.4,.64,1),box-shadow 0.22s; min-height:0; }
+.hub-feat-card::before { content:""; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(145deg,color-mix(in srgb,var(--card-accent,var(--brown)) 12%,transparent) 0%,transparent 50%); pointer-events:none; border-radius:24px; }
+.hub-feat-card::after { content:""; position:absolute; top:12px; left:14px; width:28px; height:2.5px; background:linear-gradient(90deg,var(--card-accent,var(--brown)),transparent); border-radius:2px; opacity:0.5; }
+.hub-feat-card:active { transform:scale(0.965); box-shadow:0 2px 10px rgba(180,100,40,0.08); }
+.hub-feat-card:hover  { transform:translateY(-4px); box-shadow:0 12px 32px rgba(180,100,40,0.13),0 2px 6px rgba(0,0,0,0.05); }
 .hub-feat-card.locked { opacity:0.5; filter:saturate(0.5); cursor:default; }
 .hub-feat-card-chat    { --card-accent:#F2856A; }
 .hub-feat-card-profile { --card-accent:#BDA5DF; }
 .hub-feat-card-journal { --card-accent:#7DCAAA; }
 .hub-feat-card-explore { --card-accent:#79B9D4; }
-.hub-feat-icon { width:clamp(36px,4.5dvh,44px); height:clamp(36px,4.5dvh,44px); border-radius:12px; background:var(--card-accent,var(--brown)); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.14); position:relative; z-index:1; }
+.hub-feat-icon { width:clamp(36px,4.5dvh,44px); height:clamp(36px,4.5dvh,44px); border-radius:13px; background:linear-gradient(145deg,color-mix(in srgb,var(--card-accent,var(--brown)) 80%,white) 0%,var(--card-accent,var(--brown)) 100%); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px color-mix(in srgb,var(--card-accent,var(--brown)) 45%,transparent); position:relative; z-index:1; }
 .hub-feat-icon svg { stroke:white; }
-.hub-feat-label { font-size:clamp(12px,1.6dvh,13.5px); font-weight:800; color:var(--brown); line-height:1.25; position:relative; z-index:1; }
-.hub-feat-sub { font-size:10.5px; color:var(--text-light); position:relative; z-index:1; }
+.hub-feat-label { font-size:clamp(13px,1.7dvh,14.5px); font-weight:800; color:var(--brown); line-height:1.25; position:relative; z-index:1; letter-spacing:-0.2px; }
+.hub-feat-sub { font-size:11px; color:var(--text-light); position:relative; z-index:1; opacity:0.8; }
 .hub-feat-nn { position:absolute; right:-4px; bottom:-4px; width:clamp(54px,8dvh,72px); pointer-events:none; z-index:0; opacity:0.82; }
 .hub-feat-nn img { width:100%; object-fit:contain; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.12)); }
 .hub-greeting { display:none; }
@@ -611,19 +611,27 @@
 
 /* Hub 守候版横幅 */
 .hub-upgrade-banner {
-  width: 100%; max-width: 320px; margin-top: 14px;
-  background: linear-gradient(135deg, #E8924A 0%, #B85C2A 100%);
-  border-radius: 18px; padding: 16px 20px;
+  width: 100%; max-width: 360px;
+  background: linear-gradient(125deg, #D4783A 0%, #C0622A 40%, #A8431A 100%);
+  border-radius: 22px; padding: 15px 18px;
   display: flex; align-items: center; gap: 14px;
-  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 4px 16px rgba(220,130,60,0.3);
+  cursor: pointer; transition: transform 0.2s cubic-bezier(.34,1.4,.64,1), box-shadow 0.2s;
+  box-shadow: 0 6px 24px rgba(180,80,30,0.32), 0 1px 0 rgba(255,255,255,0.12) inset;
+  position: relative; overflow: hidden;
 }
-.hub-upgrade-banner:active { transform: scale(0.97); }
-.hub-upgrade-icon { flex-shrink: 0; color: rgba(255,255,255,0.9); }
+
+.hub-upgrade-banner::after {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  pointer-events: none;
+}
+.hub-upgrade-banner:active { transform: scale(0.97); box-shadow: 0 2px 10px rgba(180,80,30,0.25); }
+.hub-upgrade-banner:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(180,80,30,0.38); }
+.hub-upgrade-icon { flex-shrink: 0; color: rgba(255,255,255,0.95); }
 .hub-upgrade-text { flex: 1; }
-.hub-upgrade-title { font-size: 14px; font-weight: 800; color: white; letter-spacing: 0.2px; }
-.hub-upgrade-sub { font-size: 11.5px; color: rgba(255,255,255,0.8); margin-top: 2px; }
-.hub-upgrade-arrow { color: rgba(255,255,255,0.7); flex-shrink: 0; }
+.hub-upgrade-title { font-size: 14.5px; font-weight: 800; color: white; letter-spacing: 0.1px; }
+.hub-upgrade-sub { font-size: 11.5px; color: rgba(255,255,255,0.75); margin-top: 3px; letter-spacing: 0.1px; }
+.hub-upgrade-arrow { color: rgba(255,255,255,0.6); flex-shrink: 0; }
 
 /* ════ 对话起点卡片 ════ */
 .chat-starters { position: absolute; bottom: 120px; left: 0; right: 0; padding: 0 16px; display: flex; flex-direction: column; gap: 8px; z-index: 5; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
@@ -669,7 +677,20 @@
 .fp-heatmap { padding: 0 0 16px; }
 .fp-heatmap-title { font-size: 11px; color: var(--text-light); letter-spacing: 0.5px; margin-bottom: 8px; }
 .fp-heatmap-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-.fp-heat-cell { aspect-ratio: 1; border-radius: 4px; background: rgba(237,217,200,0.3); transition: background 0.2s; }
+.fp-heat-cell { aspect-ratio: 1; border-radius: 4px; background: rgba(237,217,200,0.3); transition: background 0.2s; cursor: pointer; }
+.fp-heat-cell:active { transform: scale(0.88); }
+.fp-day-popup { position:fixed; bottom:0; left:50%; transform:translateX(-50%) translateY(100%); width:100%; max-width:420px; background:white; border-radius:24px 24px 0 0; padding:20px 20px 0; box-shadow:0 -4px 32px rgba(0,0,0,0.13); z-index:900; transition:transform 0.32s cubic-bezier(.32,1,.44,1); box-sizing:border-box; max-height:70vh; display:flex; flex-direction:column; }
+.fp-day-popup.open { transform:translateX(-50%) translateY(0); }
+.fp-day-popup-handle { width:36px; height:4px; background:rgba(0,0,0,0.12); border-radius:2px; margin:0 auto 16px; }
+.fp-day-popup-date { font-size:13px; font-weight:700; color:var(--brown); margin-bottom:14px; flex-shrink:0; }
+.fp-day-popup-scroll { overflow-y:auto; flex:1; padding-bottom:calc(72px + env(safe-area-inset-bottom, 16px)); }
+.fp-day-popup-mood { display:flex; align-items:center; gap:8px; background:var(--cream); border-radius:12px; padding:10px 14px; margin-bottom:10px; font-size:13px; color:var(--text); }
+.fp-day-popup-empty { font-size:13px; color:var(--text-light); text-align:center; padding:20px 0; }
+.fp-day-popup-entry { background:var(--cream); border-radius:12px; padding:10px 14px; margin-bottom:8px; }
+.fp-day-popup-entry-time { font-size:10.5px; color:var(--text-light); margin-bottom:4px; }
+.fp-day-popup-entry-text { font-size:13px; color:var(--text); line-height:1.5; }
+.fp-day-popup-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.25); z-index:899; display:none; }
+.fp-day-popup-overlay.open { display:block; }
 .fp-heat-cell.lv1 { background: rgba(220,130,60,0.2); }
 .fp-heat-cell.lv2 { background: rgba(220,130,60,0.45); }
 .fp-heat-cell.lv3 { background: rgba(220,130,60,0.75); }
@@ -2121,6 +2142,12 @@
     <div class="fp-body" id="fp-body">
       <!-- 热力图 -->
       <div class="fp-heatmap" id="fp-heatmap"></div>
+      <div class="fp-day-popup-overlay" id="fp-day-overlay" onclick="closeDayPopup()"></div>
+      <div class="fp-day-popup" id="fp-day-popup">
+        <div class="fp-day-popup-handle"></div>
+        <div class="fp-day-popup-date" id="fp-day-popup-date"></div>
+        <div class="fp-day-popup-scroll" id="fp-day-popup-content"></div>
+      </div>
       <div class="fp-empty" id="fp-empty">
         <img src="./nuan-assets/nn-lying.png" class="nn-empty-img" alt="暖暖">
         <div class="nn-deco-bubble" style="display:inline-block;" data-zh="每一个小小的好，都值得被记住 ♡" data-en="Every little good moment deserves to be remembered ♡">每一个小小的好，都值得被记住 ♡</div>
@@ -2840,7 +2867,7 @@ function renderHeatmap(container) {
     <div class="fp-heatmap-grid">
       ${cells.map(c => {
         const lv = c.count === 0 ? '' : c.count === 1 ? 'lv1' : c.count === 2 ? 'lv2' : c.count <= 3 ? 'lv3' : 'lv4';
-        return `<div class="fp-heat-cell ${lv}" title="${c.key}"></div>`;
+        return `<div class="fp-heat-cell ${lv}" onclick="openDayPopup('${c.key}')" title="${c.key}"></div>`;
       }).join('')}
     </div>
     <div class="fp-heatmap-legend">
@@ -3853,6 +3880,7 @@ function appendUnlockMsg() {
 }
 
 function showProfile() {
+  if (window.ambience) window.ambience.stop();
   closeMenu();
   updateTabBar('profile');
   const raw = localStorage.getItem('nuan_profile');
@@ -4019,6 +4047,10 @@ function showChat() {
   updateTabBar('chat');
   goTo('chat');
   markInteraction(); // 进入聊天时唤醒暖暖，重置闲置计时器
+  // Start ambient sound only while in chat
+  if (window.ambience && localStorage.getItem('nuan_amb') === 'true') {
+    window.ambience.setRoom(window._currentRoom || 'day');
+  }
   // 如果聊天记录为空，或最后一条是用户说的，暖暖主动打招呼
   const lastMsg = chatHistory[chatHistory.length - 1];
   if (!lastMsg || lastMsg.role === 'user') {
@@ -4033,6 +4065,7 @@ function showChat() {
 }
 
 function showHub() {
+  if (window.ambience) window.ambience.stop();
   // Update greeting
   const timeLabel = document.getElementById('hub-time-label');
   const nameLabel = document.getElementById('hub-user-name');
@@ -4449,11 +4482,54 @@ setInterval(() => {
 }, 1000);
 
 // ─── 时间感知 ─────────────────────────────────────────────
+function openDayPopup(dateKey) {
+  const moodLog = JSON.parse(localStorage.getItem('nuan_mood_log') || '[]');
+  const footprints = JSON.parse(localStorage.getItem('nuan_footprints') || '[]');
+  const moodEntry = moodLog.find(e => e.date === dateKey);
+  const fpEntries = footprints.filter(e => new Date(e.ts).toISOString().slice(0,10) === dateKey);
+
+  // Format date nicely
+  const d = new Date(dateKey + 'T12:00:00');
+  const isEn = currentLang === 'en';
+  const dateStr = isEn
+    ? d.toLocaleDateString('en', {weekday:'long', year:'numeric', month:'long', day:'numeric'})
+    : d.toLocaleDateString('zh', {year:'numeric', month:'long', day:'numeric', weekday:'long'});
+  document.getElementById('fp-day-popup-date').textContent = dateStr;
+
+  const moodEmoji = ['','😢','😔','😐','😊','🤩'];
+  const moodLabel = isEn
+    ? ['','Very sad','Down','Okay','Happy','Excited']
+    : ['','很难过','有点低落','一般般','开心','超兴奋'];
+
+  let content = '';
+  if (moodEntry) {
+    content += `<div class="fp-day-popup-mood">${moodEmoji[moodEntry.mood]} <span>${moodLabel[moodEntry.mood]}</span></div>`;
+  }
+  if (fpEntries.length > 0) {
+    fpEntries.sort((a,b) => b.ts - a.ts).forEach(e => {
+      const time = new Date(e.ts).toLocaleTimeString(isEn ? 'en' : 'zh', {hour:'2-digit', minute:'2-digit'});
+      content += `<div class="fp-day-popup-entry"><div class="fp-day-popup-entry-time">${time}</div><div class="fp-day-popup-entry-text">${e.text || ''}</div></div>`;
+    });
+  }
+  if (!moodEntry && fpEntries.length === 0) {
+    content = `<div class="fp-day-popup-empty">${isEn ? 'Nothing recorded this day' : '这天没有记录'}</div>`;
+  }
+  document.getElementById('fp-day-popup-content').innerHTML = content;
+
+  document.getElementById('fp-day-popup').classList.add('open');
+  document.getElementById('fp-day-overlay').classList.add('open');
+}
+
+function closeDayPopup() {
+  document.getElementById('fp-day-popup').classList.remove('open');
+  document.getElementById('fp-day-overlay').classList.remove('open');
+}
+
 function getTimePeriod() {
   const h = new Date().getHours();
-  if (h >= 5  && h < 10) return 'morning';
-  if (h >= 10 && h < 17) return 'afternoon';
-  if (h >= 17 && h < 22) return 'evening';
+  if (h >= 5  && h < 12) return 'morning';
+  if (h >= 12 && h < 18) return 'afternoon';
+  if (h >= 18 && h < 23) return 'evening';
   return 'night';
 }
 
@@ -5005,6 +5081,7 @@ function closeEditSheet() {
 
 // ─── 我的足迹 ──────────────────────────────────────────────
 function showFootprints() {
+  if (window.ambience) window.ambience.stop();
   renderFootprints();
   goTo('footprints');
   updateTabBar(null);
@@ -5583,6 +5660,7 @@ function saveExploreResult(chapterId, payload) {
 }
 
 function showExplore() {
+  if (window.ambience) window.ambience.stop();
   exploreState = { screen: 'landing', chapter: null, qIndex: 0, answers: [], scores: {} };
   renderExploreLanding();
   goTo('explore');
@@ -6770,10 +6848,7 @@ function retakeTest() {
     if (bgmBox) bgmBox.checked = _bgmOn;
     if (sfxBox) sfxBox.checked = _sfxOn;
     if (_bgmOn) startBGM();
-    // Start ambience for current room
-    if (window.ambience && localStorage.getItem('nuan_amb') === 'true') {
-      window.ambience.setRoom(window._currentRoom || 'day');
-    }
+    // Ambience only plays in chat screen — started by showChat()
   }
 
   // ── BGM: HTML5 Audio player (real mp3 files) ─────────────────
@@ -6920,302 +6995,84 @@ function retakeTest() {
 })();
 
 // ══════════════════════════════════════════════════════════════
-// Ambience System — theme-matched synthesized ambient sounds
+// Ambience System — real audio files
 // ══════════════════════════════════════════════════════════════
 (function() {
-  'use strict';
-
-  let _ctx = null;
-  let _on = false;
-  let _currentTheme = null;
-  let _nodes = [];   // active audio nodes for cleanup
-  let _timers = [];  // active timers for cleanup
-
-  _on = localStorage.getItem('nuan_amb') === 'true';
-
-  function getCtx() {
-    if (!_ctx) try { _ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-    return _ctx;
-  }
-
-  function stopAll() {
-    _timers.forEach(t => clearTimeout(t));
-    _timers = [];
-    _nodes.forEach(n => { try { n.disconnect(); if (n.stop) n.stop(); } catch(e){} });
-    _nodes = [];
-  }
-
-  // ── Noise generator ──────────────────────────────────────────
-  function createNoise(ctx, type) {
-    // type: 'white' | 'pink' | 'brown'
-    const bufSize = ctx.sampleRate * 2;
-    const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
-    for (let i=0; i<bufSize; i++) {
-      const w = Math.random()*2-1;
-      if (type==='pink') {
-        b0=0.99886*b0+w*0.0555179; b1=0.99332*b1+w*0.0750759;
-        b2=0.96900*b2+w*0.1538520; b3=0.86650*b3+w*0.3104856;
-        b4=0.55000*b4+w*0.5329522; b5=-0.7616*b5-w*0.0168980;
-        data[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.11; b6=w*0.115926;
-      } else if (type==='brown') {
-        b0=(b0+w*0.02)/1.02; data[i]=b0*3.5;
-      } else { data[i]=w; }
-    }
-    const src = ctx.createBufferSource();
-    src.buffer = buf; src.loop = true;
-    return src;
-  }
-
-  // ── Rain ─────────────────────────────────────────────────────
-  function startRain() {
-    const ctx = getCtx(); if (!ctx) return;
-    // Base rain: pink noise through bandpass
-    const noise = createNoise(ctx, 'pink');
-    const bp = ctx.createBiquadFilter();
-    bp.type = 'bandpass'; bp.frequency.value = 1200; bp.Q.value = 0.8;
-    const gain = ctx.createGain(); gain.gain.value = 0;
-    noise.connect(bp); bp.connect(gain); gain.connect(ctx.destination);
-    noise.start();
-    // Fade in
-    gain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + 3);
-    _nodes.push(noise, bp, gain);
-
-    // Occasional drips
-    function drip() {
-      if (!_on) return;
-      const ctx2 = getCtx(); if (!ctx2) return;
-      const osc = ctx2.createOscillator();
-      const g = ctx2.createGain();
-      osc.type = 'sine';
-      const freq = 800 + Math.random()*600;
-      osc.frequency.setValueAtTime(freq, ctx2.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(freq*0.5, ctx2.currentTime+0.12);
-      g.gain.setValueAtTime(0.06+Math.random()*0.06, ctx2.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.001, ctx2.currentTime+0.15);
-      osc.connect(g); g.connect(ctx2.destination);
-      osc.start(); osc.stop(ctx2.currentTime+0.2);
-      const t = setTimeout(drip, 200+Math.random()*800);
-      _timers.push(t);
-    }
-    const t = setTimeout(drip, 500); _timers.push(t);
-  }
-
-  // ── Wind ─────────────────────────────────────────────────────
-  function startWind() {
-    const ctx = getCtx(); if (!ctx) return;
-    const noise = createNoise(ctx, 'pink');
-    const lp = ctx.createBiquadFilter();
-    lp.type = 'lowpass'; lp.frequency.value = 600;
-    const gain = ctx.createGain(); gain.gain.value = 0;
-    // LFO for wind gusts
-    const lfo = ctx.createOscillator();
-    const lfoGain = ctx.createGain();
-    lfo.frequency.value = 0.08; lfoGain.gain.value = 0.07;
-    lfo.connect(lfoGain); lfoGain.connect(gain.gain);
-    lfo.start();
-    noise.connect(lp); lp.connect(gain); gain.connect(ctx.destination);
-    noise.start();
-    gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 4);
-    _nodes.push(noise, lp, gain, lfo, lfoGain);
-    // Sparse rain drips on wind
-    function drop() {
-      if (!_on) return;
-      const c = getCtx(); if (!c) return;
-      const o = c.createOscillator(), g = c.createGain();
-      o.type = 'sine'; o.frequency.value = 1200+Math.random()*400;
-      g.gain.setValueAtTime(0.04, c.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+0.1);
-      o.connect(g); g.connect(c.destination);
-      o.start(); o.stop(c.currentTime+0.12);
-      const t = setTimeout(drop, 600+Math.random()*1800); _timers.push(t);
-    }
-    const t = setTimeout(drop, 1000); _timers.push(t);
-  }
-
-  // ── Fireplace ────────────────────────────────────────────────
-  function startFireplace() {
-    const ctx = getCtx(); if (!ctx) return;
-    // Brown noise base = fire roar
-    const noise = createNoise(ctx, 'brown');
-    const lp = ctx.createBiquadFilter();
-    lp.type = 'lowpass'; lp.frequency.value = 400;
-    const gain = ctx.createGain(); gain.gain.value = 0;
-    noise.connect(lp); lp.connect(gain); gain.connect(ctx.destination);
-    noise.start();
-    gain.gain.linearRampToValueAtTime(0.14, ctx.currentTime + 2.5);
-    _nodes.push(noise, lp, gain);
-    // Crackle pops
-    function crackle() {
-      if (!_on) return;
-      const c = getCtx(); if (!c) return;
-      const o = c.createOscillator(), g = c.createGain();
-      o.type = 'sawtooth';
-      o.frequency.value = 80+Math.random()*200;
-      const vol = 0.04+Math.random()*0.08;
-      g.gain.setValueAtTime(vol, c.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+0.04+Math.random()*0.06);
-      o.connect(g); g.connect(c.destination);
-      o.start(); o.stop(c.currentTime+0.12);
-      const t = setTimeout(crackle, 150+Math.random()*600); _timers.push(t);
-    }
-    const t = setTimeout(crackle, 300); _timers.push(t);
-  }
-
-  // ── Spring ───────────────────────────────────────────────────
-  function startSpring() {
-    const ctx = getCtx(); if (!ctx) return;
-    // Gentle breeze
-    const noise = createNoise(ctx, 'pink');
-    const bp = ctx.createBiquadFilter();
-    bp.type = 'bandpass'; bp.frequency.value = 800; bp.Q.value = 1.5;
-    const gain = ctx.createGain(); gain.gain.value = 0;
-    const lfo = ctx.createOscillator();
-    const lfoG = ctx.createGain();
-    lfo.frequency.value = 0.15; lfoG.gain.value = 0.04;
-    lfo.connect(lfoG); lfoG.connect(gain.gain);
-    lfo.start();
-    noise.connect(bp); bp.connect(gain); gain.connect(ctx.destination);
-    noise.start();
-    gain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 3);
-    _nodes.push(noise, bp, gain, lfo, lfoG);
-    // Bird chirps
-    function chirp() {
-      if (!_on) return;
-      const c = getCtx(); if (!c) return;
-      const notes = [1200,1400,1600,1800,2000];
-      const len = 2+Math.floor(Math.random()*3);
-      for (let i=0; i<len; i++) {
-        const t2 = i*120;
-        const tt = setTimeout(() => {
-          const o = c.createOscillator(), g = c.createGain();
-          o.type = 'sine';
-          const f = notes[Math.floor(Math.random()*notes.length)];
-          o.frequency.setValueAtTime(f, c.currentTime);
-          o.frequency.linearRampToValueAtTime(f*1.2, c.currentTime+0.06);
-          g.gain.setValueAtTime(0.07, c.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+0.1);
-          o.connect(g); g.connect(c.destination);
-          o.start(); o.stop(c.currentTime+0.12);
-        }, t2);
-        _timers.push(tt);
-      }
-      const t = setTimeout(chirp, 3000+Math.random()*5000); _timers.push(t);
-    }
-    const t = setTimeout(chirp, 1500); _timers.push(t);
-  }
-
-  function startEvening() {
-    const ctx = getCtx(); if (!ctx) return;
-    // Soft wind + crickets
-    const noise = createNoise(ctx, 'pink');
-    const lp = ctx.createBiquadFilter();
-    lp.type = 'lowpass'; lp.frequency.value = 500;
-    const gain = ctx.createGain(); gain.gain.value = 0;
-    noise.connect(lp); lp.connect(gain); gain.connect(ctx.destination);
-    noise.start();
-    gain.gain.linearRampToValueAtTime(0.07, ctx.currentTime + 3);
-    _nodes.push(noise, lp, gain);
-    // Cricket chirps
-    function cricket() {
-      if (!_on) return;
-      const c = getCtx(); if (!c) return;
-      for (let i=0; i<3; i++) {
-        const tt = setTimeout(() => {
-          const o = c.createOscillator(), g = c.createGain();
-          o.type = 'sine'; o.frequency.value = 3200+Math.random()*400;
-          g.gain.setValueAtTime(0.06, c.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+0.06);
-          o.connect(g); g.connect(c.destination);
-          o.start(); o.stop(c.currentTime+0.08);
-        }, i*80);
-        _timers.push(tt);
-      }
-      const t = setTimeout(cricket, 800+Math.random()*1200); _timers.push(t);
-    }
-    const t = setTimeout(cricket, 1000); _timers.push(t);
-  }
-
-  function startNight() {
-    const ctx = getCtx(); if (!ctx) return;
-    // Very quiet wind
-    const noise = createNoise(ctx, 'brown');
-    const lp = ctx.createBiquadFilter();
-    lp.type = 'lowpass'; lp.frequency.value = 300;
-    const gain = ctx.createGain(); gain.gain.value = 0;
-    noise.connect(lp); lp.connect(gain); gain.connect(ctx.destination);
-    noise.start();
-    gain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 4);
-    _nodes.push(noise, lp, gain);
-    // Sparse slow crickets
-    function cricket() {
-      if (!_on) return;
-      const c = getCtx(); if (!c) return;
-      for (let i=0; i<2; i++) {
-        const tt = setTimeout(() => {
-          const o = c.createOscillator(), g = c.createGain();
-          o.type = 'sine'; o.frequency.value = 2800+Math.random()*300;
-          g.gain.setValueAtTime(0.05, c.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+0.07);
-          o.connect(g); g.connect(c.destination);
-          o.start(); o.stop(c.currentTime+0.09);
-        }, i*100);
-        _timers.push(tt);
-      }
-      const t = setTimeout(cricket, 1200+Math.random()*2000); _timers.push(t);
-    }
-    const t = setTimeout(cricket, 2000); _timers.push(t);
-  }
-
-  function startRainNight() {
-    startRain();
-    // Extra quiet, slower drips already handled in startRain
-    // Just reduce overall volume slightly via gain
-  }
-
-  const STARTERS = { rain: startRain, wind: startWind, fireplace: startFireplace, spring: startSpring, evening: startEvening, night: startNight, rain_night: startRainNight };
-
-  function startAmbience(type) {
-    stopAll();
-    if (!type || !_on) return;
-    const fn = STARTERS[type];
-    if (fn) fn();
-  }
-
-  // ── Public API ───────────────────────────────────────────────
+  const AMB_FILES = {
+    day:        './amb_day.mp3',
+    evening:    './amb_evening.mp3',
+    night:      './amb_night.mp3',
+    rain_day:   './amb_rain_day.mp3',
+    rain_night: './amb_rain.mp3',
+  };
   const ROOM_AMB = {
-    day:        'spring',
+    day:        'day',
     evening:    'evening',
     night:      'night',
-    rain_day:   'rain',
+    rain_day:   'rain_day',
     rain_night: 'rain_night',
   };
 
+  let _on = localStorage.getItem('nuan_amb') === 'true';
+  let _audio = null;
+  let _fadeTimer = null;
+  let _currentRoom = null;
+
+  function stopAmb() {
+    if (_fadeTimer) { clearInterval(_fadeTimer); _fadeTimer = null; }
+    if (_audio) {
+      const a = _audio; _audio = null;
+      // fade out
+      let vol = a.volume;
+      const step = vol / 20;
+      _fadeTimer = setInterval(() => {
+        vol -= step;
+        if (vol <= 0) { clearInterval(_fadeTimer); _fadeTimer = null; try { a.pause(); } catch(e){} }
+        else { try { a.volume = vol; } catch(e){} }
+      }, 80);
+    }
+  }
+
+  function startAmb(room) {
+    stopAmb();
+    if (!_on || !room) return;
+    const src = AMB_FILES[room];
+    if (!src) return;
+    const a = new Audio(src);
+    a.loop = true;
+    a.volume = 0;
+    a.play().catch(() => {});
+    _audio = a;
+    // fade in to 0.25
+    let vol = 0;
+    _fadeTimer = setInterval(() => {
+      vol = Math.min(vol + 0.012, 0.25);
+      try { a.volume = vol; } catch(e){}
+      if (vol >= 0.25) { clearInterval(_fadeTimer); _fadeTimer = null; }
+    }, 80);
+  }
+
   window.ambience = {
     setRoom(room) {
-      const type = ROOM_AMB[room] || null;
-      _currentTheme = type;
-      if (_on) startAmbience(type);
+      _currentRoom = ROOM_AMB[room] || null;
+      if (_on) startAmb(_currentRoom);
     },
-    setTheme(themeId) { /* no-op, kept for compatibility */ },
     start() {
       _on = true;
       localStorage.setItem('nuan_amb', 'true');
-      startAmbience(_currentTheme);
+      startAmb(_currentRoom);
     },
     stop() {
       _on = false;
       localStorage.setItem('nuan_amb', 'false');
-      stopAll();
-    }
-  };
-
-  window.onAmbToggle = function(on) {
-    on ? window.ambience.start() : window.ambience.stop();
-    // sync toggle UI
-    const el = document.getElementById('toggle-amb');
-    if (el) el.checked = on;
+      stopAmb();
+    },
+    toggle(on) {
+      on ? window.ambience.start() : window.ambience.stop();
+      // sync toggle UI
+      const el = document.getElementById('toggle-amb');
+      if (el) el.checked = on;
+    },
   };
 
   // Sync toggle state + init on page load
