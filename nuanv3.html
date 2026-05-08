@@ -401,11 +401,11 @@
 .hub-banner-tag:active { background:rgba(255,255,255,0.3); }
 .hub-banner-tag-dot { width:5px; height:5px; border-radius:50%; background:#A8FFD8; animation:pulse 2s infinite; flex-shrink:0; }
 .hub-content { flex:1; display:flex; flex-direction:column; align-items:center; padding:clamp(12px,2dvh,18px) 15px clamp(10px,1.8dvh,18px); gap:clamp(9px,1.3dvh,13px); overflow:hidden; position:relative; z-index:2; min-height:0; background:var(--cream); }
-.hub-mood-row { display:flex; align-items:center; gap:8px; padding:10px 16px; background:rgba(255,255,255,0.88); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-radius:20px; width:100%; box-sizing:border-box; box-shadow:0 4px 20px rgba(180,100,40,0.07),inset 0 1px 0 rgba(255,255,255,1); border:1px solid rgba(255,255,255,0.9); }
+.hub-mood-row { display:flex; align-items:center; gap:clamp(4px,1.5vw,8px); padding:10px clamp(10px,3.5vw,16px); background:rgba(255,255,255,0.88); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-radius:20px; width:100%; box-sizing:border-box; box-shadow:0 4px 20px rgba(180,100,40,0.07),inset 0 1px 0 rgba(255,255,255,1); border:1px solid rgba(255,255,255,0.9); }
 .hub-mood-label { font-size:11px; color:var(--text-light); flex-shrink:0; letter-spacing:0.3px; white-space:nowrap; }
-.hub-mood-emojis { display:flex; gap:0; flex:1; justify-content:space-evenly; align-items:center; overflow:visible; }
-.mood-btn { border:none; cursor:pointer; padding:0; border-radius:14px; transition:all 0.2s cubic-bezier(.34,1.4,.64,1); opacity:0.65; width:52px; height:52px; flex-shrink:0; background:none !important; position:relative; }
-.mood-btn img { display:block; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:48px; height:48px; object-fit:contain; pointer-events:none; }
+.hub-mood-emojis { display:flex; gap:0; flex:1; justify-content:space-evenly; align-items:center; overflow:visible; min-width:0; }
+.mood-btn { border:none; cursor:pointer; padding:0; border-radius:14px; transition:all 0.2s cubic-bezier(.34,1.4,.64,1); opacity:0.65; width:clamp(38px,12vw,52px); height:clamp(38px,12vw,52px); flex-shrink:1; background:none !important; position:relative; }
+.mood-btn img { display:block; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:clamp(34px,11vw,48px); height:clamp(34px,11vw,48px); object-fit:contain; pointer-events:none; }
 .mood-btn.selected { opacity:1; transform:scale(1.18); box-shadow:0 3px 12px rgba(0,0,0,0.15); }
 .mood-btn:active { transform:scale(1.25); }
 .hub-mood-done { font-size:11px; color:var(--brown); font-weight:700; flex-shrink:0; white-space:nowrap; }
@@ -487,9 +487,11 @@
 }
 .paywall-back:active { background: rgba(220,130,60,0.1); }
 .paywall-body {
-  flex: 1; display: flex; flex-direction: column; align-items: center;
-  padding: 20px 24px 40px; gap: 0;
+  flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center;
+  padding: 20px clamp(16px,5vw,24px) 40px; gap: 0;
+  overflow-y: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
 }
+.paywall-body::-webkit-scrollbar { display: none; }
 .paywall-badge {
   width: 64px; height: 64px;
   background: linear-gradient(145deg, #E8924A, #B85C2A);
@@ -1681,6 +1683,40 @@
       transition: width 0.6s ease;
     }
     .ex-result-bar-pct { font-size: 11px; color: var(--text-light); width: 30px; text-align: right; flex-shrink: 0; }
+
+    /* ═══ 响应式保护 — 超窄屏 (< 360px) ═══ */
+    @media (max-width: 359px) {
+      /* 情绪打卡：隐藏文字标签，让按钮撑满 */
+      .hub-mood-label { display: none; }
+      .hub-mood-done { display: none; }
+      /* hub 内容横向内边距收窄 */
+      .hub-content { padding-left: 10px; padding-right: 10px; }
+      /* 功能卡片文字缩小 */
+      .hub-feat-title { font-size: clamp(13px, 3.8vw, 15px); }
+      .hub-feat-desc  { font-size: clamp(10px, 2.8vw, 12px); }
+      /* 升级横幅文字缩小 */
+      .hub-upgrade-title { font-size: 13px; }
+      .hub-upgrade-sub   { font-size: 10.5px; }
+      /* 设置项文字 */
+      .settings-item-label { font-size: 14px; }
+      /* 聊天输入框 */
+      .chat-input { padding: 10px 14px; font-size: 14px; }
+      /* paywall 计划卡片字体 */
+      .plan-price { font-size: 18px; }
+      /* 早期用户文字强制换行 */
+      .survey-entry-top { word-break: break-all; font-size: 11.5px; }
+    }
+
+    /* ═══ 超高屏保护 — 防止 hub 内容拉伸变形 ═══ */
+    @media (min-height: 900px) {
+      .hub-feat-grid { max-height: 360px; }
+    }
+
+    /* ═══ 通用防溢出 ═══ */
+    .hub-feat-title, .hub-feat-desc, .hub-upgrade-title, .hub-upgrade-sub,
+    .settings-item-label, .paywall-feature-item span, .survey-entry-top {
+      overflow-wrap: break-word; word-break: break-word;
+    }
   </style>
   <!-- Firebase SDK -->
   <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
