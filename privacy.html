@@ -3,121 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>隐私政策 · 暖 Privacy Policy</title>
+  <title>隐私政策 · 暖暖 Privacy Policy</title>
   <style>
+    :root { --brown: #C0622A; --cream: #FDF8F4; --text: #2A1808; --text-light: #A07050; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; background: #FDF8F4; color: #2A1808; padding: 40px 24px 80px; max-width: 720px; margin: 0 auto; line-height: 1.8; }
-    h1 { font-size: 26px; color: #C0622A; margin-bottom: 8px; }
-    .subtitle { font-size: 14px; color: #A07050; margin-bottom: 40px; }
-    h2 { font-size: 17px; font-weight: 700; color: #C0622A; margin: 32px 0 10px; }
-    p { font-size: 15px; margin-bottom: 12px; color: #3A2010; }
-    ul { padding-left: 20px; margin-bottom: 12px; }
-    li { font-size: 15px; margin-bottom: 6px; color: #3A2010; }
-    .updated { font-size: 13px; color: #A07050; margin-top: 48px; }
-    a { color: #C0622A; }
-    hr { border: none; border-top: 1px solid #FCDFC5; margin: 40px 0; }
+    body { font-family: 'PingFang SC','Microsoft YaHei',-apple-system,Arial,sans-serif; background:var(--cream); color:var(--text); line-height:1.8; }
+    .wrap { max-width:720px; margin:0 auto; padding:48px 24px 80px; }
+    .logo { display:flex; align-items:center; gap:12px; margin-bottom:40px; }
+    .logo-icon { width:44px; height:44px; background:linear-gradient(145deg,#E8924A,#B85C2A); border-radius:12px; display:flex; align-items:center; justify-content:center; color:white; font-size:22px; }
+    .logo-name { font-size:20px; font-weight:800; color:var(--brown); }
+    h1 { font-size:26px; font-weight:800; color:var(--brown); margin-bottom:8px; }
+    .subtitle { font-size:14px; color:var(--text-light); margin-bottom:32px; }
+    .lang-toggle { display:inline-flex; border:1.5px solid rgba(192,98,42,0.3); border-radius:20px; overflow:hidden; margin-bottom:32px; }
+    .lang-btn { padding:6px 18px; font-size:13px; cursor:pointer; border:none; background:transparent; color:var(--text-light); transition:all 0.15s; font-family:inherit; }
+    .lang-btn.active { background:var(--brown); color:white; }
+    section { margin-bottom:32px; }
+    h2 { font-size:15px; font-weight:700; color:var(--brown); margin-bottom:10px; padding-bottom:6px; border-bottom:1.5px solid rgba(192,98,42,0.15); }
+    p { font-size:14px; color:#3A2010; margin-bottom:10px; }
+    ul { padding-left:20px; margin-bottom:10px; }
+    li { font-size:14px; color:#3A2010; margin-bottom:6px; }
+    .highlight { background:rgba(192,98,42,0.07); border-left:3px solid var(--brown); padding:12px 16px; border-radius:0 10px 10px 0; margin-bottom:28px; }
+    .updated { font-size:12px; color:var(--text-light); margin-top:40px; text-align:center; }
+    a { color:var(--brown); }
+    .ls { display:none; }
+    .ls.show { display:block; }
   </style>
 </head>
 <body>
+<div class="wrap">
+  <div class="logo">
+    <div class="logo-icon">暖</div>
+    <div class="logo-name">暖暖 · Nuan</div>
+  </div>
+  <h1>隐私政策 · Privacy Policy</h1>
+  <p class="subtitle">最后更新 Last updated: May 2025</p>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('zh')">中文</button>
+    <button class="lang-btn" onclick="setLang('en')">English</button>
+  </div>
 
-  <h1>隐私政策</h1>
-  <div class="subtitle">Privacy Policy · 暖 (Nuan)</div>
+  <div class="ls show" id="zh">
+    <div class="highlight"><p><strong>核心承诺：</strong>暖暖不出售、不共享你的个人数据。你的聊天记录、情绪日记、个人档案默认只存在你自己的设备上。</p></div>
+    <section><h2>1. 我们收集什么信息</h2>
+      <ul><li><strong>你主动提供的内容</strong>——与暖暖的对话、情绪打卡、日记文字、昵称与简介</li>
+      <li><strong>自动生成的数据</strong>——由对话分析出的性格标签与记忆片段（「暖暖眼中的我」功能）</li></ul>
+      <p>我们<strong>不收集</strong>：真实姓名、电话、身份证、精确位置、通讯录、相机或麦克风数据。</p>
+    </section>
+    <section><h2>2. 数据存储在哪里</h2>
+      <ul><li><strong>免费版</strong>：所有数据仅存储在你设备的浏览器本地存储（localStorage）中，不上传至任何服务器。</li>
+      <li><strong>AI 对话</strong>：你发送的消息会传输至暖暖 AI 后端（托管于 Render.com）以生成回复，处理后不长期保留。</li>
+      <li><strong>守候版</strong>：启用云端同步后，数据会加密存储于 Firebase（Google）。</li></ul>
+    </section>
+    <section><h2>3. 数据如何使用</h2>
+      <ul><li>生成 AI 回复（对话内容发送后端处理后即丢弃）</li>
+      <li>在你的设备上本地生成性格分析与记忆摘要</li>
+      <li>改善应用体验（不涉及个人身份识别）</li></ul>
+      <p>我们<strong>不会</strong>将你的数据用于广告投放或出售给第三方。</p>
+    </section>
+    <section><h2>4. 第三方服务</h2>
+      <ul><li><strong>Anthropic Claude API</strong>：驱动 AI 对话。适用 <a href="https://www.anthropic.com/privacy" target="_blank">Anthropic 隐私政策</a></li>
+      <li><strong>Render.com</strong>：AI 后端托管</li>
+      <li><strong>GitHub Pages</strong>：应用托管</li>
+      <li><strong>Firebase / Google</strong>（守候版）：云端同步，适用 <a href="https://policies.google.com/privacy" target="_blank">Google 隐私政策</a></li></ul>
+    </section>
+    <section><h2>5. 你对数据的控制权</h2>
+      <ul><li><strong>删除</strong>：设置页面「清除所有数据」可删除全部本地数据</li>
+      <li><strong>查看</strong>：所有本地数据可通过浏览器开发者工具查看</li>
+      <li><strong>导出</strong>：功能规划中</li></ul>
+    </section>
+    <section><h2>6. 儿童隐私</h2>
+      <p>暖暖面向 13 岁及以上用户。我们不会故意收集 13 岁以下儿童的个人信息。如有此情况请联系我们删除。</p>
+    </section>
+    <section><h2>7. 联系我们</h2>
+      <p>隐私相关问题请联系：<a href="mailto:junyugaming0101@gmail.com">junyugaming0101@gmail.com</a></p>
+    </section>
+  </div>
 
-  <p>暖（以下简称「本应用」）重视您的隐私。本政策说明我们如何收集、使用和保护您的个人信息。使用本应用即表示您同意本政策。</p>
+  <div class="ls" id="en">
+    <div class="highlight"><p><strong>Our commitment:</strong> Nuan does not sell or share your personal data. Your chats, mood logs, and profile are stored locally on your device by default.</p></div>
+    <section><h2>1. What We Collect</h2>
+      <ul><li><strong>Content you provide</strong> — conversations with Nuan, mood check-ins, journal entries, nickname and bio</li>
+      <li><strong>Derived data</strong> — personality tags and memory snippets generated from conversations ("How Lumi Sees Me" feature)</li></ul>
+      <p>We do <strong>not</strong> collect: real name, phone number, ID, precise location, contacts, camera or microphone data.</p>
+    </section>
+    <section><h2>2. Where Data Is Stored</h2>
+      <ul><li><strong>Free version</strong>: All data is stored only in your device's browser localStorage. Nothing is uploaded to a server.</li>
+      <li><strong>AI conversations</strong>: Messages are sent to Nuan's AI backend (hosted on Render.com) to generate responses. They are not retained after processing.</li>
+      <li><strong>Premium</strong>: When cloud sync is enabled, data is encrypted and stored on Firebase (Google).</li></ul>
+    </section>
+    <section><h2>3. How Data Is Used</h2>
+      <ul><li>Generating AI responses (conversation content is discarded after processing)</li>
+      <li>Locally generating personality analysis and memory summaries on your device</li>
+      <li>Improving the app experience (no personal identification)</li></ul>
+      <p>We do <strong>not</strong> use your data for advertising or sell it to third parties.</p>
+    </section>
+    <section><h2>4. Third-Party Services</h2>
+      <ul><li><strong>Anthropic Claude API</strong>: Powers AI chat. Subject to <a href="https://www.anthropic.com/privacy" target="_blank">Anthropic's Privacy Policy</a></li>
+      <li><strong>Render.com</strong>: AI backend hosting</li>
+      <li><strong>GitHub Pages</strong>: App hosting</li>
+      <li><strong>Firebase / Google</strong> (Premium): Cloud sync. Subject to <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a></li></ul>
+    </section>
+    <section><h2>5. Your Controls</h2>
+      <ul><li><strong>Delete</strong>: "Clear All Data" in Settings removes all local data</li>
+      <li><strong>View</strong>: All local data can be inspected via your browser's developer tools</li>
+      <li><strong>Export</strong>: Planned feature</li></ul>
+    </section>
+    <section><h2>6. Children's Privacy</h2>
+      <p>Nuan is for users aged 13 and older. We do not knowingly collect data from children under 13. Please contact us if this has occurred.</p>
+    </section>
+    <section><h2>7. Contact Us</h2>
+      <p>Privacy inquiries: <a href="mailto:junyugaming0101@gmail.com">junyugaming0101@gmail.com</a></p>
+    </section>
+  </div>
 
-  <h2>1. 我们收集的信息</h2>
-  <ul>
-    <li><strong>账号信息：</strong>通过 Google 或 Facebook 登录时，我们会获取您的显示名称和电子邮件地址，用于识别您的账号。</li>
-    <li><strong>用户内容：</strong>您在应用内输入的文字（对话内容、昵称、自我介绍）存储在您设备的本地存储中。</li>
-    <li><strong>使用数据：</strong>我们可能收集匿名的应用使用统计数据，用于改善产品体验。</li>
-  </ul>
-
-  <h2>2. 信息的使用方式</h2>
-  <ul>
-    <li>提供和改善本应用的功能与体验</li>
-    <li>识别您的账号，保存您的个人化设置</li>
-    <li>向您发送关怀提醒（仅在您开启通知权限后）</li>
-  </ul>
-
-  <h2>3. 信息共享</h2>
-  <p>我们不会出售、出租或以商业目的向第三方共享您的个人信息。以下情况除外：</p>
-  <ul>
-    <li><strong>Firebase / Google：</strong>用于身份验证服务</li>
-    <li><strong>Groq：</strong>对话内容会发送至 Groq AI 服务以生成回复，Groq 的隐私政策请参阅 <a href="https://groq.com/privacy-policy/" target="_blank">groq.com</a></li>
-    <li>法律要求时</li>
-  </ul>
-
-  <h2>4. 数据存储与安全</h2>
-  <p>您的对话记录、昵称、记忆等个人数据主要存储在您设备的本地浏览器存储（localStorage）中，不会上传至我们的服务器。我们采取合理的安全措施保护您的账号信息。</p>
-
-  <h2>5. 您的权利</h2>
-  <ul>
-    <li>您可以随时在应用设置中清除所有本地数据</li>
-    <li>您可以随时删除您的账号及相关数据</li>
-    <li>如需删除账号数据，请联系我们（见下方）</li>
-  </ul>
-
-  <h2>6. 儿童隐私</h2>
-  <p>本应用不面向 13 岁以下儿童。我们不会故意收集儿童的个人信息。</p>
-
-  <h2>7. 隐私政策更新</h2>
-  <p>我们可能会不时更新本隐私政策。更新后，我们会在本页面注明最新日期。建议您定期查看本页面。</p>
-
-  <h2>8. 联系我们</h2>
-  <p>如对本隐私政策有任何疑问，或需要删除您的账号数据，请联系：</p>
-  <p><a href="mailto:dariusphh@gmail.com">dariusphh@gmail.com</a></p>
-
-  <hr>
-
-  <!-- English version -->
-  <h1 style="margin-top:0;">Privacy Policy</h1>
-  <div class="subtitle">暖 (Nuan) · English</div>
-
-  <p>Nuan ("the App") values your privacy. This policy explains how we collect, use, and protect your personal information. By using the App, you agree to this policy.</p>
-
-  <h2>1. Information We Collect</h2>
-  <ul>
-    <li><strong>Account information:</strong> When you sign in with Google or Facebook, we receive your display name and email address to identify your account.</li>
-    <li><strong>User content:</strong> Text you enter in the app (conversations, nickname, self-introduction) is stored locally on your device.</li>
-    <li><strong>Usage data:</strong> We may collect anonymous usage statistics to improve the app experience.</li>
-  </ul>
-
-  <h2>2. How We Use Your Information</h2>
-  <ul>
-    <li>To provide and improve the app's features and experience</li>
-    <li>To identify your account and save your personalized settings</li>
-    <li>To send care reminders (only if you enable notifications)</li>
-  </ul>
-
-  <h2>3. Information Sharing</h2>
-  <p>We do not sell, rent, or share your personal information with third parties for commercial purposes, except:</p>
-  <ul>
-    <li><strong>Firebase / Google:</strong> For authentication services</li>
-    <li><strong>Groq:</strong> Conversation content is sent to Groq AI to generate responses. See <a href="https://groq.com/privacy-policy/" target="_blank">Groq's Privacy Policy</a></li>
-    <li>When required by law</li>
-  </ul>
-
-  <h2>4. Data Storage & Security</h2>
-  <p>Your conversations, nickname, memories, and other personal data are primarily stored in your device's local browser storage (localStorage) and are not uploaded to our servers. We take reasonable security measures to protect your account information.</p>
-
-  <h2>5. Your Rights</h2>
-  <ul>
-    <li>You can clear all local data at any time in the app settings</li>
-    <li>You can delete your account and associated data at any time</li>
-    <li>To request account data deletion, please contact us (see below)</li>
-  </ul>
-
-  <h2>6. Children's Privacy</h2>
-  <p>The App is not directed at children under 13. We do not knowingly collect personal information from children.</p>
-
-  <h2>7. Changes to This Policy</h2>
-  <p>We may update this privacy policy from time to time. When we do, we will update the date below. We encourage you to review this page periodically.</p>
-
-  <h2>8. Contact Us</h2>
-  <p>For questions about this privacy policy or to request account data deletion, contact us at:</p>
-  <p><a href="mailto:dariusphh@gmail.com">dariusphh@gmail.com</a></p>
-
-  <p class="updated">最后更新 Last updated: April 2026</p>
-
+  <p class="updated">© 2025 暖暖 · Nuan. All rights reserved.</p>
+</div>
+<script>
+  function setLang(l) {
+    document.getElementById('zh').classList.toggle('show', l==='zh');
+    document.getElementById('en').classList.toggle('show', l==='en');
+    document.querySelectorAll('.lang-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&l==='zh')||(i===1&&l==='en')));
+  }
+</script>
 </body>
 </html>

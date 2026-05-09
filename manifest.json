@@ -1,7 +1,7 @@
 {
-  "name": "暖 · Nuan",
-  "short_name": "暖",
-  "description": "一个认识你的情感陪伴者 · A companion who truly knows you",
+  "name": "暖暖 · Nuan",
+  "short_name": "暖暖",
+  "description": "一个认识你的情感陪伴 AI · An AI companion who truly knows you",
   "id": "/nuan/nuanv3.html",
   "start_url": "/nuan/nuanv3.html",
   "scope": "/nuan/",
@@ -9,7 +9,7 @@
   "orientation": "portrait",
   "background_color": "#FDF8F4",
   "theme_color": "#C0622A",
-  "categories": ["lifestyle", "social"],
+  "categories": ["lifestyle", "health", "social"],
   "prefer_related_applications": false,
   "icons": [
     { "src": "icon-72.png",  "sizes": "72x72",   "type": "image/png", "purpose": "any" },
@@ -17,17 +17,14 @@
     { "src": "icon-128.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
     { "src": "icon-144.png", "sizes": "144x144", "type": "image/png", "purpose": "any" },
     { "src": "icon-152.png", "sizes": "152x152", "type": "image/png", "purpose": "any" },
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
     { "src": "icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "screenshots": [
-    {
-      "src": "screenshot1.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "暖暖陪伴界面"
-    }
+    { "src": "screenshot1.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow", "label": "主页 · Home" },
+    { "src": "screenshot2.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow", "label": "与暖暖聊天 · Chat with Nuan" },
+    { "src": "screenshot3.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow", "label": "情绪足迹 · Mood Journal" },
+    { "src": "screenshot4.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow", "label": "暖暖眼中的我 · How Lumi Sees Me" }
   ]
 }
