@@ -567,6 +567,11 @@
 .paywall-fine-print {
   font-size: 11px; color: var(--text-light); text-align: center; line-height: 1.6; opacity: 0.8;
 }
+.paywall-promo-banner { width:100%; background:linear-gradient(90deg,#E8924A,#C0622A); border-radius:14px; padding:10px 16px; text-align:center; margin-bottom:14px; }
+.paywall-promo-title { font-size:13px; font-weight:800; color:white; letter-spacing:0.3px; }
+.paywall-promo-sub { font-size:11px; color:rgba(255,255,255,0.82); margin-top:2px; }
+.plan-price-orig { font-size:11px; color:rgba(160,112,80,0.7); text-decoration:line-through; margin-bottom:1px; }
+.plan-save-orig { font-size:10px; color:#5C9E6A; font-weight:700; background:rgba(92,158,106,0.12); border-radius:8px; padding:2px 7px; margin-top:2px; }
 /* ════ 问卷体验界面 ════ */
 #survey { background: var(--cream); background-image: radial-gradient(circle,rgba(220,130,60,0.042) 1px,transparent 1px); background-size: 22px 22px; flex-direction: column; overflow: hidden; }
 .survey-header { padding: 16px 20px 0; display: flex; align-items: center; flex-shrink: 0; }
@@ -2019,24 +2024,33 @@
         </div>
       </div>
 
+      <div class="paywall-promo-banner">
+        <div class="paywall-promo-title" data-zh="🎉 上线特惠 · 限时优惠价" data-en="🎉 Launch Special · Limited-time price">🎉 上线特惠 · 限时优惠价</div>
+        <div class="paywall-promo-sub" data-zh="价格将在活动结束后恢复原价" data-en="Price will return to regular after the promotion ends">价格将在活动结束后恢复原价</div>
+      </div>
+
       <div class="paywall-plans" id="paywall-plans">
         <div class="plan-card" id="plan-monthly" onclick="selectPlan('monthly')">
           <div class="plan-period" data-zh="每月" data-en="Monthly">每月</div>
-          <div class="plan-price">RM 12<span style="font-size:14px">.90</span></div>
+          <div class="plan-price-orig" data-zh="RM 22.90" data-en="RM 22.90">RM 22.90</div>
+          <div class="plan-price">RM 15<span style="font-size:14px">.90</span></div>
           <div class="plan-price-unit" data-zh="/ 月" data-en="/ mo">/ 月</div>
         </div>
         <div class="plan-card selected" id="plan-yearly" onclick="selectPlan('yearly')">
-          <div class="plan-recommend" data-zh="推荐 · 省 26%" data-en="Best value · save 26%">推荐 · 省 26%</div>
+          <div class="plan-recommend" data-zh="推荐 · 省 30%" data-en="Best value · save 30%">推荐 · 省 30%</div>
           <div class="plan-period" data-zh="每年" data-en="Yearly">每年</div>
-          <div class="plan-price">RM 99</div>
+          <div class="plan-price-orig" data-zh="RM 198" data-en="RM 198">RM 198</div>
+          <div class="plan-price">RM 138</div>
           <div class="plan-price-unit" data-zh="/ 年" data-en="/ yr">/ 年</div>
-          <div class="plan-save" data-zh="≈ RM 8.25 / 月" data-en="≈ RM 8.25 / mo">≈ RM 8.25 / 月</div>
+          <div class="plan-save" data-zh="≈ RM 11.50 / 月" data-en="≈ RM 11.50 / mo">≈ RM 11.50 / 月</div>
         </div>
       </div>
 
       <div class="paywall-onetime">
         <span data-zh="更倾向一次性付款？" data-en="Prefer to pay once?">更倾向一次性付款？</span><br>
-        <strong data-zh="永久守候 · RM 199" data-en="Lifetime · RM 199">永久守候 · RM 199</strong> — <span data-zh="所有功能，买断不续费" data-en="all features, no subscription">所有功能，买断不续费</span>
+        <strong data-zh="永久守候 · RM 199" data-en="Lifetime · RM 199">永久守候 · RM 199</strong>
+        <span class="plan-price-orig" style="display:inline;font-size:11px;margin-left:4px;" data-zh="（原价 RM 328）" data-en="(reg. RM 328)">（原价 RM 328）</span>
+        — <span data-zh="所有功能，买断不续费" data-en="all features, no subscription">所有功能，买断不续费</span>
       </div>
 
       <button class="paywall-cta" id="paywall-cta-btn" onclick="handlePaywallCta()">
@@ -3554,16 +3568,16 @@ function selectPlan(plan) {
   const btn = document.getElementById('paywall-cta-btn');
   if (btn) {
     if (currentLang === 'en') {
-      btn.textContent = plan === 'yearly' ? 'Unlock Premium · RM 99/yr ✦' : 'Unlock Premium · RM 12.90/mo ✦';
+      btn.textContent = plan === 'yearly' ? 'Unlock Premium · RM 138/yr ✦' : 'Unlock Premium · RM 15.90/mo ✦';
     } else {
-      btn.textContent = plan === 'yearly' ? '开启守候版 · RM 99/年 ✦' : '开启守候版 · RM 12.90/月 ✦';
+      btn.textContent = plan === 'yearly' ? '开启守候版 · RM 138/年 ✦' : '开启守候版 · RM 15.90/月 ✦';
     }
   }
 }
 function handlePaywallCta() {
   const msg = selectedPlan === 'yearly'
-    ? t('即将跳转至 RM 99/年 的付款页面……\n（支付功能开发中，敬请期待）', 'Redirecting to RM 99/yr payment…\n(Payment coming soon)')
-    : t('即将跳转至 RM 12.90/月 的付款页面……\n（支付功能开发中，敬请期待）', 'Redirecting to RM 12.90/mo payment…\n(Payment coming soon)');
+    ? t('即将跳转至 RM 138/年 的付款页面……\n（支付功能开发中，敬请期待）', 'Redirecting to RM 138/yr payment…\n(Payment coming soon)')
+    : t('即将跳转至 RM 15.90/月 的付款页面……\n（支付功能开发中，敬请期待）', 'Redirecting to RM 15.90/mo payment…\n(Payment coming soon)');
   alert(msg);
 }
 function goBack() {
